@@ -9,28 +9,12 @@ import java.util.Random;
 public class MousePanel extends JPanel implements MouseListener, MouseMotionListener, ActionListener {
     private Point2D.Double mousePosition = new Point2D.Double();
     private Point2D.Double shapePosition = new Point2D.Double(new Random().nextDouble() * 800, new Random().nextDouble() * 800);
-    private double gameSpeed = 1;
+    private double gameSpeed = 3;
     private Timer timer = new Timer(0, this);
     public MousePanel() {
         addMouseListener(this);
         addMouseMotionListener(this);
         timer.start();
-    }
-
-
-
-    public void positiveAlterPointWithLineEquation(Point2D.Double pointToAlter, Point2D.Double linePoint1, Point2D.Double linePoint2) {
-        double a = (linePoint1.getY() - linePoint2.getY())/(linePoint1.getX() - linePoint2.getX());
-        double b = linePoint1.getY() - a*linePoint1.getX();
-        Point2D.Double newPoint = new Point2D.Double(pointToAlter.getX() + gameSpeed, a * (pointToAlter.getX() + gameSpeed) + b);
-        pointToAlter.setLocation(newPoint);
-    }
-
-    public void negativeAlterPointWithLineEquation(Point2D.Double pointToAlter, Point2D.Double linePoint1, Point2D.Double linePoint2) {
-        double a = (linePoint1.getY() - linePoint2.getY())/(linePoint1.getX() - linePoint2.getX());
-        double b = linePoint1.getY() - a*linePoint1.getX();
-        Point2D.Double newPoint = new Point2D.Double(pointToAlter.getX() - gameSpeed, a * (pointToAlter.getX() - gameSpeed) + b);
-        pointToAlter.setLocation(newPoint);
     }
 
     @Override
@@ -61,11 +45,7 @@ public class MousePanel extends JPanel implements MouseListener, MouseMotionList
     }
 
     @Override
-    public void mousePressed(MouseEvent e) {
-        mousePosition.setLocation(e.getX(), e.getY());
-        System.out.println("mousePressed");
-        repaint();
-    }
+    public void mousePressed(MouseEvent e) { System.out.println("mousePressed"); }
 
     @Override
     public void mouseReleased(MouseEvent e) {
@@ -83,23 +63,12 @@ public class MousePanel extends JPanel implements MouseListener, MouseMotionList
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        /*
-        double shapeX = shapePosition.getX();
-        double shapeY = shapePosition.getY();
-        if(shapeX < mousePosition.getX())
-            shapeX += gameSpeed;
-        if(shapeX > mousePosition.getX())
-            shapeX -= gameSpeed;
-        if(shapeY < mousePosition.getY())
-            shapeY += gameSpeed;
-        if(shapeY > mousePosition.getY())
-            shapeY -= gameSpeed;
-        shapePosition.setLocation(shapeX, shapeY);
-        */
-        if(shapePosition.getX() < mousePosition.getX())
-            positiveAlterPointWithLineEquation(shapePosition, shapePosition, mousePosition);
-        else if(shapePosition.getX() > mousePosition.getX())
-            negativeAlterPointWithLineEquation(shapePosition, shapePosition, mousePosition);
+        double vectorX = mousePosition.getX() - shapePosition.getX();
+        double vectorY = mousePosition.getY() - shapePosition.getY();
+        double vectorLength = Math.sqrt(vectorX*vectorX + vectorY*vectorY);
+        double dirX = vectorX/vectorLength;
+        double dirY = vectorY/vectorLength;
+        shapePosition.setLocation(shapePosition.getX() + dirX*gameSpeed, shapePosition.getY() + dirY*gameSpeed);
         repaint();
     }
 }
