@@ -3,21 +3,40 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 import java.util.Random;
 
 public class GamePanel extends JPanel implements MouseListener, MouseMotionListener, ActionListener {
-    private final int snakeSegmentSize = 50;
+    private final int gameSegmentSize = 50;
     private Point2D.Double mousePosition = new Point2D.Double();
-    private Point2D.Double shapePosition = new Point2D.Double(new Random().nextDouble() * 800, new Random().nextDouble() * 800);
     private double gameSpeed = 2.5;
     private boolean speedUp = false;
     private boolean mouseInWindow = true;
     private Timer timer = new Timer(0, this);
+    private GameBoard gameBoard;
+
     public GamePanel() {
+        gameBoard = new GameBoard(800, 800, gameSegmentSize);
+        Random rand = new Random();
+        gameBoard.snake = new GameBoard.Snake(gameBoard.boardWidth, gameBoard.boardHeight, gameSegmentSize);
         addMouseListener(this);
         addMouseMotionListener(this);
         timer.start();
+    }
+
+    private void checkBorderCollision() {
+        if(gameBoard.snake.bodySegments.getFirst().getX() >= 800 - gameSegmentSize/2 || gameBoard.snake.bodySegments.getFirst().getX() <= gameSegmentSize/2 || gameBoard.snake.bodySegments.getFirst().getY() >= 800 - gameSegmentSize/2) {
+            System.out.println("Game Over");
+            System.exit(1);
+        }
+    }
+
+    private boolean checkFood() {
+        if(gameBoard.snake.bodySegments.getFirst().getX() - gameBoard.food.getX() <= gameSegmentSize/2 && gameBoard.snake.bodySegments.getFirst().getY() - gameBoard.food.getY() <= gameSegmentSize/2) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     @Override
@@ -77,18 +96,25 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
         g2d.setColor(Color.GREEN);
-        Ellipse2D.Double ell = new Ellipse2D.Double(shapePosition.getX() - snakeSegmentSize/2, shapePosition.getY() - snakeSegmentSize/2, snakeSegmentSize, snakeSegmentSize);
-        g2d.fill(ell);
+        Ellipse2D.Double snakeHeadImg = new Ellipse2D.Double(gameBoard.snake.bodySegments.getFirst().getX() - gameSegmentSize/2, gameBoard.snake.bodySegments.getFirst().getY() - gameSegmentSize/2, gameSegmentSize, gameSegmentSize);
+        Ellipse2D.Double foodImg = new Ellipse2D.Double(gameBoard.food.getX() - gameSegmentSize/2, gameBoard.food.getY() - gameSegmentSize/2, gameSegmentSize, gameSegmentSize);
+        g2d.fill(snakeHeadImg);
+        g2d.setColor(Color.RED);
+        g2d.fill(foodImg);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        double vectorX = mousePosition.getX() - shapePosition.getX();
-        double vectorY = mousePosition.getY() - shapePosition.getY();
+        double vectorX = mousePosition.getX() - gameBoard.snake.bodySegments.getFirst().getX();
+        double vectorY = mousePosition.getY() - gameBoard.snake.bodySegments.getFirst().getY();
         double vectorLength = Math.sqrt(vectorX*vectorX + vectorY*vectorY);
         double dirX = vectorX/vectorLength;
         double dirY = vectorY/vectorLength;
-        shapePosition.setLocation(shapePosition.getX() + dirX*gameSpeed, shapePosition.getY() + dirY*gameSpeed);
+        gameBoard.snake.bodySegments.getFirst().setLocation(gameBoard.snake.bodySegments.getFirst().getX() + dirX*gameSpeed, gameBoard.snake.bodySegments.getFirst().getY() + dirY*gameSpeed);
+        checkBorderCollision();
+        if(checkFood()) {
+            gameBoard.respawnFood(gameSegmentSize);
+        }
         repaint();
     }
 }

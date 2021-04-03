@@ -4,36 +4,40 @@ import java.util.Random;
 
 public class GameBoard {
     public int boardHeight, boardWidth;
-    public Snake snake;
+    public static Snake snake;
     public LinkedList<Point2D.Double> obstacles;
     public Point2D.Double food;
 
-    public GameBoard(int boardHeight, int boardWidth) {
+    public GameBoard(int boardHeight, int boardWidth, int segmentSize) {
         this.boardHeight = boardHeight;
         this.boardWidth = boardWidth;
-        this.snake = new Snake();
         Random rand = new Random();
-        this.food = new Point2D.Double(boardWidth*rand.nextDouble(), boardHeight*rand.nextDouble());
-        System.out.printf("initial food location: (%f, %f)\n", food.getX(), food.getY());
+        this.food = new Point2D.Double((boardWidth - segmentSize)*rand.nextDouble(), (boardHeight - segmentSize)*rand.nextDouble());
     }
 
-    void respawnFood() {
+    void respawnFood(int segmentSize) {
         Random rand = new Random();
-        Point2D.Double newFood = new Point2D.Double(boardWidth*rand.nextDouble(), boardHeight*rand.nextDouble());
-        while(food.equals(newFood)) {
-            newFood.setLocation(boardWidth*rand.nextDouble(), boardHeight*rand.nextDouble());
+        Point2D.Double newFood = new Point2D.Double((boardWidth - segmentSize)*rand.nextDouble(), (boardHeight - segmentSize)*rand.nextDouble());
+        while(food.equals(newFood) || food.equals(snake.bodySegments.getFirst())) {
+            newFood.setLocation((boardWidth - segmentSize)*rand.nextDouble(), (boardHeight - segmentSize)*rand.nextDouble());
         }
         food = newFood;
-        System.out.printf("new food location: (%f, %f)\n", food.getX(), food.getY());
     }
 
-    private class Snake {
-        LinkedList<Point2D.Double> bodySegments;
-        Snake() {
-            bodySegments = new LinkedList<Point2D.Double>();
+    public static class Snake {
+        public LinkedList<Point2D.Double> bodySegments;
+
+        Snake(int boardWidth, int boardHeight, int segmentSize) {
+            bodySegments = new LinkedList<>();
             Random rand = new Random();
-            bodySegments.add(0, new Point2D.Double(boardWidth*rand.nextDouble(), boardHeight*rand.nextDouble()));
-            System.out.printf("snake head location: (%f, %f)\n", bodySegments.get(0).getX(), bodySegments.get(0).getY());
+            bodySegments.add(0, new Point2D.Double((boardWidth - segmentSize)*rand.nextDouble(), (boardHeight - segmentSize)*rand.nextDouble()));
+        }
+
+        public void addBodySegment() {
+            double vectorX = bodySegments.get(bodySegments.size() - 2).getX() - bodySegments.getLast().getX();
+            double vectorY = bodySegments.get(bodySegments.size() - 2).getY() - bodySegments.getLast().getY();
+            Point2D.Double newBodySegment = new Point2D.Double(bodySegments.getLast().getX() + vectorX, bodySegments.getLast().getY() + vectorY);
+            bodySegments.add(newBodySegment);
         }
     }
 }
