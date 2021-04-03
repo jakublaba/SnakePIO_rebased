@@ -1,12 +1,15 @@
 import javax.swing.*;
+import java.awt.*;
 
 public class GameFrame extends JFrame {
     public GameFrame() {
-        super("Snake GameFrame");
+        super("Snake");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setSize(800, 800);
+        GamePanel gamePanel = new GamePanel();
+        gamePanel.setPreferredSize(new Dimension(800, 800));
+        this.setContentPane(gamePanel);
+        this.pack();
+        this.setMinimumSize(this.getSize());
         this.setVisible(true);
-        this.setResizable(false);
-        this.add(new MousePanel());
     }
 }

@@ -9,15 +9,27 @@ import java.util.Random;
 public class GamePanel extends JPanel implements MouseListener, MouseMotionListener, ActionListener {
     private final int snakeSegmentSize = 50;
     private Point2D.Double mousePosition = new Point2D.Double();
-    private Point2D.Double shapePosition = new Point2D.Double(new Random().nextDouble() * 800, new Random().nextDouble() * 800);
+    private Point2D.Double shapePosition;
     private double gameSpeed = 2.5;
     private boolean speedUp = false;
     private boolean mouseInWindow = true;
     private Timer timer = new Timer(0, this);
+    private GameBoard gameBoard;
+
     public GamePanel() {
+        gameBoard = new GameBoard(800, 800);
+        Random rand = new Random();
+        shapePosition = new Point2D.Double(rand.nextDouble() * 800, rand.nextDouble() * 800);
         addMouseListener(this);
         addMouseMotionListener(this);
         timer.start();
+    }
+
+    private void checkBorderCollision() {
+        if(shapePosition.getX() >= 800 - snakeSegmentSize/2 || shapePosition.getX() <= snakeSegmentSize/2 || shapePosition.getY() >= 800 - snakeSegmentSize/2 || shapePosition.getY() <= snakeSegmentSize/2) {
+            System.out.println("Game Over");
+            System.exit(1);
+        }
     }
 
     @Override
@@ -89,6 +101,7 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
         double dirX = vectorX/vectorLength;
         double dirY = vectorY/vectorLength;
         shapePosition.setLocation(shapePosition.getX() + dirX*gameSpeed, shapePosition.getY() + dirY*gameSpeed);
+        checkBorderCollision();
         repaint();
     }
 }
