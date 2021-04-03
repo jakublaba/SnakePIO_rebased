@@ -7,9 +7,11 @@ import java.awt.geom.Rectangle2D;
 import java.util.Random;
 
 public class MousePanel extends JPanel implements MouseListener, MouseMotionListener, ActionListener {
+    private final int snakeSegmentSize = 50;
     private Point2D.Double mousePosition = new Point2D.Double();
     private Point2D.Double shapePosition = new Point2D.Double(new Random().nextDouble() * 800, new Random().nextDouble() * 800);
-    private double gameSpeed = 3;
+    private double gameSpeed = 2.5;
+    private boolean speedUp = false;
     private Timer timer = new Timer(0, this);
     public MousePanel() {
         addMouseListener(this);
@@ -19,6 +21,11 @@ public class MousePanel extends JPanel implements MouseListener, MouseMotionList
 
     @Override
     public void mouseDragged(MouseEvent e) {
+        mousePosition.setLocation(e.getX(), e.getY());
+        if(!speedUp) {
+            gameSpeed *= 2;
+            speedUp = true;
+        }
         System.out.println("mouseDragged");
     }
 
@@ -45,10 +52,20 @@ public class MousePanel extends JPanel implements MouseListener, MouseMotionList
     }
 
     @Override
-    public void mousePressed(MouseEvent e) { System.out.println("mousePressed"); }
+    public void mousePressed(MouseEvent e) {
+        if(!speedUp) {
+            gameSpeed *= 2;
+            speedUp = true;
+        }
+        System.out.println("mousePressed");
+    }
 
     @Override
     public void mouseReleased(MouseEvent e) {
+        if(speedUp) {
+            gameSpeed /= 2;
+            speedUp = false;
+        }
         System.out.println("mouseReleased");
     }
 
@@ -57,7 +74,7 @@ public class MousePanel extends JPanel implements MouseListener, MouseMotionList
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
         g2d.setColor(Color.GREEN);
-        Ellipse2D.Double ell = new Ellipse2D.Double(shapePosition.getX() - 25, shapePosition.getY() - 25, 50, 50);
+        Ellipse2D.Double ell = new Ellipse2D.Double(shapePosition.getX() - snakeSegmentSize/2, shapePosition.getY() - snakeSegmentSize/2, snakeSegmentSize, snakeSegmentSize);
         g2d.fill(ell);
     }
 
