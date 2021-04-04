@@ -30,7 +30,7 @@ public class GameBoard {
         }
 
         public void move() {
-            for(int i = 1; i < bodySegments.size(); i++) {
+            for(int i = bodySegments.size() - 1; i > 0; i--) {
                 bodySegments.get(i).setLocation(bodySegments.get(i - 1));
             }
         }
