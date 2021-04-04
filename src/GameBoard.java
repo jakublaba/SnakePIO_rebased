@@ -17,9 +17,7 @@ public class GameBoard {
 
     void respawnFood(int segmentSize) {
         Point2D.Double newFood = new Point2D.Double(ThreadLocalRandom.current().nextDouble(segmentSize/2, boardWidth - segmentSize/2), ThreadLocalRandom.current().nextDouble(segmentSize/2, boardHeight - segmentSize/2));
-        while(food.equals(newFood) || food.equals(snake.bodySegments.getFirst())) {
-            newFood.setLocation(ThreadLocalRandom.current().nextDouble(segmentSize/2, boardWidth - segmentSize/2), ThreadLocalRandom.current().nextDouble(segmentSize/2, boardHeight - segmentSize/2));
-        }
+        newFood.setLocation(ThreadLocalRandom.current().nextDouble(segmentSize/2, boardWidth - segmentSize/2), ThreadLocalRandom.current().nextDouble(segmentSize/2, boardHeight - segmentSize/2));
         food = newFood;
     }
 
@@ -31,11 +29,24 @@ public class GameBoard {
             bodySegments.add(0, new Point2D.Double(ThreadLocalRandom.current().nextDouble(segmentSize/2, boardWidth - segmentSize/2), ThreadLocalRandom.current().nextDouble(segmentSize/2, boardHeight - segmentSize/2)));
         }
 
+        public void move() {
+            for(int i = 1; i < bodySegments.size(); i++) {
+                bodySegments.get(i).setLocation(bodySegments.get(i - 1));
+            }
+        }
+
         public void addBodySegment() {
-            double vectorX = bodySegments.get(bodySegments.size() - 2).getX() - bodySegments.getLast().getX();
-            double vectorY = bodySegments.get(bodySegments.size() - 2).getY() - bodySegments.getLast().getY();
-            Point2D.Double newBodySegment = new Point2D.Double(bodySegments.getLast().getX() + vectorX, bodySegments.getLast().getY() + vectorY);
-            bodySegments.add(newBodySegment);
+            Point2D.Double newBodySegment;
+            //jeżeli jest sama głowa
+            if(bodySegments.size() == 1) {
+                newBodySegment = new Point2D.Double(bodySegments.getFirst().getX(), bodySegments.getFirst().getY());
+                bodySegments.addLast(newBodySegment);
+            }
+            //jeżeli są już jakieś segmenty poza głową
+            else {
+                newBodySegment = new Point2D.Double(bodySegments.getLast().getX(), bodySegments.getLast().getY());
+                bodySegments.addLast(newBodySegment);
+            }
         }
     }
 }
