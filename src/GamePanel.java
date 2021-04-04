@@ -137,7 +137,6 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
             double dirX = vectorX/vectorLength;
             double dirY = vectorY/vectorLength;
             gameBoard.snake.bodySegments.getFirst().setLocation(gameBoard.snake.bodySegments.getFirst().getX() + dirX*gameSpeed, gameBoard.snake.bodySegments.getFirst().getY() + dirY*gameSpeed);
-        }
         checkBorderCollision();
         if(checkFood()) {
             System.out.printf("Food at (%f, %f) location collected by head at (%f, %f) location\n", gameBoard.food.getX(), gameBoard.food.getY(), gameBoard.snake.bodySegments.getFirst().getX(), gameBoard.snake.bodySegments.getFirst().getY());
@@ -146,5 +145,6 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
         }
         gameBoard.snake.move();
         repaint();
+        }
     }
 }
