@@ -9,7 +9,7 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
     private Point2D.Double mousePosition = new Point2D.Double();
     private double gameSpeed = 2.5;
     private boolean speedUp = false;
-    private boolean mouseInWindow = true;
+    private boolean mouseInWindow = false;
     private Timer timer = new Timer(0, this);
     private GameBoard gameBoard;
 
@@ -23,41 +23,63 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
     }
 
     private void checkBorderCollision() {
-        if(gameBoard.snake.bodySegments.getFirst().getX() >= 800 - gameSegmentSize/2 || gameBoard.snake.bodySegments.getFirst().getX() <= gameSegmentSize/2 || gameBoard.snake.bodySegments.getFirst().getY() >= 800 - gameSegmentSize/2) {
-            System.out.println("Game Over");
+        double distFromTop = gameBoard.snake.bodySegments.getFirst().getY();
+        double distFromBottom = gameBoard.boardHeight - distFromTop;
+        double distFromLeft = gameBoard.snake.bodySegments.getFirst().getX();
+        double distFromRight = gameBoard.boardWidth - distFromLeft;
+        if(distFromTop <= gameSegmentSize/2) {
+            System.out.println("Game Over: collision with top border");
+            System.out.printf("Coordinates of head when game ended: (%f, %f)\n", gameBoard.snake.bodySegments.getFirst().getX(), gameBoard.snake.bodySegments.getFirst().getY());
+            System.exit(1);
+        }
+        if(distFromBottom <= gameSegmentSize/2) {
+            System.out.println("Game Over: collision with bottom border");
+            System.out.printf("Coordinates of head when game ended: (%f, %f)\n", gameBoard.snake.bodySegments.getFirst().getX(), gameBoard.snake.bodySegments.getFirst().getY());
+            System.exit(1);
+        }
+        if(distFromLeft <= gameSegmentSize/2) {
+            System.out.println("Game Over: collision with left border");
+            System.out.printf("Coordinates of head when game ended: (%f, %f)\n", gameBoard.snake.bodySegments.getFirst().getX(), gameBoard.snake.bodySegments.getFirst().getY());
+            System.exit(1);
+        }
+        if(distFromRight <= gameSegmentSize/2) {
+            System.out.println("Game Over: collision with right border");
+            System.out.printf("Coordinates of head when game ended: (%f, %f)\n", gameBoard.snake.bodySegments.getFirst().getX(), gameBoard.snake.bodySegments.getFirst().getY());
             System.exit(1);
         }
     }
 
     private boolean checkFood() {
-        if(gameBoard.snake.bodySegments.getFirst().getX() - gameBoard.food.getX() <= gameSegmentSize/2 && gameBoard.snake.bodySegments.getFirst().getY() - gameBoard.food.getY() <= gameSegmentSize/2) {
-            return true;
-        }
-        else {
-            return false;
-        }
+        double xDiffSqr = (gameBoard.snake.bodySegments.getFirst().getX()-gameBoard.food.getX())*(gameBoard.snake.bodySegments.getFirst().getX()-gameBoard.food.getX());
+        double yDiffSqr = (gameBoard.snake.bodySegments.getFirst().getY()-gameBoard.food.getY())*(gameBoard.snake.bodySegments.getFirst().getY()-gameBoard.food.getY());
+        double distance = Math.sqrt(xDiffSqr + yDiffSqr);
+        return distance < gameSegmentSize/2;
     }
 
     @Override
     public void mouseDragged(MouseEvent e) {
-        mousePosition.setLocation(e.getX(), e.getY());
+        if(mouseInWindow) {
+            mousePosition.setLocation(e.getX(), e.getY());
+        }
         if(!speedUp) {
             gameSpeed *= 2;
             speedUp = true;
         }
-        System.out.println("mouseDragged");
+        //System.out.println("mouseDragged");
     }
 
     @Override
     public void mouseMoved(MouseEvent e) {
-        mousePosition.setLocation(e.getX(), e.getY());
-        System.out.println("mouseMoved");
-        repaint();
+        if(mouseInWindow) {
+            mousePosition.setLocation(e.getX(), e.getY());
+        }
+        //System.out.println("mouseMoved");
+        //repaint();
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        System.out.println("mouseClicked");
+        //System.out.println("mouseClicked");
     }
 
     @Override
@@ -78,7 +100,7 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
             gameSpeed *= 2;
             speedUp = true;
         }
-        System.out.println("mousePressed");
+        //System.out.println("mousePressed");
     }
 
     @Override
@@ -87,7 +109,7 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
             gameSpeed /= 2;
             speedUp = false;
         }
-        System.out.println("mouseReleased");
+        //System.out.println("mouseReleased");
     }
 
     @Override
@@ -96,25 +118,33 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2d.setColor(Color.GREEN);
-        Ellipse2D.Double snakeHeadImg = new Ellipse2D.Double(gameBoard.snake.bodySegments.getFirst().getX() - gameSegmentSize/2, gameBoard.snake.bodySegments.getFirst().getY() - gameSegmentSize/2, gameSegmentSize, gameSegmentSize);
+        Ellipse2D.Double snakeSegmentImg;
+        for(int i = 0; i < gameBoard.snake.bodySegments.size(); i++) {
+            snakeSegmentImg = new Ellipse2D.Double(gameBoard.snake.bodySegments.get(i).getX() - gameSegmentSize/2, gameBoard.snake.bodySegments.get(i).getY() - gameSegmentSize/2, gameSegmentSize, gameSegmentSize);
+            g2d.fill(snakeSegmentImg);
+        }
         Ellipse2D.Double foodImg = new Ellipse2D.Double(gameBoard.food.getX() - gameSegmentSize/2, gameBoard.food.getY() - gameSegmentSize/2, gameSegmentSize, gameSegmentSize);
-        g2d.fill(snakeHeadImg);
         g2d.setColor(Color.RED);
         g2d.fill(foodImg);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        double vectorX = mousePosition.getX() - gameBoard.snake.bodySegments.getFirst().getX();
-        double vectorY = mousePosition.getY() - gameBoard.snake.bodySegments.getFirst().getY();
-        double vectorLength = Math.sqrt(vectorX*vectorX + vectorY*vectorY);
-        double dirX = vectorX/vectorLength;
-        double dirY = vectorY/vectorLength;
-        gameBoard.snake.bodySegments.getFirst().setLocation(gameBoard.snake.bodySegments.getFirst().getX() + dirX*gameSpeed, gameBoard.snake.bodySegments.getFirst().getY() + dirY*gameSpeed);
+        if(mouseInWindow) {
+            double vectorX = mousePosition.getX() - gameBoard.snake.bodySegments.getFirst().getX();
+            double vectorY = mousePosition.getY() - gameBoard.snake.bodySegments.getFirst().getY();
+            double vectorLength = Math.sqrt(vectorX*vectorX + vectorY*vectorY);
+            double dirX = vectorX/vectorLength;
+            double dirY = vectorY/vectorLength;
+            gameBoard.snake.bodySegments.getFirst().setLocation(gameBoard.snake.bodySegments.getFirst().getX() + dirX*gameSpeed, gameBoard.snake.bodySegments.getFirst().getY() + dirY*gameSpeed);
+        }
         checkBorderCollision();
         if(checkFood()) {
+            System.out.printf("Food at (%f, %f) location collected by head at (%f, %f) location\n", gameBoard.food.getX(), gameBoard.food.getY(), gameBoard.snake.bodySegments.getFirst().getX(), gameBoard.snake.bodySegments.getFirst().getY());
             gameBoard.respawnFood(gameSegmentSize);
+            gameBoard.snake.addBodySegment();
         }
+        gameBoard.snake.move();
         repaint();
     }
 }
