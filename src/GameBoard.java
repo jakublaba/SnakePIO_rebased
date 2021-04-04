@@ -1,6 +1,7 @@
 import java.awt.geom.Point2D;
 import java.util.LinkedList;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class GameBoard {
     public int boardHeight, boardWidth;
@@ -11,15 +12,13 @@ public class GameBoard {
     public GameBoard(int boardHeight, int boardWidth, int segmentSize) {
         this.boardHeight = boardHeight;
         this.boardWidth = boardWidth;
-        Random rand = new Random();
-        this.food = new Point2D.Double((boardWidth - segmentSize)*rand.nextDouble(), (boardHeight - segmentSize)*rand.nextDouble());
+        this.food = new Point2D.Double(ThreadLocalRandom.current().nextDouble(segmentSize/2, boardWidth - segmentSize/2), ThreadLocalRandom.current().nextDouble(segmentSize/2, boardHeight - segmentSize/2));
     }
 
     void respawnFood(int segmentSize) {
-        Random rand = new Random();
-        Point2D.Double newFood = new Point2D.Double((boardWidth - segmentSize)*rand.nextDouble(), (boardHeight - segmentSize)*rand.nextDouble());
+        Point2D.Double newFood = new Point2D.Double(ThreadLocalRandom.current().nextDouble(segmentSize/2, boardWidth - segmentSize/2), ThreadLocalRandom.current().nextDouble(segmentSize/2, boardHeight - segmentSize/2));
         while(food.equals(newFood) || food.equals(snake.bodySegments.getFirst())) {
-            newFood.setLocation((boardWidth - segmentSize)*rand.nextDouble(), (boardHeight - segmentSize)*rand.nextDouble());
+            newFood.setLocation(ThreadLocalRandom.current().nextDouble(segmentSize/2, boardWidth - segmentSize/2), ThreadLocalRandom.current().nextDouble(segmentSize/2, boardHeight - segmentSize/2));
         }
         food = newFood;
     }
@@ -29,8 +28,7 @@ public class GameBoard {
 
         Snake(int boardWidth, int boardHeight, int segmentSize) {
             bodySegments = new LinkedList<>();
-            Random rand = new Random();
-            bodySegments.add(0, new Point2D.Double((boardWidth - segmentSize)*rand.nextDouble(), (boardHeight - segmentSize)*rand.nextDouble()));
+            bodySegments.add(0, new Point2D.Double(ThreadLocalRandom.current().nextDouble(segmentSize/2, boardWidth - segmentSize/2), ThreadLocalRandom.current().nextDouble(segmentSize/2, boardHeight - segmentSize/2)));
         }
 
         public void addBodySegment() {
