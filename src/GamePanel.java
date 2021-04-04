@@ -137,14 +137,22 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
             double dirX = vectorX/vectorLength;
             double dirY = vectorY/vectorLength;
             gameBoard.snake.bodySegments.getFirst().setLocation(gameBoard.snake.bodySegments.getFirst().getX() + dirX*gameSpeed, gameBoard.snake.bodySegments.getFirst().getY() + dirY*gameSpeed);
-        checkBorderCollision();
-        if(checkFood()) {
-            System.out.printf("Food at (%f, %f) location collected by head at (%f, %f) location\n", gameBoard.food.getX(), gameBoard.food.getY(), gameBoard.snake.bodySegments.getFirst().getX(), gameBoard.snake.bodySegments.getFirst().getY());
-            gameBoard.respawnFood(gameSegmentSize);
-            gameBoard.snake.addBodySegment();
-        }
-        gameBoard.snake.move();
-        repaint();
+            checkBorderCollision();
+            if(checkFood()) {
+                System.out.printf("Food at (%f, %f) location collected by head at (%f, %f) location\n", gameBoard.food.getX(), gameBoard.food.getY(), gameBoard.snake.bodySegments.getFirst().getX(), gameBoard.snake.bodySegments.getFirst().getY());
+                gameBoard.respawnFood(gameSegmentSize);
+                gameBoard.snake.addBodySegment();
+                /*
+                 * do sprawdzania pozycji częśći sneka
+                System.out.printf("SIZE: (%d)\n", gameBoard.snake.bodySegments.size());
+                for(int i = gameBoard.snake.bodySegments.size() - 1; i > 1; i--) {
+                    System.out.printf("%d segment at (%f, %f) location\n", i, gameBoard.snake.bodySegments.get(i).getX(), gameBoard.snake.bodySegments.get(i).getY());
+                }
+                */
+
+            }
+            gameBoard.snake.move();
+            repaint();
         }
     }
 }
