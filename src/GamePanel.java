@@ -3,7 +3,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
-import java.util.Random;
 
 public class GamePanel extends JPanel implements MouseListener, MouseMotionListener, ActionListener {
     private final int gameSegmentSize = 50;
@@ -16,7 +15,7 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
 
     public GamePanel() {
         gameBoard = new GameBoard(800, 800, gameSegmentSize);
-        Random rand = new Random();
+        this.setBackground(Color.BLACK);
         gameBoard.snake = new GameBoard.Snake(gameBoard.boardWidth, gameBoard.boardHeight, gameSegmentSize);
         addMouseListener(this);
         addMouseMotionListener(this);
@@ -95,6 +94,7 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2d.setColor(Color.GREEN);
         Ellipse2D.Double snakeHeadImg = new Ellipse2D.Double(gameBoard.snake.bodySegments.getFirst().getX() - gameSegmentSize/2, gameBoard.snake.bodySegments.getFirst().getY() - gameSegmentSize/2, gameSegmentSize, gameSegmentSize);
         Ellipse2D.Double foodImg = new Ellipse2D.Double(gameBoard.food.getX() - gameSegmentSize/2, gameBoard.food.getY() - gameSegmentSize/2, gameSegmentSize, gameSegmentSize);
