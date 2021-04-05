@@ -11,5 +11,6 @@ public class GameFrame extends JFrame {
         this.pack();
         this.setMinimumSize(this.getSize());
         this.setVisible(true);
+        this.setResizable(false);
     }
 }
