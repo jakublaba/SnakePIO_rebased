@@ -49,8 +49,8 @@ public class GameBoard {
     }
 
     public void checkTailCollision(double gameSegmentSize) {
-        if(snake.bodySegments.size() > 7) {
-            for(int i = 7; i < snake.bodySegments.size(); i++) {
+        if(snake.bodySegments.size() > 7) { //magic number bruh
+            for(int i = 7; i < snake.bodySegments.size(); i++) { //BRUH
                 if(Math.abs(snake.bodySegments.getFirst().distance(snake.bodySegments.get(i))) < gameSegmentSize/2) {
                     System.out.printf("Game Over: collision with tail segment number %d\n", i);
                     System.exit(1);
@@ -81,21 +81,8 @@ public class GameBoard {
         }
 
         public void addBodySegment() {
-            //zostawiłem poprzednią wersję jakby co
-            //jeżeli jest sama głowa
-            /*
-            if(bodySegments.size() == 1) {
-                newBodySegment = new Point2D.Double(bodySegments.getFirst().getX(), bodySegments.getFirst().getY());
-            }
-            */
-            //jeżeli są już jakieś segmenty poza głową
-            /*
-            else {
-                newBodySegment = new Point2D.Double(bodySegments.getLast().getX(), bodySegments.getLast().getY());
-            }
-            */
             Point2D.Double newBodySegment;
-            newBodySegment = new Point2D.Double(bodySegments.get(bodySegments.size() - 1).getX(), bodySegments.get(bodySegments.size() - 1).getY());
+            newBodySegment = new Point2D.Double(bodySegments.getLast().getX(), bodySegments.getLast().getY());
             bodySegments.addLast(newBodySegment);
         }
     }
