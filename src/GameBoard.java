@@ -81,15 +81,21 @@ public class GameBoard {
         }
 
         public void addBodySegment() {
-            Point2D.Double newBodySegment;
+            //zostawiłem poprzednią wersję jakby co
             //jeżeli jest sama głowa
+            /*
             if(bodySegments.size() == 1) {
                 newBodySegment = new Point2D.Double(bodySegments.getFirst().getX(), bodySegments.getFirst().getY());
             }
+            */
             //jeżeli są już jakieś segmenty poza głową
+            /*
             else {
                 newBodySegment = new Point2D.Double(bodySegments.getLast().getX(), bodySegments.getLast().getY());
             }
+            */
+            Point2D.Double newBodySegment;
+            newBodySegment = new Point2D.Double(bodySegments.get(bodySegments.size() - 1).getX(), bodySegments.get(bodySegments.size() - 1).getY());
             bodySegments.addLast(newBodySegment);
         }
     }
