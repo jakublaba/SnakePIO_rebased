@@ -1,6 +1,5 @@
 import java.awt.geom.Point2D;
 import java.util.LinkedList;
-import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class GameBoard {
@@ -21,6 +20,51 @@ public class GameBoard {
         food = newFood;
     }
 
+    public void checkBorderCollision(double gameSegmentSize) {
+        double distFromTop = snake.bodySegments.getFirst().getY();
+        double distFromBottom = boardHeight - distFromTop;
+        double distFromLeft = snake.bodySegments.getFirst().getX();
+        double distFromRight = boardWidth - distFromLeft;
+        if(distFromTop <= gameSegmentSize/2) {
+            System.out.println("Game Over: collision with top border");
+            System.out.printf("Coordinates of head when game ended: (%f, %f)\n", snake.bodySegments.getFirst().getX(), snake.bodySegments.getFirst().getY());
+            System.exit(1);
+        }
+        if(distFromBottom <= gameSegmentSize/2) {
+            System.out.println("Game Over: collision with bottom border");
+            System.out.printf("Coordinates of head when game ended: (%f, %f)\n", snake.bodySegments.getFirst().getX(), snake.bodySegments.getFirst().getY());
+            System.exit(1);
+        }
+        if(distFromLeft <= gameSegmentSize/2) {
+            System.out.println("Game Over: collision with left border");
+            System.out.printf("Coordinates of head when game ended: (%f, %f)\n", snake.bodySegments.getFirst().getX(), snake.bodySegments.getFirst().getY());
+            System.exit(1);
+        }
+        if(distFromRight <= gameSegmentSize/2) {
+            System.out.println("Game Over: collision with right border");
+            System.out.printf("Coordinates of head when game ended: (%f, %f)\n", snake.bodySegments.getFirst().getX(), snake.bodySegments.getFirst().getY());
+            System.exit(1);
+        }
+    }
+
+    public void checkTailCollision(double gameSegmentSize) {
+        if(snake.bodySegments.size() > 7) { //magic number bruh
+            for(int i = 7; i < snake.bodySegments.size(); i++) { //BRUH
+                if(Math.abs(snake.bodySegments.getFirst().distance(snake.bodySegments.get(i))) < gameSegmentSize/2) {
+                    System.out.printf("Game Over: collision with tail segment number %d\n", i);
+                    System.exit(1);
+                }
+            }
+        }
+    }
+
+    public boolean checkFood(double gameSegmentSize) {
+        double xDiffSqr = (snake.bodySegments.getFirst().getX()-food.getX())*(snake.bodySegments.getFirst().getX()-food.getX());
+        double yDiffSqr = (snake.bodySegments.getFirst().getY()-food.getY())*(snake.bodySegments.getFirst().getY()-food.getY());
+        double distance = Math.sqrt(xDiffSqr + yDiffSqr);
+        return distance < gameSegmentSize/2;
+    }
+
     public static class Snake {
         public LinkedList<Point2D.Double> bodySegments;
 
@@ -37,16 +81,8 @@ public class GameBoard {
 
         public void addBodySegment() {
             Point2D.Double newBodySegment;
-            //jeżeli jest sama głowa
-            if(bodySegments.size() == 1) {
-                newBodySegment = new Point2D.Double(bodySegments.getFirst().getX(), bodySegments.getFirst().getY());
-                bodySegments.addLast(newBodySegment);
-            }
-            //jeżeli są już jakieś segmenty poza głową
-            else {
-                newBodySegment = new Point2D.Double(bodySegments.getLast().getX(), bodySegments.getLast().getY());
-                bodySegments.addLast(newBodySegment);
-            }
+            newBodySegment = new Point2D.Double(bodySegments.getLast().getX(), bodySegments.getLast().getY());
+            bodySegments.addLast(newBodySegment);
         }
     }
 }

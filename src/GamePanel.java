@@ -5,9 +5,9 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
 
 public class GamePanel extends JPanel implements MouseListener, MouseMotionListener, ActionListener {
-    private final int gameSegmentSize = 50;
+    private final int gameSegmentSize = 20;
     private Point2D.Double mousePosition = new Point2D.Double();
-    private double gameSpeed = 2.5;
+    private double gameSpeed = 3;
     private boolean speedUp = false;
     private boolean mouseInWindow = false;
     private Timer timer = new Timer(0, this);
@@ -16,45 +16,12 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
     public GamePanel() {
         gameBoard = new GameBoard(800, 800, gameSegmentSize);
         this.setBackground(Color.BLACK);
-        gameBoard.snake = new GameBoard.Snake(gameBoard.boardWidth, gameBoard.boardHeight, gameSegmentSize);
+        GameBoard.snake = new GameBoard.Snake(gameBoard.boardWidth, gameBoard.boardHeight, gameSegmentSize);
         addMouseListener(this);
         addMouseMotionListener(this);
         timer.start();
     }
 
-    private void checkBorderCollision() {
-        double distFromTop = gameBoard.snake.bodySegments.getFirst().getY();
-        double distFromBottom = gameBoard.boardHeight - distFromTop;
-        double distFromLeft = gameBoard.snake.bodySegments.getFirst().getX();
-        double distFromRight = gameBoard.boardWidth - distFromLeft;
-        if(distFromTop <= gameSegmentSize/2) {
-            System.out.println("Game Over: collision with top border");
-            System.out.printf("Coordinates of head when game ended: (%f, %f)\n", gameBoard.snake.bodySegments.getFirst().getX(), gameBoard.snake.bodySegments.getFirst().getY());
-            System.exit(1);
-        }
-        if(distFromBottom <= gameSegmentSize/2) {
-            System.out.println("Game Over: collision with bottom border");
-            System.out.printf("Coordinates of head when game ended: (%f, %f)\n", gameBoard.snake.bodySegments.getFirst().getX(), gameBoard.snake.bodySegments.getFirst().getY());
-            System.exit(1);
-        }
-        if(distFromLeft <= gameSegmentSize/2) {
-            System.out.println("Game Over: collision with left border");
-            System.out.printf("Coordinates of head when game ended: (%f, %f)\n", gameBoard.snake.bodySegments.getFirst().getX(), gameBoard.snake.bodySegments.getFirst().getY());
-            System.exit(1);
-        }
-        if(distFromRight <= gameSegmentSize/2) {
-            System.out.println("Game Over: collision with right border");
-            System.out.printf("Coordinates of head when game ended: (%f, %f)\n", gameBoard.snake.bodySegments.getFirst().getX(), gameBoard.snake.bodySegments.getFirst().getY());
-            System.exit(1);
-        }
-    }
-
-    private boolean checkFood() {
-        double xDiffSqr = (gameBoard.snake.bodySegments.getFirst().getX()-gameBoard.food.getX())*(gameBoard.snake.bodySegments.getFirst().getX()-gameBoard.food.getX());
-        double yDiffSqr = (gameBoard.snake.bodySegments.getFirst().getY()-gameBoard.food.getY())*(gameBoard.snake.bodySegments.getFirst().getY()-gameBoard.food.getY());
-        double distance = Math.sqrt(xDiffSqr + yDiffSqr);
-        return distance < gameSegmentSize/2;
-    }
 
     @Override
     public void mouseDragged(MouseEvent e) {
@@ -74,7 +41,6 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
             mousePosition.setLocation(e.getX(), e.getY());
         }
         //System.out.println("mouseMoved");
-        //repaint();
     }
 
     @Override
@@ -119,8 +85,8 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2d.setColor(Color.GREEN);
         Ellipse2D.Double snakeSegmentImg;
-        for(int i = 0; i < gameBoard.snake.bodySegments.size(); i++) {
-            snakeSegmentImg = new Ellipse2D.Double(gameBoard.snake.bodySegments.get(i).getX() - gameSegmentSize/2, gameBoard.snake.bodySegments.get(i).getY() - gameSegmentSize/2, gameSegmentSize, gameSegmentSize);
+        for(int i = 0; i < GameBoard.snake.bodySegments.size(); i++) {
+            snakeSegmentImg = new Ellipse2D.Double(GameBoard.snake.bodySegments.get(i).getX() - gameSegmentSize/2, GameBoard.snake.bodySegments.get(i).getY() - gameSegmentSize/2, gameSegmentSize, gameSegmentSize);
             g2d.fill(snakeSegmentImg);
         }
         Ellipse2D.Double foodImg = new Ellipse2D.Double(gameBoard.food.getX() - gameSegmentSize/2, gameBoard.food.getY() - gameSegmentSize/2, gameSegmentSize, gameSegmentSize);
@@ -131,27 +97,44 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
     @Override
     public void actionPerformed(ActionEvent e) {
         if(mouseInWindow) {
-            double vectorX = mousePosition.getX() - gameBoard.snake.bodySegments.getFirst().getX();
-            double vectorY = mousePosition.getY() - gameBoard.snake.bodySegments.getFirst().getY();
-            double vectorLength = Math.sqrt(vectorX*vectorX + vectorY*vectorY);
-            double dirX = vectorX/vectorLength;
-            double dirY = vectorY/vectorLength;
-            gameBoard.snake.bodySegments.getFirst().setLocation(gameBoard.snake.bodySegments.getFirst().getX() + dirX*gameSpeed, gameBoard.snake.bodySegments.getFirst().getY() + dirY*gameSpeed);
-            checkBorderCollision();
-            if(checkFood()) {
-                System.out.printf("Food at (%f, %f) location collected by head at (%f, %f) location\n", gameBoard.food.getX(), gameBoard.food.getY(), gameBoard.snake.bodySegments.getFirst().getX(), gameBoard.snake.bodySegments.getFirst().getY());
-                gameBoard.respawnFood(gameSegmentSize);
-                gameBoard.snake.addBodySegment();
+            double mouseVectorX = mousePosition.getX() - GameBoard.snake.bodySegments.getFirst().getX();
+            double mouseVectorY = mousePosition.getY() - GameBoard.snake.bodySegments.getFirst().getY();
+            double mouseVectorLength = Math.sqrt(mouseVectorX*mouseVectorX + mouseVectorY*mouseVectorY);
+            double dirX = mouseVectorX/mouseVectorLength;
+            double dirY = mouseVectorY/mouseVectorLength;
+            if (GameBoard.snake.bodySegments.size() > 2) {
+                double bodyVectorX = GameBoard.snake.bodySegments.get(2).getX() - GameBoard.snake.bodySegments.getFirst().getX();
+                double bodyVectorY = GameBoard.snake.bodySegments.get(2).getY() - GameBoard.snake.bodySegments.getFirst().getY();
+                double bodyVectorLength = Math.sqrt(bodyVectorX * bodyVectorX + bodyVectorY * bodyVectorY);
+                double scalarProd = mouseVectorX * bodyVectorX + mouseVectorY * bodyVectorY;
+                double cosVectors = scalarProd / (mouseVectorLength * bodyVectorLength);
                 /*
-                 * do sprawdzania pozycji częśći sneka
-                System.out.printf("SIZE: (%d)\n", gameBoard.snake.bodySegments.size());
-                for(int i = gameBoard.snake.bodySegments.size() - 1; i > 1; i--) {
-                    System.out.printf("%d segment at (%f, %f) location\n", i, gameBoard.snake.bodySegments.get(i).getX(), gameBoard.snake.bodySegments.get(i).getY());
+                System.out.printf("Mouse vector = [%f, %f]\n", mouseVectorX, mouseVectorY);
+                System.out.printf("Body vector = [%f, %f]\n", bodyVectorX, bodyVectorY);
+                System.out.printf("Scalar prod of body and mouse vectors: %f\n", scalarProd);
+                System.out.printf("cos of an angle between vectors: %f\n", cosVectors);
+                 */
+                if (cosVectors > 0.5) { //magic number - przybliżona wartość cosinusa 60 stopni
+                    dirX = -bodyVectorX / bodyVectorLength;
+                    dirY = -bodyVectorY / bodyVectorLength;
                 }
-                */
-
             }
-            gameBoard.snake.move();
+            GameBoard.snake.bodySegments.getFirst().setLocation(GameBoard.snake.bodySegments.getFirst().getX() + dirX*gameSpeed, GameBoard.snake.bodySegments.getFirst().getY() + dirY*gameSpeed);
+
+            gameBoard.checkBorderCollision(gameSegmentSize);
+            gameBoard.checkTailCollision(gameSegmentSize);
+            if(gameBoard.checkFood(gameSegmentSize)) {
+                System.out.printf("Food at (%f, %f) location collected by head at (%f, %f) location\n", gameBoard.food.getX(), gameBoard.food.getY(), GameBoard.snake.bodySegments.getFirst().getX(), GameBoard.snake.bodySegments.getFirst().getY());
+                gameBoard.respawnFood(gameSegmentSize);
+                GameBoard.snake.addBodySegment();
+
+                //do sprawdzania pozycji części snejka
+                System.out.printf("SIZE: (%d)\n", GameBoard.snake.bodySegments.size());
+                for (int i = GameBoard.snake.bodySegments.size() - 1; i > 1; i--) {
+                    System.out.printf("Segment %d at (%f, %f) location\n", i, GameBoard.snake.bodySegments.get(i).getX(), GameBoard.snake.bodySegments.get(i).getY());
+                }
+            }
+            GameBoard.snake.move();
             repaint();
         }
     }
