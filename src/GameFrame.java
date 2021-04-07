@@ -9,6 +9,7 @@ public class GameFrame extends JFrame {
         gamePanel.setPreferredSize(new Dimension(800, 800));
         this.setContentPane(gamePanel);
         this.pack();
+        this.setLocationRelativeTo(null);
         this.setMinimumSize(this.getSize());
         this.setVisible(true);
         this.setResizable(false);
