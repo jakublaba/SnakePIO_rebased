@@ -48,8 +48,8 @@ public class GameBoard {
     }
 
     public void checkTailCollision(double gameSegmentSize) {
-        if(snake.bodySegments.size() > 7) { //magic number bruh
-            for(int i = 7; i < snake.bodySegments.size(); i++) { //BRUH
+        if(snake.bodySegments.size() > 10) { //magic number bruh
+            for(int i = 10; i < snake.bodySegments.size(); i++) { //BRUH
                 if(Math.abs(snake.bodySegments.getFirst().distance(snake.bodySegments.get(i))) < gameSegmentSize/2) {
                     System.out.printf("Game Over: collision with tail segment number %d\n", i);
                     System.exit(1);
