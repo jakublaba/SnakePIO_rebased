@@ -1,6 +1,5 @@
 import java.awt.geom.Point2D;
 import java.util.LinkedList;
-import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class GameBoard {
@@ -66,24 +65,4 @@ public class GameBoard {
         return distance < gameSegmentSize/2;
     }
 
-    public static class Snake {
-        public LinkedList<Point2D.Double> bodySegments;
-
-        Snake(int boardWidth, int boardHeight, int segmentSize) {
-            bodySegments = new LinkedList<>();
-            bodySegments.add(0, new Point2D.Double(ThreadLocalRandom.current().nextDouble(segmentSize/2, boardWidth - segmentSize/2), ThreadLocalRandom.current().nextDouble(segmentSize/2, boardHeight - segmentSize/2)));
-        }
-
-        public void move() {
-            for(int i = bodySegments.size() - 1; i > 0; i--) {
-                bodySegments.get(i).setLocation(bodySegments.get(i - 1));
-            }
-        }
-
-        public void addBodySegment() {
-            Point2D.Double newBodySegment;
-            newBodySegment = new Point2D.Double(bodySegments.getLast().getX(), bodySegments.getLast().getY());
-            bodySegments.addLast(newBodySegment);
-        }
-    }
 }

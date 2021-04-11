@@ -3,6 +3,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class GamePanel extends JPanel implements MouseListener, MouseMotionListener, ActionListener {
     private final int gameSegmentSize = 20;
@@ -16,7 +17,8 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
     public GamePanel() {
         gameBoard = new GameBoard(800, 800, gameSegmentSize);
         this.setBackground(Color.BLACK);
-        GameBoard.snake = new GameBoard.Snake(gameBoard.boardWidth, gameBoard.boardHeight, gameSegmentSize);
+        GameBoard.snake = new Snake(ThreadLocalRandom.current().nextInt(gameSegmentSize, 800 - gameSegmentSize),
+                ThreadLocalRandom.current().nextInt(gameSegmentSize, 800 - gameSegmentSize));
         addMouseListener(this);
         addMouseMotionListener(this);
         timer.start();
