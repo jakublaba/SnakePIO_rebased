@@ -1,11 +1,11 @@
 import java.awt.geom.Point2D;
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 public class Snake {
-    public LinkedList<Point2D.Double> bodySegments;
+    public ArrayList<Point2D.Double> bodySegments;
 
     Snake(int x, int y) {
-        bodySegments = new LinkedList<>();
+        bodySegments = new ArrayList<>();
         bodySegments.add(0, new Point2D.Double(x, y) );
     }
 
@@ -17,7 +17,8 @@ public class Snake {
 
     public void addBodySegment() {
         Point2D.Double newBodySegment;
-        newBodySegment = new Point2D.Double(bodySegments.getLast().getX(), bodySegments.getLast().getY());
-        bodySegments.addLast(newBodySegment);
+        newBodySegment = new Point2D.Double(bodySegments.get(bodySegments.size() - 1).getX(),
+                bodySegments.get(bodySegments.size() - 1).getY());
+        bodySegments.add(newBodySegment);
     }
 }
