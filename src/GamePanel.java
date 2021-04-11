@@ -1,7 +1,7 @@
-import javax.swing.JPanel;
-import javax.swing.Timer;
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.font.FontRenderContext;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
 import java.util.concurrent.ThreadLocalRandom;
@@ -14,10 +14,15 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
     private boolean mouseInWindow = false;
     private Timer timer = new Timer(0, this); /* timer, to nawet nie jest on */
     private GameBoard gameBoard;
+    private JLabel scoreText = new JLabel("Score: 0");
 
     public GamePanel() {
         gameBoard = new GameBoard(800, 800, gameSegmentSize);
         this.setBackground(Color.BLACK);
+        this.setLayout(new GridBagLayout());
+        scoreText.setFont(new Font("Arial", Font.PLAIN, 32));
+        scoreText.setBackground(Color.WHITE);
+        this.add(scoreText);
         GameBoard.snake = new Snake(ThreadLocalRandom.current().nextInt(gameSegmentSize, 800 - gameSegmentSize), ThreadLocalRandom.current().nextInt(gameSegmentSize, 800 - gameSegmentSize));
         addMouseListener(this);
         addMouseMotionListener(this);
@@ -153,5 +158,6 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
             }
         }
         GameBoard.snake.bodySegments.get(0).setLocation(GameBoard.snake.bodySegments.get(0).getX() + dirX * gameSpeed, GameBoard.snake.bodySegments.get(0).getY() + dirY * gameSpeed);
+        scoreText.setText("Score: " + (GameBoard.snake.bodySegments.size() - 1));
     }
 }
