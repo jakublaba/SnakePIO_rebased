@@ -3,9 +3,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class MenuPanel extends JFrame implements ActionListener {
-    JPanel panel =new JPanel();
-    public MenuPanel(){
+public class MenuFrame extends JFrame implements ActionListener {
+    JPanel panel = new JPanel();
+    public MenuFrame(){
         this.setTitle("Snake");
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         panel.setBackground(new Color(3, 192, 60));
@@ -52,6 +52,6 @@ public class MenuPanel extends JFrame implements ActionListener {
     }
 
     public static void main(String[] args) {
-        new MenuPanel();
+        new MenuFrame();
     }
 }

@@ -6,19 +6,24 @@ import java.awt.geom.Point2D;
 
 public class GamePanel extends JPanel implements MouseListener, MouseMotionListener, ActionListener {
     private final int gameSegmentSize = 20;
-    private Point2D.Double mousePosition = new Point2D.Double();
+    private final Point2D.Double mousePosition = new Point2D.Double();
     private double gameSpeed = 3;
     private boolean speedUp = false;
     private boolean mouseInWindow = false;
-    private Timer timer = new Timer(0, this);
-    private GameBoard gameBoard;
+    private final GameBoard gameBoard;
+    private JLabel scoreText = new JLabel("Score: 0");
 
     public GamePanel() {
         gameBoard = new GameBoard(800, 800, gameSegmentSize);
         this.setBackground(Color.BLACK);
+        this.setLayout(new GridBagLayout());
+        scoreText.setBackground(Color.WHITE);
+        scoreText.setFont(new Font("Arial", Font.PLAIN, 24));
+        this.add(scoreText);
         GameBoard.snake = new GameBoard.Snake(gameBoard.boardWidth, gameBoard.boardHeight, gameSegmentSize);
-        addMouseListener(this);
-        addMouseMotionListener(this);
+        this.addMouseListener(this);
+        this.addMouseMotionListener(this);
+        Timer timer = new Timer(0, this);
         timer.start();
     }
 
@@ -51,13 +56,13 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
     @Override
     public void mouseEntered(MouseEvent e) {
         mouseInWindow = true;
-        System.out.println("mouseEntered");
+        //System.out.println("mouseEntered");
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
         mouseInWindow = false;
-        System.out.println("mouseExited");
+        //System.out.println("mouseExited");
     }
 
     @Override
@@ -135,6 +140,7 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
                 }
             }
             GameBoard.snake.move();
+            scoreText.setText("Score: " + (GameBoard.snake.bodySegments.size() - 1));
             repaint();
         }
     }
