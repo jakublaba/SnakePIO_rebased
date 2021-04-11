@@ -1,4 +1,4 @@
-import javax.swing.*;
+import javax.swing.JFrame;
 import java.awt.*;
 
 public class GameFrame extends JFrame {

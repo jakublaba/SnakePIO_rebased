@@ -1,4 +1,6 @@
-import javax.swing.*;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.Timer;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.Ellipse2D;
@@ -87,11 +89,13 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2d.setColor(Color.GREEN);
         Ellipse2D.Double snakeSegmentImg;
+
         for (int i = 0; i < GameBoard.snake.bodySegments.size(); i++) {
             snakeSegmentImg = new Ellipse2D.Double(GameBoard.snake.bodySegments.get(i).getX() - gameSegmentSize / 2,
                     GameBoard.snake.bodySegments.get(i).getY() - gameSegmentSize / 2, gameSegmentSize, gameSegmentSize);
             g2d.fill(snakeSegmentImg);
         }
+
         Ellipse2D.Double foodImg = new Ellipse2D.Double(gameBoard.food.getX() - gameSegmentSize / 2,
                 gameBoard.food.getY() - gameSegmentSize / 2, gameSegmentSize, gameSegmentSize);
         g2d.setColor(Color.RED);
@@ -101,46 +105,60 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
     @Override
     public void actionPerformed(ActionEvent e) {
         if (mouseInWindow) {
-            double mouseVectorX = mousePosition.getX() - GameBoard.snake.bodySegments.get(0).getX();
-            double mouseVectorY = mousePosition.getY() - GameBoard.snake.bodySegments.get(0).getY();
-            double mouseVectorLength = Math.sqrt(mouseVectorX * mouseVectorX + mouseVectorY * mouseVectorY);
-            double dirX = mouseVectorX / mouseVectorLength;
-            double dirY = mouseVectorY / mouseVectorLength;
-            if (GameBoard.snake.bodySegments.size() > 2) {
-                double bodyVectorX = GameBoard.snake.bodySegments.get(2).getX() - GameBoard.snake.bodySegments.get(0).getX();
-                double bodyVectorY = GameBoard.snake.bodySegments.get(2).getY() - GameBoard.snake.bodySegments.get(0).getY();
-                double bodyVectorLength = Math.sqrt(bodyVectorX * bodyVectorX + bodyVectorY * bodyVectorY);
-                double scalarProd = mouseVectorX * bodyVectorX + mouseVectorY * bodyVectorY;
-                double cosVectors = scalarProd / (mouseVectorLength * bodyVectorLength);
-                /*
-                System.out.printf("Mouse vector = [%f, %f]\n", mouseVectorX, mouseVectorY);
-                System.out.printf("Body vector = [%f, %f]\n", bodyVectorX, bodyVectorY);
-                System.out.printf("Scalar prod of body and mouse vectors: %f\n", scalarProd);
-                System.out.printf("cos of an angle between vectors: %f\n", cosVectors);
-                 */
-                if (cosVectors > 0.5) { //magic number - przybliżona wartość cosinusa 60 stopni
-                    dirX = -bodyVectorX / bodyVectorLength;
-                    dirY = -bodyVectorY / bodyVectorLength;
-                }
+            updateDirection();
+            updateGame();
+            repaint();
+        }
+    }
+
+    private void updateGame() {
+        gameBoard.checkBorderCollision(gameSegmentSize);
+        gameBoard.checkTailCollision(gameSegmentSize);
+
+        if (gameBoard.checkFood(gameSegmentSize)) {
+            gameBoard.respawnFood(gameSegmentSize);
+            GameBoard.snake.addBodySegment();
+
+            //do sprawdzania pozycji części snejka
+            /*
+            System.out.printf("SIZE: (%d)\n", GameBoard.snake.bodySegments.size());
+            for (int i = GameBoard.snake.bodySegments.size() - 1; i > 1; i--) {
+                System.out.printf("Segment %d at (%f, %f) location\n", i, GameBoard.snake.bodySegments.get(i).getX(),
+                        GameBoard.snake.bodySegments.get(i).getY());
             }
-            GameBoard.snake.bodySegments.get(0).setLocation(GameBoard.snake.bodySegments.get(0).getX() + dirX * gameSpeed, GameBoard.snake.bodySegments.get(0).getY() + dirY * gameSpeed);
+            */
+        }
+        GameBoard.snake.move();
+    }
 
-            gameBoard.checkBorderCollision(gameSegmentSize);
-            gameBoard.checkTailCollision(gameSegmentSize);
-            if (gameBoard.checkFood(gameSegmentSize)) {
-                gameBoard.respawnFood(gameSegmentSize);
-                GameBoard.snake.addBodySegment();
+    private void updateDirection() {
+        double mouseVectorX = mousePosition.getX() - GameBoard.snake.bodySegments.get(0).getX();
+        double mouseVectorY = mousePosition.getY() - GameBoard.snake.bodySegments.get(0).getY();
+        double mouseVectorLength = Math.sqrt(mouseVectorX * mouseVectorX + mouseVectorY * mouseVectorY);
+        double dirX = mouseVectorX / mouseVectorLength;
+        double dirY = mouseVectorY / mouseVectorLength;
 
-                //do sprawdzania pozycji części snejka
-                System.out.printf("SIZE: (%d)\n", GameBoard.snake.bodySegments.size());
-                for (int i = GameBoard.snake.bodySegments.size() - 1; i > 1; i--) {
-                    System.out.printf("Segment %d at (%f, %f) location\n", i, GameBoard.snake.bodySegments.get(i).getX(),
-                            GameBoard.snake.bodySegments.get(i).getY());
-                }
+        if (GameBoard.snake.bodySegments.size() > 2) {
+            double bodyVectorX = GameBoard.snake.bodySegments.get(2).getX() - GameBoard.snake.bodySegments.get(0).getX();
+            double bodyVectorY = GameBoard.snake.bodySegments.get(2).getY() - GameBoard.snake.bodySegments.get(0).getY();
+            double bodyVectorLength = Math.sqrt(bodyVectorX * bodyVectorX + bodyVectorY * bodyVectorY);
+            double scalarProd = mouseVectorX * bodyVectorX + mouseVectorY * bodyVectorY;
+            double cosVectors = scalarProd / (mouseVectorLength * bodyVectorLength);
+            /*
+            System.out.printf("Mouse vector = [%f, %f]\n", mouseVectorX, mouseVectorY);
+            System.out.printf("Body vector = [%f, %f]\n", bodyVectorX, bodyVectorY);
+            System.out.printf("Scalar prod of body and mouse vectors: %f\n", scalarProd);
+            System.out.printf("cos of an angle between vectors: %f\n", cosVectors);
+             */
+            if (cosVectors > 0.5) { //magic number - przybliżona wartość cosinusa 60 stopni
+                dirX = -bodyVectorX / bodyVectorLength;
+                dirY = -bodyVectorY / bodyVectorLength;
             }
             GameBoard.snake.move();
             scoreText.setText("Score: " + (GameBoard.snake.bodySegments.size() - 1));
             repaint();
         }
+        GameBoard.snake.bodySegments.get(0).setLocation(GameBoard.snake.bodySegments.get(0).getX() + dirX * gameSpeed,
+                GameBoard.snake.bodySegments.get(0).getY() + dirY * gameSpeed);
     }
 }
