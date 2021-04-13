@@ -1,14 +1,12 @@
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class MenuFrame extends JFrame implements ActionListener {
     JPanel panel = new JPanel();
-    public MenuFrame(){
+
+    public MenuFrame() {
         this.setTitle("Snake");
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         panel.setBackground(new Color(3, 192, 60));
@@ -58,6 +56,8 @@ public class MenuFrame extends JFrame implements ActionListener {
     }
 
     public static void main(String[] args) {
-        new MenuFrame();
+        MenuFrame dupa = new MenuFrame(); //
+        GameEngine sranie = new GameEngine();
+        sranie.run(true);
     }
 }

@@ -1,10 +1,8 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.font.FontRenderContext;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class GamePanel extends JPanel implements MouseListener, MouseMotionListener, ActionListener {
     private final int gameSegmentSize = 20;
@@ -12,18 +10,19 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
     private double gameSpeed = 3;
     private boolean speedUp = false;
     private boolean mouseInWindow = false;
-    private Timer timer = new Timer(0, this); /* timer, to nawet nie jest on */
-    private GameBoard gameBoard;
+    private Timer timer = new Timer(16, this); /* timer, to nawet nie jest on */
+    //private GameBoard gameBoard;
     private JLabel scoreText = new JLabel("Score: 0");
 
     public GamePanel() {
-        gameBoard = new GameBoard(800, 800, gameSegmentSize);
+        /*gameBoard = new GameBoard(800, 800, gameSegmentSize);*/
         this.setBackground(Color.BLACK);
         this.setLayout(new GridBagLayout());
         scoreText.setFont(new Font("Arial", Font.PLAIN, 32));
         scoreText.setBackground(Color.WHITE);
         this.add(scoreText);
-        GameBoard.snake = new Snake(ThreadLocalRandom.current().nextInt(gameSegmentSize, 800 - gameSegmentSize), ThreadLocalRandom.current().nextInt(gameSegmentSize, 800 - gameSegmentSize));
+        /*GameBoard.snake = new Snake(ThreadLocalRandom.current().nextInt(gameSegmentSize, 800 - gameSegmentSize),
+                ThreadLocalRandom.current().nextInt(gameSegmentSize, 800 - gameSegmentSize));*/
         addMouseListener(this);
         addMouseMotionListener(this);
         timer.start();
@@ -98,8 +97,8 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
             g2d.fill(snakeSegmentImg);
         }
 
-        Ellipse2D.Double foodImg = new Ellipse2D.Double(gameBoard.food.getX() - gameSegmentSize / 2,
-                gameBoard.food.getY() - gameSegmentSize / 2, gameSegmentSize, gameSegmentSize);
+        Ellipse2D.Double foodImg = new Ellipse2D.Double(GameBoard.food.getX() - gameSegmentSize / 2,
+                GameBoard.food.getY() - gameSegmentSize / 2, gameSegmentSize, gameSegmentSize);
         g2d.setColor(Color.RED);
         g2d.fill(foodImg);
     }
@@ -108,29 +107,9 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
     public void actionPerformed(ActionEvent e) {
         if (mouseInWindow) {
             updateDirection();
-            updateGame();
+            //updateGame();
             repaint();
         }
-    }
-
-    private void updateGame() {
-        gameBoard.checkBorderCollision(gameSegmentSize);
-        gameBoard.checkTailCollision(gameSegmentSize);
-
-        if (gameBoard.checkFood(gameSegmentSize)) {
-            gameBoard.respawnFood(gameSegmentSize);
-            GameBoard.snake.addBodySegment();
-
-            //do sprawdzania pozycji części snejka
-            /*
-            System.out.printf("SIZE: (%d)\n", GameBoard.snake.bodySegments.size());
-            for (int i = GameBoard.snake.bodySegments.size() - 1; i > 1; i--) {
-                System.out.printf("Segment %d at (%f, %f) location\n", i, GameBoard.snake.bodySegments.get(i).getX(),
-                        GameBoard.snake.bodySegments.get(i).getY());
-            }
-            */
-        }
-        GameBoard.snake.move();
     }
 
     private void updateDirection() {
