@@ -56,8 +56,8 @@ public class MenuFrame extends JFrame implements ActionListener {
     }
 
     public static void main(String[] args) {
-        MenuFrame dupa = new MenuFrame(); //
-        GameEngine sranie = new GameEngine();
-        sranie.run(true);
+        MenuFrame aMenuFrame = new MenuFrame(); //
+        GameEngine myGameEngine = new GameEngine();
+        myGameEngine.run(true);
     }
 }
