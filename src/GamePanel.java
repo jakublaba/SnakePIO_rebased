@@ -14,16 +14,6 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
     private JLabel scoreText = new JLabel("Score: 0");
 
     public GamePanel() {
-<<<<<<< HEAD
-        gameBoard = new GameBoard(800, 800, gameSegmentSize);
-        setBackground(Color.BLACK);
-        setLayout(new GridBagLayout());
-        scoreText.setFont(new Font("Arial", Font.PLAIN, 32));
-        scoreText.setBackground(Color.WHITE);
-        scoreText.setOpaque(false);
-        add(scoreText);
-        GameBoard.snake = new Snake(ThreadLocalRandom.current().nextInt(gameSegmentSize, 800 - gameSegmentSize), ThreadLocalRandom.current().nextInt(gameSegmentSize, 800 - gameSegmentSize));
-=======
         this.setBackground(Color.BLACK);
         this.setLayout(new GridBagLayout());
 
@@ -31,7 +21,6 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
         scoreText.setBackground(Color.WHITE);
         this.add(scoreText);
 
->>>>>>> 2a5fa2e1817999861decc941a8367acc53492b82
         addMouseListener(this);
         addMouseMotionListener(this);
         timer.start();
@@ -57,7 +46,6 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        //System.out.println("mouseClicked");
     }
 
     @Override

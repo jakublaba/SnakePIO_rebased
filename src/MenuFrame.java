@@ -8,7 +8,7 @@ public class MenuFrame extends JFrame implements ActionListener {
 
     public MenuFrame() {
         this.setTitle("Snake");
-        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         panel.setBackground(new Color(3, 192, 60));
         panel.setLayout(null);
         panel.setPreferredSize(new Dimension(800, 800));
@@ -51,7 +51,6 @@ public class MenuFrame extends JFrame implements ActionListener {
         Object source = e.getSource();
         if (source == button) {
             dispose();
-            //setVisible(false);
             new GameFrame();
         }
         if(source==button2){
@@ -64,7 +63,7 @@ public class MenuFrame extends JFrame implements ActionListener {
     }
 
     public static void main(String[] args) {
-        MenuFrame aMenuFrame = new MenuFrame(); //
+        MenuFrame aMenuFrame = new MenuFrame();
         GameEngine myGameEngine = new GameEngine();
         myGameEngine.run(true);
     }
