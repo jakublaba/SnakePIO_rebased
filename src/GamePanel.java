@@ -49,7 +49,6 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        //System.out.println("mouseClicked");
     }
 
     @Override

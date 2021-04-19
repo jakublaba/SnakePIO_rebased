@@ -8,7 +8,7 @@ public class MenuFrame extends JFrame implements ActionListener {
 
     public MenuFrame() {
         this.setTitle("Snake");
-        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         panel.setBackground(new Color(3, 192, 60));
         panel.setLayout(null);
         panel.setPreferredSize(new Dimension(800, 800));
@@ -19,7 +19,6 @@ public class MenuFrame extends JFrame implements ActionListener {
         this.setResizable(false);
         this.myBorderPanel();
         this.myButton();
-
     }
 
     public void myBorderPanel() {
@@ -31,24 +30,32 @@ public class MenuFrame extends JFrame implements ActionListener {
 
     JButton button;
     JButton button1;
+    JButton button2;
 
     public void myButton() {
         button = new JButton("New Game");
         button.setBounds(300, 300, 200, 50);
         panel.add(button);
+        button2 = new JButton("Settings");
+        button2.setBounds(300, 400, 200, 50);
+        panel.add(button2);
         button1 = new JButton("Exit");
-        button1.setBounds(300, 400, 200, 50);
+        button1.setBounds(300, 500, 200, 50);
         panel.add(button1);
         button.addActionListener(this);
         button1.addActionListener(this);
+        button2.addActionListener(this);
     }
-
     @Override
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
         if (source == button) {
-            setVisible(false);
+            dispose();
             new GameFrame();
+        }
+        if(source==button2){
+            dispose();
+            new Settings();
         }
         if (source == button1) {
             System.exit(0);
@@ -56,7 +63,7 @@ public class MenuFrame extends JFrame implements ActionListener {
     }
 
     public static void main(String[] args) {
-        MenuFrame aMenuFrame = new MenuFrame(); //
+        MenuFrame aMenuFrame = new MenuFrame();
         GameEngine myGameEngine = new GameEngine();
         myGameEngine.run(true);
     }

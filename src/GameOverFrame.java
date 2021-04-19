@@ -4,7 +4,7 @@ import java.awt.*;
 public class GameOverFrame extends JFrame{
     public GameOverFrame() {
         super("Snake");
-        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         JPanel panel = new JPanel();
         panel.setLayout(new GridBagLayout());
         panel.setBackground(new Color(3, 192, 60));
