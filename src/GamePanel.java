@@ -18,11 +18,12 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
 
     public GamePanel() {
         gameBoard = new GameBoard(800, 800, gameSegmentSize);
-        this.setBackground(Color.BLACK);
-        this.setLayout(new GridBagLayout());
+        setBackground(Color.BLACK);
+        setLayout(new GridBagLayout());
         scoreText.setFont(new Font("Arial", Font.PLAIN, 32));
         scoreText.setBackground(Color.WHITE);
-        this.add(scoreText);
+        scoreText.setOpaque(false);
+        add(scoreText);
         GameBoard.snake = new Snake(ThreadLocalRandom.current().nextInt(gameSegmentSize, 800 - gameSegmentSize), ThreadLocalRandom.current().nextInt(gameSegmentSize, 800 - gameSegmentSize));
         addMouseListener(this);
         addMouseMotionListener(this);
