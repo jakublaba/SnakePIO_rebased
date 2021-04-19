@@ -1,22 +1,20 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.font.FontRenderContext;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class GamePanel extends JPanel implements MouseListener, MouseMotionListener, ActionListener {
     private final int gameSegmentSize = 20;
     private final Point2D.Double mousePosition = new Point2D.Double();
     private double gameSpeed = 3;
     private boolean speedUp = false;
-    private boolean mouseInWindow = false;
-    private Timer timer = new Timer(0, this); /* timer, to nawet nie jest on */
-    private GameBoard gameBoard;
+    private Timer timer = new Timer(16, this); /* timer, to nawet nie jest on */
+    //private GameBoard gameBoard;
     private JLabel scoreText = new JLabel("Score: 0");
 
     public GamePanel() {
+<<<<<<< HEAD
         gameBoard = new GameBoard(800, 800, gameSegmentSize);
         setBackground(Color.BLACK);
         setLayout(new GridBagLayout());
@@ -25,6 +23,15 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
         scoreText.setOpaque(false);
         add(scoreText);
         GameBoard.snake = new Snake(ThreadLocalRandom.current().nextInt(gameSegmentSize, 800 - gameSegmentSize), ThreadLocalRandom.current().nextInt(gameSegmentSize, 800 - gameSegmentSize));
+=======
+        this.setBackground(Color.BLACK);
+        this.setLayout(new GridBagLayout());
+
+        scoreText.setFont(new Font("Arial", Font.PLAIN, 32));
+        scoreText.setBackground(Color.WHITE);
+        this.add(scoreText);
+
+>>>>>>> 2a5fa2e1817999861decc941a8367acc53492b82
         addMouseListener(this);
         addMouseMotionListener(this);
         timer.start();
@@ -32,22 +39,20 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
 
     @Override
     public void mouseDragged(MouseEvent e) {
-        if (mouseInWindow) {
-            mousePosition.setLocation(e.getX(), e.getY());
-        }
+
+        mousePosition.setLocation(e.getX(), e.getY());
+
         if (!speedUp) {
             gameSpeed *= 2;
             speedUp = true;
         }
-        //System.out.println("mouseDragged");
     }
 
     @Override
     public void mouseMoved(MouseEvent e) {
-        if (mouseInWindow) {
-            mousePosition.setLocation(e.getX(), e.getY());
-        }
-        //System.out.println("mouseMoved");
+
+        mousePosition.setLocation(e.getX(), e.getY());
+
     }
 
     @Override
@@ -57,14 +62,10 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        mouseInWindow = true;
-        //System.out.println("mouseEntered");
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-        mouseInWindow = false;
-        //System.out.println("mouseExited");
     }
 
     @Override
@@ -73,7 +74,6 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
             gameSpeed *= 2;
             speedUp = true;
         }
-        //System.out.println("mousePressed");
     }
 
     @Override
@@ -82,7 +82,6 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
             gameSpeed /= 2;
             speedUp = false;
         }
-        //System.out.println("mouseReleased");
     }
 
     @Override
@@ -99,39 +98,16 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
             g2d.fill(snakeSegmentImg);
         }
 
-        Ellipse2D.Double foodImg = new Ellipse2D.Double(gameBoard.food.getX() - gameSegmentSize / 2,
-                gameBoard.food.getY() - gameSegmentSize / 2, gameSegmentSize, gameSegmentSize);
+        Ellipse2D.Double foodImg = new Ellipse2D.Double(GameBoard.food.getX() - gameSegmentSize / 2,
+                GameBoard.food.getY() - gameSegmentSize / 2, gameSegmentSize, gameSegmentSize);
         g2d.setColor(Color.RED);
         g2d.fill(foodImg);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (mouseInWindow) {
-            updateDirection();
-            updateGame();
-            repaint();
-        }
-    }
-
-    private void updateGame() {
-        gameBoard.checkBorderCollision(gameSegmentSize);
-        gameBoard.checkTailCollision(gameSegmentSize);
-
-        if (gameBoard.checkFood(gameSegmentSize)) {
-            gameBoard.respawnFood(gameSegmentSize);
-            GameBoard.snake.addBodySegment();
-
-            //do sprawdzania pozycji części snejka
-            /*
-            System.out.printf("SIZE: (%d)\n", GameBoard.snake.bodySegments.size());
-            for (int i = GameBoard.snake.bodySegments.size() - 1; i > 1; i--) {
-                System.out.printf("Segment %d at (%f, %f) location\n", i, GameBoard.snake.bodySegments.get(i).getX(),
-                        GameBoard.snake.bodySegments.get(i).getY());
-            }
-            */
-        }
-        GameBoard.snake.move();
+        updateDirection();
+        repaint();
     }
 
     private void updateDirection() {
@@ -147,12 +123,7 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
             double bodyVectorLength = Math.sqrt(bodyVectorX * bodyVectorX + bodyVectorY * bodyVectorY);
             double scalarProd = mouseVectorX * bodyVectorX + mouseVectorY * bodyVectorY;
             double cosVectors = scalarProd / (mouseVectorLength * bodyVectorLength);
-            /*
-            System.out.printf("Mouse vector = [%f, %f]\n", mouseVectorX, mouseVectorY);
-            System.out.printf("Body vector = [%f, %f]\n", bodyVectorX, bodyVectorY);
-            System.out.printf("Scalar prod of body and mouse vectors: %f\n", scalarProd);
-            System.out.printf("cos of an angle between vectors: %f\n", cosVectors);
-             */
+
             if (cosVectors > 0.5) { //magic number - przybliżona wartość cosinusa 60 stopni
                 dirX = -bodyVectorX / bodyVectorLength;
                 dirY = -bodyVectorY / bodyVectorLength;
