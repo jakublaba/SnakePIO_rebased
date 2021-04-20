@@ -1,12 +1,18 @@
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Snake {
+    private final int safeHeight, safeWidth, segmentSize;
     public ArrayList<Point2D.Double> bodySegments;
 
-    Snake(int x, int y) {
+    Snake(int width, int height, int segmentSize) {
+        this.segmentSize = segmentSize;
+        this.safeWidth = width - this.segmentSize;
+        this.safeHeight = height - this.segmentSize;
         bodySegments = new ArrayList<>();
-        bodySegments.add(0, new Point2D.Double(x, y) );
+        bodySegments.add(0, new Point2D.Double(ThreadLocalRandom.current().nextDouble(this.segmentSize, safeWidth),
+                ThreadLocalRandom.current().nextDouble(this.segmentSize, safeHeight)) );
     }
 
     public void move() {

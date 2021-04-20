@@ -3,17 +3,15 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class GameBoard {
     public int boardHeight, boardWidth;
-    public static Snake snake;
-    public static Point2D.Double food; // będzie do przerobienia na le klasę
+    public static Snake mySnake;
+    public static Food myFood; // będzie do przerobienia na le klasę
 
     //konstruktor
     public GameBoard(int boardHeight, int boardWidth, int segmentSize) {
         this.boardHeight = boardHeight;
         this.boardWidth = boardWidth;
-        this.food = new Point2D.Double(ThreadLocalRandom.current().nextDouble(segmentSize / 2, boardWidth - segmentSize / 2),
-                ThreadLocalRandom.current().nextDouble(segmentSize / 2, boardHeight - segmentSize / 2));
-        this.snake = new Snake(ThreadLocalRandom.current().nextInt(segmentSize, 800 - segmentSize),
-                ThreadLocalRandom.current().nextInt(segmentSize, 800 - segmentSize));
+        this.myFood = new Food(boardWidth, boardHeight, segmentSize);
+        this.mySnake = new Snake(boardWidth, boardHeight, segmentSize);
     }
 
     //defaultowe wartości
@@ -21,45 +19,41 @@ public class GameBoard {
         this(800, 800, 20);
     }
 
-    void respawnFood(int segmentSize) {
-        Point2D.Double newFood = new Point2D.Double(ThreadLocalRandom.current().nextDouble(segmentSize / 2, boardWidth - segmentSize / 2),
-                ThreadLocalRandom.current().nextDouble(segmentSize / 2, boardHeight - segmentSize / 2));
-        newFood.setLocation(ThreadLocalRandom.current().nextDouble(segmentSize / 2, boardWidth - segmentSize / 2),
-                ThreadLocalRandom.current().nextDouble(segmentSize / 2, boardHeight - segmentSize / 2));
-        food = newFood;
+    void respawnFood() {
+        myFood.respawn();
     }
 
     public void checkBorderCollision(double gameSegmentSize) {
-        double distFromTop = snake.bodySegments.get(0).getY();
+        double distFromTop = mySnake.bodySegments.get(0).getY();
         double distFromBottom = boardHeight - distFromTop;
-        double distFromLeft = snake.bodySegments.get(0).getX();
+        double distFromLeft = mySnake.bodySegments.get(0).getX();
         double distFromRight = boardWidth - distFromLeft;
         if (distFromTop <= gameSegmentSize / 2) {
             System.out.println("Game Over: collision with top border");
-            System.out.printf("Coordinates of head when game ended: (%f, %f)\n", snake.bodySegments.get(0).getX(), snake.bodySegments.get(0).getY());
+            System.out.printf("Coordinates of head when game ended: (%f, %f)\n", mySnake.bodySegments.get(0).getX(), mySnake.bodySegments.get(0).getY());
             System.exit(1);
         }
         if (distFromBottom <= gameSegmentSize / 2) {
             System.out.println("Game Over: collision with bottom border");
-            System.out.printf("Coordinates of head when game ended: (%f, %f)\n", snake.bodySegments.get(0).getX(), snake.bodySegments.get(0).getY());
+            System.out.printf("Coordinates of head when game ended: (%f, %f)\n", mySnake.bodySegments.get(0).getX(), mySnake.bodySegments.get(0).getY());
             System.exit(1);
         }
         if (distFromLeft <= gameSegmentSize / 2) {
             System.out.println("Game Over: collision with left border");
-            System.out.printf("Coordinates of head when game ended: (%f, %f)\n", snake.bodySegments.get(0).getX(), snake.bodySegments.get(0).getY());
+            System.out.printf("Coordinates of head when game ended: (%f, %f)\n", mySnake.bodySegments.get(0).getX(), mySnake.bodySegments.get(0).getY());
             System.exit(1);
         }
         if (distFromRight <= gameSegmentSize / 2) {
             System.out.println("Game Over: collision with right border");
-            System.out.printf("Coordinates of head when game ended: (%f, %f)\n", snake.bodySegments.get(0).getX(), snake.bodySegments.get(0).getY());
+            System.out.printf("Coordinates of head when game ended: (%f, %f)\n", mySnake.bodySegments.get(0).getX(), mySnake.bodySegments.get(0).getY());
             System.exit(1);
         }
     }
 
     public void checkTailCollision(double gameSegmentSize) {
-        if (snake.bodySegments.size() > 10) { //magic number bruh
-            for (int i = 10; i < snake.bodySegments.size(); i++) { //BRUH
-                if (Math.abs(snake.bodySegments.get(0).distance(snake.bodySegments.get(i))) < gameSegmentSize / 2) {
+        if (mySnake.bodySegments.size() > 10) { //magic number bruh
+            for (int i = 10; i < mySnake.bodySegments.size(); i++) { //BRUH
+                if (Math.abs(mySnake.bodySegments.get(0).distance(mySnake.bodySegments.get(i))) < gameSegmentSize / 2) {
                     System.out.printf("Game Over: collision with tail segment number %d\n", i);
                     System.exit(1);
                 }
@@ -68,8 +62,8 @@ public class GameBoard {
     }
 
     public boolean checkFood(double gameSegmentSize) {
-        double xDiffSqr = (snake.bodySegments.get(0).getX() - food.getX()) * (snake.bodySegments.get(0).getX() - food.getX());
-        double yDiffSqr = (snake.bodySegments.get(0).getY() - food.getY()) * (snake.bodySegments.get(0).getY() - food.getY());
+        double xDiffSqr = (mySnake.bodySegments.get(0).getX() - myFood.getX()) * (mySnake.bodySegments.get(0).getX() - myFood.getX());
+        double yDiffSqr = (mySnake.bodySegments.get(0).getY() - myFood.getY()) * (mySnake.bodySegments.get(0).getY() - myFood.getY());
         double distance = Math.sqrt(xDiffSqr + yDiffSqr);
         return distance < gameSegmentSize / 2;
     }
