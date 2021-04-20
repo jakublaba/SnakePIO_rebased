@@ -3,10 +3,11 @@ import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Snake {
-    private final int safeHeight, safeWidth, segmentSize;
+    private final int safeHeight, safeWidth, segmentSize, sizeMultiplier;
     public ArrayList<Point2D.Double> bodySegments;
 
-    Snake(int width, int height, int segmentSize) {
+    Snake(int width, int height, int segmentSize, int sizeMultiplier) {
+        this.sizeMultiplier = sizeMultiplier;
         this.segmentSize = segmentSize;
         this.safeWidth = width - this.segmentSize;
         this.safeHeight = height - this.segmentSize;
@@ -22,9 +23,11 @@ public class Snake {
     }
 
     public void addBodySegment() {
-        Point2D.Double newBodySegment;
-        newBodySegment = new Point2D.Double(bodySegments.get(bodySegments.size() - 1).getX(),
-                bodySegments.get(bodySegments.size() - 1).getY());
-        bodySegments.add(newBodySegment);
+        for (int i = 0; i < sizeMultiplier; i++) {
+            Point2D.Double newBodySegment;
+            newBodySegment = new Point2D.Double(bodySegments.get(bodySegments.size() - 1).getX(),
+                    bodySegments.get(bodySegments.size() - 1).getY());
+            bodySegments.add(newBodySegment);
+        }
     }
 }

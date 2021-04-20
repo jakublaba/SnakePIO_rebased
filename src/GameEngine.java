@@ -4,8 +4,6 @@ import static java.lang.Thread.*;
 public class GameEngine {
     private boolean state;
     private GameBoard myGameBoard;
-    //private GamePanel myGamePanel;
-    //private GameFrame myGameFrame;
 
     public GameEngine() {
         state = false;
