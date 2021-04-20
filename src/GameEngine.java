@@ -4,8 +4,8 @@ import static java.lang.Thread.*;
 public class GameEngine {
     private boolean state;
     private GameBoard myGameBoard;
-    private GamePanel myGamePanel;
-    private GameFrame myGameFrame;
+    //private GamePanel myGamePanel;
+    //private GameFrame myGameFrame;
 
     public GameEngine() {
         state = false;
@@ -25,8 +25,8 @@ public class GameEngine {
         myGameBoard.checkTailCollision(20);
 
         if (myGameBoard.checkFood(20)) {
-            myGameBoard.respawnFood(20);
-            GameBoard.snake.addBodySegment();
+            myGameBoard.respawnFood();
+            myGameBoard.mySnake.addBodySegment();
 
             //do sprawdzania pozycji części snejka
             /*
@@ -37,10 +37,10 @@ public class GameEngine {
             }
             */
         }
-        GameBoard.snake.move();
+        GameBoard.mySnake.move();
     }
 
-
+    /* to jest dopiero szkielet/prototyp */
     public void run(boolean isRunning) {
         final int MS_PER_FRAME = 16; // około 60 FPS (troche mniej)
 
