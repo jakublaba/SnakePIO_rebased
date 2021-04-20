@@ -1,17 +1,18 @@
-import java.awt.geom.Point2D;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class GameBoard {
-    public int boardHeight, boardWidth;
+    private final int boardHeight;
+    private final int boardWidth;
+    private final int sizeMultiplier;
     public static Snake mySnake;
-    public static Food myFood; // będzie do przerobienia na le klasę
+    public static Food myFood;
 
     //konstruktor
     public GameBoard(int boardHeight, int boardWidth, int segmentSize) {
+        this.sizeMultiplier = 8; //osie razy dłuższy snejk, bo tak
         this.boardHeight = boardHeight;
         this.boardWidth = boardWidth;
         this.myFood = new Food(boardWidth, boardHeight, segmentSize);
-        this.mySnake = new Snake(boardWidth, boardHeight, segmentSize);
+        this.mySnake = new Snake(boardWidth, boardHeight, segmentSize, this.sizeMultiplier);
     }
 
     //defaultowe wartości
@@ -19,8 +20,21 @@ public class GameBoard {
         this(800, 800, 20);
     }
 
-    void respawnFood() {
-        myFood.respawn();
+
+    public int getBoardWidth() {
+        return boardWidth;
+    }
+
+    public int getBoardHeight() {
+        return boardHeight;
+    }
+
+    public int getSizeMultiplier() {
+        return sizeMultiplier;
+    }
+
+    public void respawnFood() {
+        this.myFood.respawn();
     }
 
     public void checkBorderCollision(double gameSegmentSize) {

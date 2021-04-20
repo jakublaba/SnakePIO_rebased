@@ -118,6 +118,6 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
             }
         }
         GameBoard.mySnake.bodySegments.get(0).setLocation(GameBoard.mySnake.bodySegments.get(0).getX() + dirX * gameSpeed, GameBoard.mySnake.bodySegments.get(0).getY() + dirY * gameSpeed);
-        scoreText.setText("Score: " + (GameBoard.mySnake.bodySegments.size() - 1));
+        scoreText.setText("Score: " + ((GameBoard.mySnake.bodySegments.size() - 1) / 8)); /* to jeszcze do poprawy ale już raczej w javafx */
     }
 }
