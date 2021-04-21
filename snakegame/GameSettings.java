@@ -1,4 +1,6 @@
+package snakegame;
 import javafx.scene.paint.Color;
+import javafx.stage.Screen;
 
 public interface GameSettings {
     double HEIGHT = Screen.getPrimary().getBounds().getHeight();

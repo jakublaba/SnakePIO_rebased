@@ -5,11 +5,10 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class Snake {
 
-    private Vector velocity;
-    private Vector acceleration;
-    private float maxSpeed;
+    private final Vector velocity;
+    private final float maxSpeed;
 
-    private double segmentSize;
+    private final double segmentSize;
     public static ArrayList<Vector> bodySegments = new ArrayList<>();
 
     public Snake(double segmentSize) {
@@ -23,8 +22,7 @@ public class Snake {
         Vector dir = Vector.subtract(mouse, bodySegments.get(0));
         dir.normalize();
         dir.multiply(0.5);
-        acceleration = dir;
-        velocity.add(acceleration);
+        velocity.add(dir);
         velocity.limit(maxSpeed);
         bodySegments.get(0).add(velocity);
     }

@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 package snakegame;
-=======
-
->>>>>>> origin/NowyBackground
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;

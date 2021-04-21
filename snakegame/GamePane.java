@@ -2,6 +2,7 @@ package snakegame;
 
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -35,17 +36,41 @@ public class GamePane extends Pane {
         }
     }
 
+    public void setBackground() {
+        int sideLength = 40;
+        double rest = GameSettings.HEIGHT % sideLength;
+        double numberOfSquare = (GameSettings.HEIGHT - GameSettings.HEIGHT % sideLength) / sideLength;
+
+        for(int i = 0; i < numberOfSquare; ++i) {
+            for(int j = 0; j < numberOfSquare; ++j) {
+
+                Rectangle squareBackground = new Rectangle();
+                squareBackground.setX(i*sideLength + rest/2);
+                squareBackground.setY(j*sideLength + rest/2);
+                squareBackground.setWidth(sideLength);
+                squareBackground.setHeight(sideLength);
+                if ((i + j) % 2 == 0) {
+                    squareBackground.setFill(GameSettings.background_one);
+                } else {
+                    squareBackground.setFill(GameSettings.getBackground_two);
+                }
+
+                getChildren().add(squareBackground);
+            }
+        }
+    }
+
     public void show() {
         getChildren().clear();
+        setBackground();
 
-        for(int i = 0; i < snake.bodySegments.size(); i++) {
+        for(int i = 0; i < Snake.bodySegments.size(); i++) {
             Circle snakeSegmentImg = new Circle(segmentSize / 2);
-            snakeSegmentImg.setCenterX(snake.bodySegments.get(i).getX() - segmentSize / 2);
-            snakeSegmentImg.setCenterY(snake.bodySegments.get(i).getY() - segmentSize / 2);
+            snakeSegmentImg.setCenterX(Snake.bodySegments.get(i).getX() - segmentSize / 2);
+            snakeSegmentImg.setCenterY(Snake.bodySegments.get(i).getY() - segmentSize / 2);
             snakeSegmentImg.setFill(GameSettings.snakeColor);
             getChildren().add(snakeSegmentImg);
         }
-
 
         Circle foodImg = new Circle(segmentSize / 2);
         foodImg.setCenterX(food.getX());
