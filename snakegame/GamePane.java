@@ -32,12 +32,39 @@ public final class GamePane extends Pane {
 
 
     public void checkFood() {
-        Vector distance = new Vector(Snake.bodySegments.get(0).getX(), Snake.bodySegments.get(0).getY());
-        distance.subtract(food);
+        Vector distance = new Vector(mySnake.get(0).getX(), mySnake.get(0).getY());
+        distance.subtract(myFood.getPosition());
         if(distance.length() < segmentSize / 1.2) {
-            respawnFood();
+            myFood.respawn();
             //na potrzeby testowania wąż rośnie szybciej, żeby przy każdym uruchomieniu nie musieć zbierać żarcia w nieskończoność xd
-            for(int i = 0; i < 5; i++) { snake.addBodySegment(); }
+            for(int i = 0; i < 5; i++) { mySnake.addBodySegment(); }
+        }
+    }
+
+    public void checkTailCollision() {
+        if(mySnake.getSize() > 10) {
+            for(int i = 10; i < mySnake.getSize(); i++) {
+                Vector distance = new Vector(mySnake.get(0).getX(), mySnake.get(0).getY());
+                distance.subtract(mySnake.get(i));
+                if(distance.length() < segmentSize / 2) {
+                    System.out.printf("Game Over: Collision with tail segment number %d\n", i);
+                    System.exit(1);
+                }
+            }
+        }
+    }
+
+    public void checkBorders() {
+        if(mySnake.get(0).getX() > GameSettings.WIDTH) {
+            mySnake.get(0).setX(0);
+        } else if (mySnake.get(0).getX() < 0) {
+            mySnake.get(0).setX(GameSettings.WIDTH);
+        }
+
+        if (mySnake.get(0).getY() > GameSettings.HEIGHT) {
+            mySnake.get(0).setY(0);
+        } else if (mySnake.get(0).getY() < 0) {
+            mySnake.get(0).setY(GameSettings.HEIGHT);
         }
     }
 
@@ -48,7 +75,6 @@ public final class GamePane extends Pane {
 
         for(int i = 0; i < numberOfSquare; ++i) {
             for(int j = 0; j < numberOfSquare; ++j) {
-
                 Rectangle squareBackground = new Rectangle();
                 squareBackground.setX(i*sideLength + rest/2);
                 squareBackground.setY(j*sideLength + rest/2);
@@ -69,18 +95,18 @@ public final class GamePane extends Pane {
         getChildren().clear();
         setBackground();
 
-        for(int i = 0; i < Snake.bodySegments.size(); i++) {
+        for(int i = 0; i < mySnake.getSize(); i++) {
             Circle snakeSegmentImg = new Circle(segmentSize / 2);
-            snakeSegmentImg.setCenterX(Snake.bodySegments.get(i).getX() - segmentSize / 2);
-            snakeSegmentImg.setCenterY(Snake.bodySegments.get(i).getY() - segmentSize / 2);
+            snakeSegmentImg.setCenterX(mySnake.get(i).getX() - segmentSize / 2);
+            snakeSegmentImg.setCenterY(mySnake.get(i).getY() - segmentSize / 2);
             snakeSegmentImg.setFill(GameSettings.snakeColor);
             snakeSegmentImg.setStroke(GameSettings.snakeEdgeColor);
             getChildren().add(snakeSegmentImg);
         }
 
         Circle foodImg = new Circle(segmentSize / 2);
-        foodImg.setCenterX(food.getX());
-        foodImg.setCenterY(food.getY());
+        foodImg.setCenterX(myFood.getX());
+        foodImg.setCenterY(myFood.getY());
         foodImg.setFill(GameSettings.foodColor);
         getChildren().add(foodImg);
     }
@@ -104,27 +130,5 @@ public final class GamePane extends Pane {
             }
         }
         return false;
-    }
-
-    private void checkBorders() {
-        ListIterator<PointVector> mySnakeIterator = mySnake.getBodySegments().listIterator();
-        final var head = mySnakeIterator.next();
-        var newHead = new PointVector(head.getX(), head.getY());
-
-        if (head.getX() > boardWidth) {
-            newHead.setX(0);
-            mySnakeIterator.set(newHead);
-        } else if (head.getX() < 0) {
-            newHead.setX(boardWidth);
-            mySnakeIterator.set(newHead);
-        }
-
-        if (head.getY() > boardHeight) {
-            newHead.setY(0);
-            mySnakeIterator.set(newHead);
-        } else if (head.getY() < 0) {
-            newHead.setY(boardHeight);
-            mySnakeIterator.set(newHead);
-        }
     }
 }
