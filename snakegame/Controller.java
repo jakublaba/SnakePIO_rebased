@@ -1,6 +1,5 @@
 package snakegame;
 
-
 import javafx.animation.AnimationTimer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -23,47 +22,44 @@ public class Controller {
     private javafx.scene.control.Button settingsButton;
 
     @FXML
-    public void startButtonAction(ActionEvent event) {
+    public void startButtonAction() {
         Stage Menu = (Stage) settingsButton.getScene().getWindow();
         Menu.hide();
         Pane gameField;
         Vector mousePosition = new Vector(0,0);
         Stage primaryStage = new Stage();
 
-            BorderPane root = new BorderPane();
-            StackPane layerPane = new StackPane();
+        BorderPane root = new BorderPane();
+        StackPane layerPane = new StackPane();
 
-            gameField = new Pane();
+        gameField = new Pane();
 
-            layerPane.getChildren().addAll(gameField);
-            root.setCenter(layerPane);
+        layerPane.getChildren().addAll(gameField);
+        root.setCenter(layerPane);
 
-            Scene scene = new Scene(root, GameSettings.WIDTH, GameSettings.HEIGHT, Color.BLACK);
-            primaryStage.setTitle("SnakeFX");
-            primaryStage.setScene(scene);
-            primaryStage.show();
+        Scene scene = new Scene(root, GameSettings.WIDTH, GameSettings.HEIGHT, Color.BLACK);
+        primaryStage.setTitle("SnakeFX");
+        primaryStage.setScene(scene);
+        primaryStage.show();
 
-            GamePane GamePane = new GamePane();
-            gameField.getChildren().add(GamePane);
+        GamePane GamePane = new GamePane();
+        gameField.getChildren().add(GamePane);
 
-            // capture mouse position
-            /* to chwilowo bo mi sie nie chcialo przepisywac
-            scene.addEventFilter(MouseEvent.ANY, e -> mousePosition.set(e.getX(), e.getY()));
-
-            AnimationTimer gameLoop = new AnimationTimer() {
-                @Override
-                public void handle(long now) {
-                    GamePane.mySnake.updateHeadLocation(mousePosition);
-                    GamePane.mySnake.move();
-                    GamePane.checkBorders();
-                    GamePane.checkTailCollision();
-                    GamePane.checkFood();
-                    //System.out.printf("Current snake length: %d\n", GamePane.mySnake.bodySegments.size());
-                    GamePane.show();
-                }
-            };
-            gameLoop.start();*/
-        }
+        scene.addEventFilter(MouseEvent.ANY, e -> mousePosition.set(e.getX(), e.getY()));
+        GameBoard myBoard = new GameBoard();
+        AnimationTimer gameLoop = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                GameBoard.mySnake.updateHeadLocation(mousePosition);
+                GameBoard.mySnake.move();
+                myBoard.checkBorders();
+                myBoard.checkTailCollision();
+                myBoard.checkFood();
+                GamePane.show(myBoard);;
+            }
+        };
+        gameLoop.start();
+    }
 
 
     @FXML
