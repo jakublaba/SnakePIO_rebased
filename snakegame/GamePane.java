@@ -5,13 +5,13 @@ import javafx.scene.shape.Circle;
 
 import java.util.concurrent.ThreadLocalRandom;
 
-public class GameBoard extends Pane {
-    public final double boardHeight, boardWidth;
+public class GamePane extends Pane {
+    private final double boardHeight, boardWidth;
     public static Snake snake;
-    public static Vector food;
+    private static Vector food;
     private final double segmentSize;
 
-    public GameBoard(double boardHeight, double boardWidth, double segmentSize) {
+    public GamePane(double boardHeight, double boardWidth, double segmentSize) {
         this.boardHeight = boardHeight;
         this.boardWidth = boardWidth;
         this.segmentSize = segmentSize;

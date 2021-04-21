@@ -11,8 +11,8 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class Main extends Application {
-    Pane gameField;
-    Vector mousePosition = new Vector(0,0);
+    private Pane gameField;
+    private Vector mousePosition = new Vector(0,0);
 
     @Override
     public void start(Stage primaryStage) {
@@ -31,22 +31,20 @@ public class Main extends Application {
         primaryStage.setFullScreen(true);
         primaryStage.show();
 
-        GameBoard gameBoard = new GameBoard(GameSettings.HEIGHT, GameSettings.WIDTH, GameSettings.segmentSize);
-        gameField.getChildren().add(gameBoard);
+        GamePane gamePane = new GamePane(GameSettings.HEIGHT, GameSettings.WIDTH, GameSettings.segmentSize);
+        gameField.getChildren().add(gamePane);
 
-        // capture mouse position
         scene.addEventFilter(MouseEvent.ANY, e -> mousePosition.set(e.getX(), e.getY()));
-
         AnimationTimer gameLoop = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                GameBoard.snake.updateHeadLocation(mousePosition);
-                GameBoard.snake.move();
-                GameBoard.snake.checkBorders();
-                GameBoard.snake.checkTailCollision();
-                gameBoard.checkFood();
-                System.out.printf("Current snake length: %d\n", gameBoard.snake.bodySegments.size());
-                gameBoard.show();
+                GamePane.snake.updateHeadLocation(mousePosition);
+                GamePane.snake.move();
+                GamePane.snake.checkBorders();
+                GamePane.snake.checkTailCollision();
+                gamePane.checkFood();
+                System.out.printf("Current snake length: %d\n", GamePane.snake.bodySegments.size());
+                gamePane.show();
             }
         };
         gameLoop.start();
