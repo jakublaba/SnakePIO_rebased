@@ -3,13 +3,13 @@ import javafx.scene.paint.Color;
 import javafx.stage.Screen;
 
 public interface GameSettings {
-    double HEIGHT = Screen.getPrimary().getBounds().getHeight();
-    double WIDTH = Screen.getPrimary().getBounds().getWidth();
+    double HEIGHT = 800;
+    double WIDTH = 800;
     Color snakeColor = Color.DARKSALMON;
     Color snakeEdgeColor = Color.web("#654321");
     Color foodColor = Color.DARKRED;
-    Color background_one = Color.GREEN;
-    Color getBackground_two = Color.DARKGREEN;
+    Color bgColorOne = Color.GREEN;
+    Color bgColorTwo = Color.DARKGREEN;
     double segmentSize = 30;
-    double maxSpeed = Math.sqrt(HEIGHT*HEIGHT + WIDTH*WIDTH) / 300;
+    double maxSpeed = 7;
 }

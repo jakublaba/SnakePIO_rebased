@@ -50,9 +50,9 @@ public class GamePane extends Pane {
                 squareBackground.setWidth(sideLength);
                 squareBackground.setHeight(sideLength);
                 if ((i + j) % 2 == 0) {
-                    squareBackground.setFill(GameSettings.background_one);
+                    squareBackground.setFill(GameSettings.bgColorOne);
                 } else {
-                    squareBackground.setFill(GameSettings.getBackground_two);
+                    squareBackground.setFill(GameSettings.bgColorTwo);
                 }
 
                 getChildren().add(squareBackground);
