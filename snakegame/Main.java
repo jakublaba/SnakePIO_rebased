@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 public class Main extends Application {
     Pane gameField;
     Vector mousePosition = new Vector(0,0);
+    GameBoard myBoard;
 
     @Override
     public void init() {
@@ -36,20 +37,23 @@ public class Main extends Application {
         primaryStage.setResizable(false);
         primaryStage.show();
 
-        GamePane gamePane = new GamePane(GameSettings.HEIGHT, GameSettings.WIDTH, GameSettings.segmentSize);
+        GamePane gamePane = new GamePane();
         gameField.getChildren().add(gamePane);
 
         scene.addEventFilter(MouseEvent.ANY, e -> mousePosition.set(e.getX(), e.getY()));
+
+        myBoard = new GameBoard();
+        //jeszcze to poprawię - pf
         AnimationTimer gameLoop = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                GamePane.mySnake.updateHeadLocation(mousePosition);
-                GamePane.mySnake.move();
-                gamePane.checkBorders();
-                gamePane.checkTailCollision();
-                gamePane.checkFood();
+                myBoard.mySnake.updateHeadLocation(mousePosition);
+                myBoard.mySnake.move();
+                myBoard.checkBorders();
+                myBoard.checkTailCollision();
+                myBoard.checkFood();
                 //System.out.printf("Current snake length: %d\n", GamePane.mySnake.bodySegments.size());
-                gamePane.show();
+                gamePane.show(myBoard);
             }
         };
         gameLoop.start();

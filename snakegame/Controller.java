@@ -43,10 +43,11 @@ public class Controller {
             primaryStage.setScene(scene);
             primaryStage.show();
 
-            GamePane GamePane = new GamePane(GameSettings.HEIGHT, GameSettings.WIDTH, GameSettings.segmentSize);
+            GamePane GamePane = new GamePane();
             gameField.getChildren().add(GamePane);
 
             // capture mouse position
+            /* to chwilowo bo mi sie nie chcialo przepisywac
             scene.addEventFilter(MouseEvent.ANY, e -> mousePosition.set(e.getX(), e.getY()));
 
             AnimationTimer gameLoop = new AnimationTimer() {
@@ -61,7 +62,7 @@ public class Controller {
                     GamePane.show();
                 }
             };
-            gameLoop.start();
+            gameLoop.start();*/
         }
 
 
