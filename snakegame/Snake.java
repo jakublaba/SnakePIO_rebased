@@ -4,16 +4,21 @@ import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Snake {
-
+    private final double safeHeight, safeWidth, segmentSize;
+    private final int sizeMultiplier;
     private final Vector velocity;
+    private ArrayList<Vector> bodySegments;
 
-    private final double segmentSize;
-    public static ArrayList<Vector> bodySegments = new ArrayList<>();
-
-    public Snake(double segmentSize) {
-        bodySegments.add(new Vector(ThreadLocalRandom.current().nextDouble(segmentSize, GameSettings.WIDTH - segmentSize), ThreadLocalRandom.current().nextDouble(segmentSize, GameSettings.HEIGHT - segmentSize)));
-        velocity = new Vector(0, 0);
-        this.segmentSize = segmentSize;
+    public Snake() {
+        this.sizeMultiplier = GameSettings.sizeMultiplier;
+        this.segmentSize = GameSettings.segmentSize;
+        this.safeWidth = GameSettings.WIDTH - this.segmentSize;
+        this.safeHeight = GameSettings.HEIGHT - this.segmentSize;
+        bodySegments = new ArrayList<>();
+        bodySegments.add(new Vector(ThreadLocalRandom.current().nextDouble(this.segmentSize, this.safeWidth),
+                ThreadLocalRandom.current().nextDouble(this.segmentSize, this.safeHeight)));
+        this.velocity = new Vector(0, 0);
+        //this.segmentSize = segmentSize;
     }
 
     public void updateHeadLocation(Vector mouse) {
@@ -31,32 +36,16 @@ public class Snake {
         }
     }
 
-    public void checkBorders() {
-        if(bodySegments.get(0).getX() > GameSettings.WIDTH) {
-            bodySegments.get(0).setX(0);
-        } else if (bodySegments.get(0).getX() < 0) {
-            bodySegments.get(0).setX(GameSettings.WIDTH);
-        }
-
-        if (bodySegments.get(0).getY() > GameSettings.HEIGHT) {
-            bodySegments.get(0).setY(0);
-        } else if (bodySegments.get(0).getY() < 0) {
-            bodySegments.get(0).setY(GameSettings.HEIGHT);
-        }
+    public int getSize() {
+        return bodySegments.size();
     }
 
-    public void checkTailCollision() {
-        if(bodySegments.size() > 10) {
-            for(int i = 10; i < bodySegments.size(); i++) {
-                Vector distance = new Vector(bodySegments.get(0).getX(), bodySegments.get(0).getY());
-                distance.subtract(bodySegments.get(i));
-                if(distance.length() < segmentSize / 2) {
-                    System.out.printf("Game Over: Collision with tail segment number %d\n", i);
-                    System.exit(1);
-                }
-            }
-        }
+    public Vector get(int i) {
+        return bodySegments.get(i);
     }
+
+
+
 
     public void addBodySegment() {
         Vector newBodySegment;

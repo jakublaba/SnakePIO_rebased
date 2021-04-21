@@ -5,7 +5,6 @@ import javafx.animation.AnimationTimer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import java.io.IOException;
@@ -53,12 +52,12 @@ public class Controller {
             AnimationTimer gameLoop = new AnimationTimer() {
                 @Override
                 public void handle(long now) {
-                    GamePane.snake.updateHeadLocation(mousePosition);
-                    GamePane.snake.move();
-                    GamePane.snake.checkBorders();
-                    GamePane.snake.checkTailCollision();
+                    GamePane.mySnake.updateHeadLocation(mousePosition);
+                    GamePane.mySnake.move();
+                    GamePane.checkBorders();
+                    GamePane.checkTailCollision();
                     GamePane.checkFood();
-                    System.out.printf("Current snake length: %d\n", GamePane.snake.bodySegments.size());
+                    //System.out.printf("Current snake length: %d\n", GamePane.mySnake.bodySegments.size());
                     GamePane.show();
                 }
             };

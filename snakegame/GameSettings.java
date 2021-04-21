@@ -5,6 +5,7 @@ import javafx.stage.Screen;
 public interface GameSettings {
     double HEIGHT = 800;
     double WIDTH = 800;
+    int sizeMultiplier = 5;
     Color snakeColor = Color.DARKSALMON;
     Color snakeEdgeColor = Color.web("#654321");
     Color foodColor = Color.DARKRED;

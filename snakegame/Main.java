@@ -43,12 +43,12 @@ public class Main extends Application {
         AnimationTimer gameLoop = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                GamePane.snake.updateHeadLocation(mousePosition);
-                GamePane.snake.move();
-                GamePane.snake.checkBorders();
-                GamePane.snake.checkTailCollision();
+                GamePane.mySnake.updateHeadLocation(mousePosition);
+                GamePane.mySnake.move();
+                gamePane.checkBorders();
+                gamePane.checkTailCollision();
                 gamePane.checkFood();
-                System.out.printf("Current snake length: %d\n", GamePane.snake.bodySegments.size());
+                //System.out.printf("Current snake length: %d\n", GamePane.mySnake.bodySegments.size());
                 gamePane.show();
             }
         };
