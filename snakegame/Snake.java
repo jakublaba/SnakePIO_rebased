@@ -6,7 +6,6 @@ import java.util.concurrent.ThreadLocalRandom;
 public class Snake {
 
     private final Vector velocity;
-    private final float maxSpeed;
 
     private final double segmentSize;
     public static ArrayList<Vector> bodySegments = new ArrayList<>();
@@ -14,7 +13,6 @@ public class Snake {
     public Snake(double segmentSize) {
         bodySegments.add(new Vector(ThreadLocalRandom.current().nextDouble(segmentSize, GameSettings.WIDTH - segmentSize), ThreadLocalRandom.current().nextDouble(segmentSize, GameSettings.HEIGHT - segmentSize)));
         velocity = new Vector(0, 0);
-        maxSpeed = 5;
         this.segmentSize = segmentSize;
     }
 
@@ -23,7 +21,7 @@ public class Snake {
         dir.normalize();
         dir.multiply(0.5);
         velocity.add(dir);
-        velocity.limit(maxSpeed);
+        velocity.limit(GameSettings.maxSpeed);
         bodySegments.get(0).add(velocity);
     }
 

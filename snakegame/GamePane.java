@@ -1,6 +1,7 @@
 package snakegame;
 
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 
@@ -29,7 +30,7 @@ public class GamePane extends Pane {
     public void checkFood() {
         Vector distance = new Vector(snake.bodySegments.get(0).getX(), snake.bodySegments.get(0).getY());
         distance.subtract(food);
-        if(distance.length() < segmentSize / 1.5) {
+        if(distance.length() < segmentSize / 1.2) {
             respawnFood();
             //na potrzeby testowania wąż rośnie szybciej, żeby przy każdym uruchomieniu nie musieć zbierać żarcia w nieskończoność xd
             for(int i = 0; i < 5; i++) { snake.addBodySegment(); }
@@ -69,6 +70,7 @@ public class GamePane extends Pane {
             snakeSegmentImg.setCenterX(Snake.bodySegments.get(i).getX() - segmentSize / 2);
             snakeSegmentImg.setCenterY(Snake.bodySegments.get(i).getY() - segmentSize / 2);
             snakeSegmentImg.setFill(GameSettings.snakeColor);
+            snakeSegmentImg.setStroke(GameSettings.snakeEdgeColor);
             getChildren().add(snakeSegmentImg);
         }
 
