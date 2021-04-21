@@ -3,7 +3,6 @@ package snakegame;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 
@@ -33,7 +32,7 @@ public final class GamePane extends Pane {
 
 
     public void checkFood() {
-        Vector distance = new Vector(snake.bodySegments.get(0).getX(), snake.bodySegments.get(0).getY());
+        Vector distance = new Vector(Snake.bodySegments.get(0).getX(), Snake.bodySegments.get(0).getY());
         distance.subtract(food);
         if(distance.length() < segmentSize / 1.2) {
             respawnFood();
@@ -56,9 +55,9 @@ public final class GamePane extends Pane {
                 squareBackground.setWidth(sideLength);
                 squareBackground.setHeight(sideLength);
                 if ((i + j) % 2 == 0) {
-                    squareBackground.setFill(GameSettings.background_one);
+                    squareBackground.setFill(GameSettings.bgColorOne);
                 } else {
-                    squareBackground.setFill(GameSettings.getBackground_two);
+                    squareBackground.setFill(GameSettings.bgColorTwo);
                 }
 
                 getChildren().add(squareBackground);

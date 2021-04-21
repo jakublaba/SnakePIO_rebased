@@ -33,6 +33,7 @@ public class Main extends Application {
         Scene scene = new Scene(root, GameSettings.WIDTH, GameSettings.HEIGHT);
         primaryStage.setTitle("SnakeFX");
         primaryStage.setScene(scene);
+        primaryStage.setResizable(false);
         primaryStage.show();
         GameBoard gameBoard = new GameBoard(GameSettings.HEIGHT, GameSettings.WIDTH, GameSettings.segmentSize);
         gameField.getChildren().add(gameBoard);

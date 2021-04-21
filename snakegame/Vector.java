@@ -42,7 +42,7 @@ public class Vector {
         y -= v.y;
     }
 
-    public void limit(float max) {
+    public void limit(double max) {
         if(length() > max) {
             normalize();
             multiply(max);
