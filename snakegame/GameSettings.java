@@ -11,5 +11,5 @@ public interface GameSettings {
     Color background_one = Color.GREEN;
     Color getBackground_two = Color.DARKGREEN;
     double segmentSize = 30;
-    float maxSpeed = 5;
+    double maxSpeed = Math.sqrt(HEIGHT*HEIGHT + WIDTH*WIDTH) / 300;
 }

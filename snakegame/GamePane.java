@@ -1,7 +1,6 @@
 package snakegame;
 
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 
@@ -28,7 +27,7 @@ public class GamePane extends Pane {
     }
 
     public void checkFood() {
-        Vector distance = new Vector(snake.bodySegments.get(0).getX(), snake.bodySegments.get(0).getY());
+        Vector distance = new Vector(Snake.bodySegments.get(0).getX(), Snake.bodySegments.get(0).getY());
         distance.subtract(food);
         if(distance.length() < segmentSize / 1.2) {
             respawnFood();
