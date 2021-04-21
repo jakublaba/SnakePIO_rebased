@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-package snakegame;
-=======
 
->>>>>>> origin/NowyBackground
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
@@ -34,26 +30,25 @@ public class Main extends Application {
         layerPane.getChildren().addAll(gameField);
         root.setCenter(layerPane);
 
-        Scene scene = new Scene(root, GameSettings.WIDTH, GameSettings.HEIGHT, Color.BLACK);
+        Scene scene = new Scene(root, GameSettings.WIDTH, GameSettings.HEIGHT);
         primaryStage.setTitle("SnakeFX");
         primaryStage.setScene(scene);
-        primaryStage.setFullScreen(true);
         primaryStage.show();
+        GameBoard gameBoard = new GameBoard(GameSettings.HEIGHT, GameSettings.WIDTH, GameSettings.segmentSize);
+        gameField.getChildren().add(gameBoard);
 
-        GamePane gamePane = new GamePane(GameSettings.HEIGHT, GameSettings.WIDTH, GameSettings.segmentSize);
-        gameField.getChildren().add(gamePane);
-
+        // capture mouse position
         scene.addEventFilter(MouseEvent.ANY, e -> mousePosition.set(e.getX(), e.getY()));
         AnimationTimer gameLoop = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                GamePane.snake.updateHeadLocation(mousePosition);
-                GamePane.snake.move();
-                GamePane.snake.checkBorders();
-                GamePane.snake.checkTailCollision();
-                gamePane.checkFood();
-                System.out.printf("Current snake length: %d\n", GamePane.snake.bodySegments.size());
-                gamePane.show();
+                GameBoard.snake.updateHeadLocation(mousePosition);
+                GameBoard.snake.move();
+                GameBoard.snake.checkBorders();
+                GameBoard.snake.checkTailCollision();
+                gameBoard.checkFood();
+                System.out.printf("Current snake length: %d\n", gameBoard.snake.bodySegments.size());
+                gameBoard.show();
             }
         };
         gameLoop.start();
