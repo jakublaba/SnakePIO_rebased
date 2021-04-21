@@ -7,9 +7,9 @@ public interface GameSettings {
     int sizeMultiplier = 5;
     Color snakeColor = Color.DARKSALMON;
     Color snakeEdgeColor = Color.web("#654321");
-    Color foodColor = Color.DARKRED;
+    Color foodColor = Color.RED;
     Color bgColorOne = Color.GREEN;
     Color bgColorTwo = Color.DARKGREEN;
     double segmentSize = 30;
-    double maxSpeed = 7;
+    double maxSpeed = 4;
 }

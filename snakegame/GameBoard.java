@@ -18,13 +18,14 @@ public class GameBoard {
         distance.subtract(myFood.getPosition());
         if (distance.length() < (segmentSize / 1.2)) {
             myFood.respawn();
-            //na potrzeby testowania wąż rośnie szybciej, żeby przy każdym uruchomieniu nie musieć zbierać żarcia w nieskończoność xd
-            for (int i = 0; i < 5; i++) {
+            //na potrzeby testowania wąż rośnie szybciej
+            for (int i = 0; i < 9; i++) {
                 mySnake.addBodySegment();
             }
         }
     }
 
+    //takie same uwagi jak przy Snake.move()
     public void checkTailCollision() {
         if (mySnake.getSize() > 10) {
             for (int i = 10; i < mySnake.getSize(); i++) {
