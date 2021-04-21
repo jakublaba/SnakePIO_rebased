@@ -1,88 +1,70 @@
 package snakegame;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.ListIterator;
 import java.util.concurrent.ThreadLocalRandom;
 
-public final class Snake {
-    private final int sizeMultiplier;
-    private final PointVector velocity;
-    private final List<PointVector> bodySegments;
+public class Snake {
 
-    public Snake() {
-        this.sizeMultiplier = GameSettings.FOOD_MULTIPLIER;
-        double segmentSize = GameSettings.SEGMENT_SIZE;
-        double safeWidth = GameSettings.BOARD_WIDTH - segmentSize;
-        double safeHeight = GameSettings.BOARD_HEIGHT - segmentSize;
+    private final Vector velocity;
 
-        bodySegments = new ArrayList<>();
-        bodySegments.add(new PointVector(ThreadLocalRandom.current().nextDouble(segmentSize, safeWidth),
-                ThreadLocalRandom.current().nextDouble(segmentSize, safeHeight)));
-        this.velocity = new PointVector(0, 0);
+    private final double segmentSize;
+    public static ArrayList<Vector> bodySegments = new ArrayList<>();
+
+    public Snake(double segmentSize) {
+        bodySegments.add(new Vector(ThreadLocalRandom.current().nextDouble(segmentSize, GameSettings.WIDTH - segmentSize), ThreadLocalRandom.current().nextDouble(segmentSize, GameSettings.HEIGHT - segmentSize)));
+        velocity = new Vector(0, 0);
+        this.segmentSize = segmentSize;
     }
 
-    public List<PointVector> getBodySegments() {
-        return bodySegments;
-    }
-
-    public void move(PointVector mouse) {
-        ListIterator<PointVector> mySnakeIterator = bodySegments.listIterator(); //creates the iterator
-
-        var oldLocation = mySnakeIterator.next();   //save head location to temp
-        var temporarySegment = oldLocation;
-
-        var dir = PointVector.subtract(mouse, temporarySegment);
+    public void updateHeadLocation(Vector mouse) {
+        Vector dir = Vector.subtract(mouse, bodySegments.get(0));
         dir.normalize();
         dir.multiply(0.5);
         velocity.add(dir);
-        velocity.setConstantSpeed(GameSettings.MAX_SPEED);
-        temporarySegment.add(velocity);
-        mySnakeIterator.set(temporarySegment);  //save new head location
+        velocity.limit(GameSettings.maxSpeed);
+        bodySegments.get(0).add(velocity);
+    }
 
-        while (mySnakeIterator.hasNext()) {
-            temporarySegment = oldLocation;
-            oldLocation = mySnakeIterator.next();
-            mySnakeIterator.set(new PointVector(temporarySegment.getX(), temporarySegment.getY()));
+    public void move() {
+        for (int i = bodySegments.size() - 1; i > 0; i--) {
+            bodySegments.get(i).set(bodySegments.get(i - 1).getX(), bodySegments.get(i - 1).getY());
+        }
+    }
+
+    public void checkBorders() {
+        if(bodySegments.get(0).getX() > GameSettings.WIDTH) {
+            bodySegments.get(0).setX(0);
+        } else if (bodySegments.get(0).getX() < 0) {
+            bodySegments.get(0).setX(GameSettings.WIDTH);
         }
 
+        if (bodySegments.get(0).getY() > GameSettings.HEIGHT) {
+            bodySegments.get(0).setY(0);
+        } else if (bodySegments.get(0).getY() < 0) {
+            bodySegments.get(0).setY(GameSettings.HEIGHT);
+        }
     }
 
-    /*
-     * returns size of bodySegments list divided by multiplier (user score)
-     */
-    public int getSizeForUser() {
-        return bodySegments.size() / sizeMultiplier;
+    public void checkTailCollision() {
+        if(bodySegments.size() > 10) {
+            for(int i = 10; i < bodySegments.size(); i++) {
+                Vector distance = new Vector(bodySegments.get(0).getX(), bodySegments.get(0).getY());
+                distance.subtract(bodySegments.get(i));
+                if(distance.length() < segmentSize / 2) {
+                    System.out.printf("Game Over: Collision with tail segment number %d\n", i);
+                    System.exit(1);
+                }
+            }
+        }
     }
 
-    /*
-     * returns actual size of bodySegments list
-     */
-    public int getActualSize() {
-        return bodySegments.size();
-    }
-
-    /*
-     * returns snake's head (first body segment)
-     */
-    public PointVector getHead() {
-        return bodySegments.get(0);
-    }
-
-    /*
-     * returns snake's tail (last body segment)
-     */
-    public PointVector getTail() {
-        return bodySegments.get(getActualSize() - 1); //actually quite robust when using ArrayList
-    }
-
-    /*
-     * adds n (n=GameSettings.SIZE_MULTIPLIER) segments to the end of the snake
-     */
     public void addBodySegment() {
-        for (int i = 0; i < GameSettings.FOOD_MULTIPLIER; i++) {
-            var newBodySegment = new PointVector(getTail());
-            bodySegments.add(newBodySegment);
+        Vector newBodySegment;
+        if(bodySegments.size() == 0) {
+            newBodySegment = new Vector(bodySegments.get(0).getX(), bodySegments.get(0).getY());
+        } else {
+            newBodySegment = new Vector(bodySegments.get(bodySegments.size() - 1).getX(), bodySegments.get(bodySegments.size() - 1).getY());
         }
+        bodySegments.add(newBodySegment);
     }
 }
