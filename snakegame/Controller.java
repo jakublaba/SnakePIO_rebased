@@ -3,15 +3,16 @@ package snakegame;
 import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.stage.Stage;
-import javafx.scene.Parent;
-import java.io.IOException;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
+
+import java.io.IOException;
 
 public class Controller {
     @FXML
@@ -21,8 +22,8 @@ public class Controller {
     private boolean pause;
 
     @FXML
-    private void startButtonAction() {
-        Stage Menu = (Stage)settingsButton.getScene().getWindow();
+    public void startButtonAction() {
+        Stage Menu = (Stage) settingsButton.getScene().getWindow();
         Menu.hide();
         Pane gameField;
         Vector mousePosition = new Vector(0, 0);
@@ -47,18 +48,13 @@ public class Controller {
         GamePane GamePane = new GamePane();
         gameField.getChildren().add(GamePane);
 
-        // capture mouse position
         scene.addEventFilter(MouseEvent.ANY, e -> mousePosition.set(e.getX(), e.getY()));
         GameBoard myBoard = new GameBoard();
         AnimationTimer gameLoop = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                GameBoard.mySnake.updateHeadLocation(mousePosition);
-                GameBoard.mySnake.move();
-                myBoard.checkBorders();
-                myBoard.checkTailCollision();
-                myBoard.checkFood();
-                GamePane.show(myBoard);
+                myBoard.updateGame(mousePosition); //process controls
+                GamePane.show(myBoard); //render
             }
         };
         pause = false;
@@ -75,12 +71,12 @@ public class Controller {
     }
 
     @FXML
-    private void exitButtonAction() {
+    public void exitButtonAction() {
         System.exit(0);
     }
 
     @FXML
-    private void settingsButtonAction() {
+    public void settingsButtonAction() {
         Parent root;
         try {
             root = FXMLLoader.load(getClass().getResource("settings.fxml"));
@@ -97,7 +93,7 @@ public class Controller {
     }
 
     @FXML
-    private void backButtonAction() {
+    public void backButtonAction() {
         Stage stage = (Stage) closeButton.getScene().getWindow();
         Parent root;
         try {

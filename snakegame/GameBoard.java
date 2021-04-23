@@ -13,7 +13,15 @@ public class GameBoard {
         mySnake = new Snake();
     }
 
-    public void checkFood() {
+    public void updateGame(Vector mousePosition) {
+        mySnake.updateHeadLocation(mousePosition);
+        mySnake.move();
+        checkBorders();
+        checkTailCollision();
+        checkFood();
+    }
+
+    private void checkFood() {
         Vector distance = new Vector(mySnake.get(0).getX(), mySnake.get(0).getY());
         distance.subtract(myFood.getPosition());
         if (distance.length() < (segmentSize / 1.2)) {
@@ -25,8 +33,7 @@ public class GameBoard {
         }
     }
 
-    //takie same uwagi jak przy Snake.move()
-    public void checkTailCollision() {
+    private void checkTailCollision() {
         if (mySnake.getSize() > 10) {
             for (int i = 10; i < mySnake.getSize(); i++) {
                 Vector distance = new Vector(mySnake.get(0).getX(), mySnake.get(0).getY());
@@ -39,7 +46,7 @@ public class GameBoard {
         }
     }
 
-    public void checkBorders() {
+    private void checkBorders() {
         if (mySnake.get(0).getX() > boardWidth) {
             mySnake.get(0).setX(0);
         } else if (mySnake.get(0).getX() < 0) {
