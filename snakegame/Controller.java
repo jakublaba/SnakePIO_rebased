@@ -26,7 +26,7 @@ public class Controller {
         Stage Menu = (Stage) settingsButton.getScene().getWindow();
         Menu.hide();
         Pane gameField;
-        Vector mousePosition = new Vector(0, 0);
+        PointVector mousePosition = new PointVector(0, 0);
         Stage primaryStage = new Stage();
         BorderPane root = new BorderPane();
         StackPane layerPane = new StackPane();

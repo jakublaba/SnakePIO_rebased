@@ -3,13 +3,15 @@ package snakegame;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Food {
-    protected final PointVector position;
+    private final double safeHeight, safeWidth, segmentSize;
+    private PointVector position;
 
     public Food() {
-        final var segmentSize = GameSettings.SEGMENT_SIZE;
-        final var safeWidth = GameSettings.BOARD_WIDTH - segmentSize;
-        final var safeHeight = GameSettings.BOARD_HEIGHT - segmentSize;
-        this.position = new PointVector(ThreadLocalRandom.current().nextDouble(segmentSize, safeWidth), ThreadLocalRandom.current().nextDouble(segmentSize, safeHeight));
+        this.segmentSize = GameSettings.segmentSize;
+        this.safeWidth = GameSettings.WIDTH - this.segmentSize;
+        this.safeHeight = GameSettings.HEIGHT - this.segmentSize;
+        this.position = new PointVector(ThreadLocalRandom.current().nextDouble(this.segmentSize, safeWidth),
+                ThreadLocalRandom.current().nextDouble(this.segmentSize, safeHeight));
     }
 
     public PointVector getPosition() {
