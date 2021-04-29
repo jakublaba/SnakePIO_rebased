@@ -38,4 +38,28 @@ public class GamePane extends Pane {
             for(int i = 0; i < 5; i++) { mySnake.addBodySegment(); }
         }
     }
+
+    public void show(GameBoard myBoard) {
+        getChildren().clear();
+        setBackground();
+
+        for(int i = 0; i < myBoard.mySnake.getSize(); i++) {
+            Circle snakeSegmentImg = new Circle(segmentSize / 2);
+            snakeSegmentImg.setCenterX(myBoard.mySnake.get(i).getX() - segmentSize / 2);
+            snakeSegmentImg.setCenterY(myBoard.mySnake.get(i).getY() - segmentSize / 2);
+            if (i % 2 == 0)
+                snakeSegmentImg.setFill(GameSettings.snakeColorOne);
+            else
+                snakeSegmentImg.setFill(GameSettings.snakeColorTwo);
+            snakeSegmentImg.setStroke(GameSettings.snakeEdgeColor);
+            getChildren().add(snakeSegmentImg);
+        }
+
+        Circle foodImg = new Circle(segmentSize / 2);
+        foodImg.setCenterX(myBoard.myFood.getX());
+        foodImg.setCenterY(myBoard.myFood.getY());
+        foodImg.setFill(GameSettings.foodColor);
+        getChildren().add(foodImg);
+    }
+
 }
