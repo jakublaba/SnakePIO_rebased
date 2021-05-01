@@ -4,7 +4,7 @@ public class GameBoard {
     private final double boardHeight, boardWidth, segmentSize;
     public static Snake mySnake;
     public static Food myFood;
-    private final SoundPlayer mySoundPlayer;
+    private final GameSoundPlayer mySoundPlayer;
 
     public GameBoard() {
         this.boardHeight = GameSettings.HEIGHT;
@@ -12,7 +12,7 @@ public class GameBoard {
         this.segmentSize = GameSettings.segmentSize;
         myFood = new Food();
         mySnake = new Snake();
-        mySoundPlayer = new SoundPlayer();
+        mySoundPlayer = new GameSoundPlayer();
     }
 
     public void updateGame(PointVector mousePosition) {
