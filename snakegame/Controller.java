@@ -10,6 +10,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -26,7 +28,7 @@ public class Controller {
         Stage Menu = (Stage) settingsButton.getScene().getWindow();
         Menu.hide();
         Pane gameField;
-        PointVector mousePosition = new PointVector(0, 0);
+        pointVector mousePosition = new pointVector(0, 0);
         Stage primaryStage = new Stage();
         BorderPane root = new BorderPane();
         StackPane layerPane = new StackPane();
@@ -48,11 +50,23 @@ public class Controller {
         GamePane GamePane = new GamePane();
         gameField.getChildren().add(GamePane);
 
+        /*
+        tworzymy soundtrack który będzie grał w trakcie gry
+        ustalony na zapętlenie
+        dalej w pętli game loop (animation timer) jest stopowany
+         */
+        var soundtrack = new Media(getClass().getResource(
+                "/sounds/happy_0.mp3").toExternalForm());
+        var soundtrackPlayer = new MediaPlayer(soundtrack);
+        soundtrackPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+        soundtrackPlayer.setVolume(0.2); //0.0 - muted; 1.0 - full volume
+
         scene.addEventFilter(MouseEvent.ANY, e -> mousePosition.set(e.getX(), e.getY()));
         GameBoard myBoard = new GameBoard();
         AnimationTimer gameLoop = new AnimationTimer() {
             @Override
             public void handle(long now) {
+                soundtrackPlayer.play();
                 myBoard.updateGame(mousePosition); //process controls
                 GamePane.show(myBoard); //render
             }
