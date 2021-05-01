@@ -48,13 +48,6 @@ public final class Snake {
 
     public void addBodySegment() {
         pointVector newBodySegment;
-        /*
-        if(bodySegments.size() == 0) {
-            newBodySegment = new PointVector(bodySegments.get(0).getX(), bodySegments.get(0).getY());
-        } else {
-            newBodySegment = new PointVector(bodySegments.get(bodySegments.size() - 1).getX(), bodySegments.get(bodySegments.size() - 1).getY());
-        }
-        */
         newBodySegment = new pointVector(bodySegments.get(bodySegments.size() - 1).getX(), bodySegments.get(bodySegments.size() - 1).getY());
         bodySegments.add(newBodySegment);
     }

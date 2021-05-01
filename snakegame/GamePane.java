@@ -45,8 +45,8 @@ public class GamePane extends Pane {
 
         for(int i = 0; i < myBoard.mySnake.getSize(); i++) {
             Circle snakeSegmentImg = new Circle(segmentSize / 2);
-            snakeSegmentImg.setCenterX(myBoard.mySnake.get(i).getX() - segmentSize / 2);
-            snakeSegmentImg.setCenterY(myBoard.mySnake.get(i).getY() - segmentSize / 2);
+            snakeSegmentImg.setCenterX(GameBoard.mySnake.get(i).getX() - segmentSize / 2);
+            snakeSegmentImg.setCenterY(GameBoard.mySnake.get(i).getY() - segmentSize / 2);
             if (i % 2 == 0)
                 snakeSegmentImg.setFill(GameSettings.snakeColorOne);
             else

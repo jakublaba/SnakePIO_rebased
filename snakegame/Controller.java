@@ -34,11 +34,11 @@ public class Controller {
         StackPane layerPane = new StackPane();
 
         gameField = new Pane();
-        Button button1 = new Button("Pause");
-        button1.setTranslateX(GameSettings.WIDTH / 2 - 30);
-        button1.setTranslateY(GameSettings.HEIGHT / 2 - 25);
+        Button pauseButton = new Button("Pause");
+        pauseButton.setTranslateX(GameSettings.WIDTH / 2 - 30);
+        pauseButton.setTranslateY(GameSettings.HEIGHT / 2 - 25);
         layerPane.getChildren().addAll(gameField);
-        layerPane.getChildren().add(button1);
+        layerPane.getChildren().add(pauseButton);
         root.setCenter(layerPane);
 
         Scene scene = new Scene(root, GameSettings.WIDTH, GameSettings.HEIGHT);
@@ -54,9 +54,8 @@ public class Controller {
         tworzymy soundtrack który będzie grał w trakcie gry
         ustalony na zapętlenie
         dalej w pętli game loop (animation timer) jest stopowany
-         */
-        var soundtrack = new Media(getClass().getResource(
-                "/sounds/happy_0.mp3").toExternalForm());
+        */
+        var soundtrack = new Media(getClass().getResource("resources/sounds/happy_0.mp3").toExternalForm());
         var soundtrackPlayer = new MediaPlayer(soundtrack);
         soundtrackPlayer.setCycleCount(MediaPlayer.INDEFINITE);
         soundtrackPlayer.setVolume(0.2); //0.0 - muted; 1.0 - full volume
@@ -73,7 +72,7 @@ public class Controller {
         };
         pause = false;
         gameLoop.start();
-        button1.setOnAction(event -> {
+        pauseButton.setOnAction(event -> {
             if (!pause) {
                 gameLoop.stop();
                 pause = true;
@@ -85,12 +84,12 @@ public class Controller {
     }
 
     @FXML
-    public void exitButtonAction() {
+    private void exitButtonAction() {
         System.exit(0);
     }
 
     @FXML
-    public void settingsButtonAction() {
+    private void settingsButtonAction() {
         Parent root;
         try {
             root = FXMLLoader.load(getClass().getResource("settings.fxml"));
@@ -107,7 +106,7 @@ public class Controller {
     }
 
     @FXML
-    public void backButtonAction() {
+    private void backButtonAction() {
         Stage stage = (Stage) closeButton.getScene().getWindow();
         Parent root;
         try {
