@@ -13,7 +13,7 @@ public class Main extends Application {
         try {
             Parent root = FXMLLoader.load(getClass().getResource("menu.fxml"));
             primaryStage.setTitle("SnakeFX");
-            primaryStage.setScene(new Scene(root, 576.0, 415.0));
+            primaryStage.setScene(new Scene(root, GameSettings.WIDTH, GameSettings.HEIGHT));
             primaryStage.setResizable(false);
             primaryStage.show();
         } catch (IOException e) {

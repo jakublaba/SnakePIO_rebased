@@ -5,14 +5,23 @@
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="415.0"
-      prefWidth="576.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="snakegame.Controller">
-   <AnchorPane prefHeight="415.0" prefWidth="576.0" styleClass="bodybg" stylesheets="@menu.css">
-      <Label alignment="CENTER" layoutX="13.0" layoutY="14.0" prefHeight="141.0" prefWidth="550.0"
-             styleClass="mainlabel" stylesheets="@menu.css" text="Snake" textAlignment="CENTER">
+<Pane maxHeight="800.0" maxWidth="800.0" minHeight="800.0" minWidth="800.0" prefHeight="800.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="snakegame.Controller">
+   <children>
+      <Button layoutX="300.0" layoutY="306.0" mnemonicParsing="false" onAction="#startButtonAction" prefHeight="100.0" prefWidth="200.0" text="Start">
          <font>
-            <Font name="Courier New" size="120.0"/>
+            <Font size="24.0" />
+         </font></Button>
+      <Button fx:id="settingsButton" layoutX="300.0" layoutY="449.0" mnemonicParsing="false" onAction="#settingsButtonAction" prefHeight="100.0" prefWidth="200.0" text="Settings">
+         <font>
+            <Font size="24.0" />
+         </font></Button>
+      <Button layoutX="300.0" layoutY="590.0" mnemonicParsing="false" onAction="#exitButtonAction" prefHeight="100.0" prefWidth="200.0" text="Exit">
+         <font>
+            <Font size="24.0" />
+         </font></Button>
+      <Label alignment="CENTER" layoutX="256.0" layoutY="100.0" prefHeight="129.0" prefWidth="288.0" text="Snake" textAlignment="CENTER" textFill="#2ba445">
+         <font>
+            <Font size="96.0" />
          </font>
          <textFill>
             <LinearGradient>

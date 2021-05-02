@@ -47,7 +47,7 @@ public class GameBoard {
         final int limitDoUgryzienia = 30; // nie da się zbytnio zderzyć poniżej
         var mySnake = getMySnake();
 
-        if ((mySnake.getSize() * GameSettings.SIZE_MULTIPLIER) > limitDoUgryzienia) {
+        if ((mySnake.getActualSize()) > limitDoUgryzienia) {
             var myBodySegments = mySnake.getBodySegments();
             ListIterator<PointVector> mySnakeIterator = myBodySegments.listIterator(limitDoUgryzienia);
 

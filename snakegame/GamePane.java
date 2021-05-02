@@ -6,8 +6,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 
-import java.util.ListIterator;
-
 public class GamePane extends Pane {
     private final double segmentSize;
 
@@ -45,12 +43,11 @@ public class GamePane extends Pane {
         int colorChooser = 0; /* only used for determining snakeBodySegment colour */
 
         var mySnakeBodySegments = myBoard.getMySnake().getBodySegments(); //copy the segments
-        ListIterator<PointVector> mySnakeIterator = mySnakeBodySegments.listIterator(); //creates the iterator
-        while (mySnakeIterator.hasNext()) {
+
+        for (PointVector mySnakeBodySegment : mySnakeBodySegments) {
             Circle snakeSegmentImg = new Circle(segmentSize / 2);
-            var snakeSegmentPosition = mySnakeIterator.next(); //temporary PointVector object
-            snakeSegmentImg.setCenterX(snakeSegmentPosition.getX() - segmentSize / 2);
-            snakeSegmentImg.setCenterY(snakeSegmentPosition.getY() - segmentSize / 2);
+            snakeSegmentImg.setCenterX(mySnakeBodySegment.getX() - segmentSize / 2);
+            snakeSegmentImg.setCenterY(mySnakeBodySegment.getY() - segmentSize / 2);
 
             /* colouring */
             if (colorChooser % 2 == 0)
@@ -64,8 +61,8 @@ public class GamePane extends Pane {
         }
 
         Circle foodImg = new Circle(segmentSize / 2);
-        foodImg.setCenterX(myBoard.myFood.getX());
-        foodImg.setCenterY(myBoard.myFood.getY());
+        foodImg.setCenterX(GameBoard.myFood.getX());
+        foodImg.setCenterY(GameBoard.myFood.getY());
         foodImg.setFill(GameSettings.FOOD_COLOR);
         getChildren().add(foodImg);
     }
