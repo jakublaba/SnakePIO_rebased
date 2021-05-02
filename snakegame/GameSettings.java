@@ -1,16 +1,29 @@
 package snakegame;
+
 import javafx.scene.paint.Color;
 
 public interface GameSettings {
+    /*
+     *  GAME BOARD SIZE
+     */
     double HEIGHT = 800;
     double WIDTH = 800;
-    int sizeMultiplier = 5;
-    Color snakeColorOne = Color.LIGHTSKYBLUE; //był darksalmon
-    Color snakeColorTwo = Color.CORNFLOWERBLUE;
-    Color snakeEdgeColor = Color.LIGHTSTEELBLUE; // był Color.web("#654321")
-    Color foodColor = Color.RED;
-    Color bgColorOne = Color.GREEN;
-    Color bgColorTwo = Color.DARKGREEN;
-    double segmentSize = 30;
-    double maxSpeed = 4;
+
+    /*
+     *  SNAKE PROPERTIES
+     */
+    int SIZE_MULTIPLIER = 5;
+    double SEGMENT_SIZE = 30;
+    double MAX_SPEED = 4;
+
+    /*
+     * GRAPHICS
+     */
+    Color SNAKE_COLOR_ONE = Color.LIGHTSKYBLUE; //był darksalmon
+    Color SNAKE_COLOR_TWO = Color.CORNFLOWERBLUE;
+    Color SNAKE_EDGE_COLOR = Color.LIGHTSTEELBLUE; // był Color.web("#654321")
+    Color FOOD_COLOR = Color.RED;
+    Color BG_COLOR_ONE = Color.GREEN;
+    Color BG_COLOR_TWO = Color.DARKGREEN;
+
 }

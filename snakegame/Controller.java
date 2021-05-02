@@ -28,17 +28,17 @@ public class Controller {
         Stage Menu = (Stage) settingsButton.getScene().getWindow();
         Menu.hide();
         Pane gameField;
-        pointVector mousePosition = new pointVector(0, 0);
+        PointVector mousePosition = new PointVector(0, 0);
         Stage primaryStage = new Stage();
         BorderPane root = new BorderPane();
         StackPane layerPane = new StackPane();
 
         gameField = new Pane();
-        Button pauseButton = new Button("Pause");
-        pauseButton.setTranslateX(GameSettings.WIDTH / 2 - 30);
-        pauseButton.setTranslateY(GameSettings.HEIGHT / 2 - 25);
+        Button button1 = new Button("Pause");
+        button1.setTranslateX(GameSettings.WIDTH / 2 - 30);
+        button1.setTranslateY(GameSettings.HEIGHT / 2 - 25);
         layerPane.getChildren().addAll(gameField);
-        layerPane.getChildren().add(pauseButton);
+        layerPane.getChildren().add(button1);
         root.setCenter(layerPane);
 
         Scene scene = new Scene(root, GameSettings.WIDTH, GameSettings.HEIGHT);
@@ -51,28 +51,32 @@ public class Controller {
         gameField.getChildren().add(GamePane);
 
         /*
-        tworzymy soundtrack który będzie grał w trakcie gry
-        ustalony na zapętlenie
-        dalej w pętli game loop (animation timer) jest stopowany
-        */
-        var soundtrack = new Media(getClass().getResource("resources/sounds/happy_0.mp3").toExternalForm());
+         * tworzymy soundtrack który będzie grał w trakcie gry
+         * ustalony na zapętlenie
+         * dalej w pętli game loop (animation timer) jest stopowany
+         */
+        var soundtrack = new Media(getClass().getResource(
+                "/sounds/happy_0.mp3").toExternalForm());
         var soundtrackPlayer = new MediaPlayer(soundtrack);
         soundtrackPlayer.setCycleCount(MediaPlayer.INDEFINITE);
         soundtrackPlayer.setVolume(0.2); //0.0 - muted; 1.0 - full volume
 
         scene.addEventFilter(MouseEvent.ANY, e -> mousePosition.set(e.getX(), e.getY()));
+
         GameBoard myBoard = new GameBoard();
+
         AnimationTimer gameLoop = new AnimationTimer() {
             @Override
-            public void handle(long now) {
+            public void handle(long currentTime) {
                 soundtrackPlayer.play();
                 myBoard.updateGame(mousePosition); //process controls
-                GamePane.show(myBoard); //render
+                GamePane.render(myBoard); //render
             }
         };
         pause = false;
         gameLoop.start();
-        pauseButton.setOnAction(event -> {
+
+        button1.setOnAction(event -> {
             if (!pause) {
                 gameLoop.stop();
                 pause = true;
@@ -81,15 +85,16 @@ public class Controller {
                 pause = false;
             }
         });
+
     }
 
     @FXML
-    private void exitButtonAction() {
+    public void exitButtonAction() {
         System.exit(0);
     }
 
     @FXML
-    private void settingsButtonAction() {
+    public void settingsButtonAction() {
         Parent root;
         try {
             root = FXMLLoader.load(getClass().getResource("settings.fxml"));
@@ -106,7 +111,7 @@ public class Controller {
     }
 
     @FXML
-    private void backButtonAction() {
+    public void backButtonAction() {
         Stage stage = (Stage) closeButton.getScene().getWindow();
         Parent root;
         try {

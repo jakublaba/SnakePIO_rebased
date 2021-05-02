@@ -10,32 +10,29 @@ public class GamePane extends Pane {
     private final double segmentSize;
 
     public GamePane() {
-        Image apple = new Image(getClass().getResourceAsStream(GameSettings.APPLE_IMG));
-        Image ruby = new Image(getClass().getResourceAsStream(GameSettings.RUBY_IMG));
-        Image smallSaw = new Image(getClass().getResourceAsStream(GameSettings.SMALL_SAW_IMG));
-        Image bigSaw = new Image(getClass().getResourceAsStream(GameSettings.BIG_SAW_IMG));
-        appleImg = new ImageView();
-        rubyImg = new ImageView();
-        verticalSawImg = new ImageView();
-        horizontalSawImg = new ImageView();
-        diagonalUpSawImg = new ImageView();
-        diagonalDownSawImg = new ImageView();
-        appleImg.setImage(apple);
-        rubyImg.setImage(ruby);
-        verticalSawImg.setImage(smallSaw);
-        horizontalSawImg.setImage(bigSaw);
-        diagonalUpSawImg.setImage(smallSaw);
-        diagonalDownSawImg.setImage(bigSaw);
+        this.segmentSize = GameSettings.SEGMENT_SIZE;
     }
 
+    public void setBackground() {
+        int sideLength = 40;
+        double rest = GameSettings.HEIGHT % sideLength;
+        double numberOfSquare = (GameSettings.HEIGHT - GameSettings.HEIGHT % sideLength) / sideLength;
 
-    public void checkFood() {
-        Vector distance = new Vector(mySnake.get(0).getX(), mySnake.get(0).getY());
-        distance.subtract(myFood.getPosition());
-        if(distance.length() < (segmentSize / 1.2)) {
-            myFood.respawn();
-            //na potrzeby testowania wąż rośnie szybciej, żeby przy każdym uruchomieniu nie musieć zbierać żarcia w nieskończoność xd
-            for(int i = 0; i < 5; i++) { mySnake.addBodySegment(); }
+        for(int i = 0; i < numberOfSquare; ++i) {
+            for(int j = 0; j < numberOfSquare; ++j) {
+                Rectangle squareBackground = new Rectangle();
+                squareBackground.setX(i*sideLength + rest/2);
+                squareBackground.setY(j*sideLength + rest/2);
+                squareBackground.setWidth(sideLength);
+                squareBackground.setHeight(sideLength);
+                if ((i + j) % 2 == 0) {
+                    squareBackground.setFill(GameSettings.BG_COLOR_ONE);
+                } else {
+                    squareBackground.setFill(GameSettings.BG_COLOR_TWO);
+                }
+
+                getChildren().add(squareBackground);
+            }
         }
     }
 
@@ -48,17 +45,17 @@ public class GamePane extends Pane {
             snakeSegmentImg.setCenterX(GameBoard.mySnake.get(i).getX() - segmentSize / 2);
             snakeSegmentImg.setCenterY(GameBoard.mySnake.get(i).getY() - segmentSize / 2);
             if (i % 2 == 0)
-                snakeSegmentImg.setFill(GameSettings.snakeColorOne);
+                snakeSegmentImg.setFill(GameSettings.SNAKE_COLOR_ONE);
             else
-                snakeSegmentImg.setFill(GameSettings.snakeColorTwo);
-            snakeSegmentImg.setStroke(GameSettings.snakeEdgeColor);
+                snakeSegmentImg.setFill(GameSettings.SNAKE_COLOR_TWO);
+            snakeSegmentImg.setStroke(GameSettings.SNAKE_EDGE_COLOR);
             getChildren().add(snakeSegmentImg);
         }
 
         Circle foodImg = new Circle(segmentSize / 2);
         foodImg.setCenterX(myBoard.myFood.getX());
         foodImg.setCenterY(myBoard.myFood.getY());
-        foodImg.setFill(GameSettings.foodColor);
+        foodImg.setFill(GameSettings.FOOD_COLOR);
         getChildren().add(foodImg);
     }
 

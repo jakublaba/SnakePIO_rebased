@@ -2,17 +2,21 @@ package snakegame;
 
 public class GameBoard {
     private final double boardHeight, boardWidth, segmentSize;
-    public static Snake mySnake;
+    private final Snake mySnake;
     public static Food myFood;
     private final GameSoundPlayer mySoundPlayer;
 
     public GameBoard() {
         this.boardHeight = GameSettings.HEIGHT;
         this.boardWidth = GameSettings.WIDTH;
-        this.segmentSize = GameSettings.segmentSize;
+        this.segmentSize = GameSettings.SEGMENT_SIZE;
         myFood = new Food();
         mySnake = new Snake();
         mySoundPlayer = new GameSoundPlayer();
+    }
+
+    public Snake getMySnake() {
+        return mySnake;
     }
 
     public void updateGame(PointVector mousePosition) {
@@ -30,10 +34,10 @@ public class GameBoard {
     private boolean checkFood() {
         PointVector distance = new PointVector(mySnake.get(0).getX(), mySnake.get(0).getY());
         distance.subtract(myFood.getPosition());
-        if (distance.length() < (segmentSize / 1.2)) {
+        if (distance.length() < segmentSize) {
             myFood.respawn();
             //na potrzeby testowania wąż rośnie szybciej
-            for (int i = 0; i < 9; i++) {
+            for (int i = 0; i < GameSettings.SIZE_MULTIPLIER; i++) {
                 mySnake.addBodySegment();
             }
             return true;

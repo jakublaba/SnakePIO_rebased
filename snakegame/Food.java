@@ -4,10 +4,10 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class Food {
     private final double safeHeight, safeWidth, segmentSize;
-    private PointVector position;
+    private final PointVector position;
 
     public Food() {
-        this.segmentSize = GameSettings.segmentSize;
+        this.segmentSize = GameSettings.SEGMENT_SIZE;
         this.safeWidth = GameSettings.WIDTH - this.segmentSize;
         this.safeHeight = GameSettings.HEIGHT - this.segmentSize;
         this.position = new PointVector(ThreadLocalRandom.current().nextDouble(this.segmentSize, safeWidth),

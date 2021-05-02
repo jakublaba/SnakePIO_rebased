@@ -41,8 +41,8 @@ public class PointVector {
         y -= v.y;
     }
 
-    public void limit(double max) {
-        if(length() > max) {
+    public void setConstantSpeed(double max) {
+        if(length() != max) {
             normalize();
             multiply(max);
         }

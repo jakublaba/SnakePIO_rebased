@@ -11,8 +11,8 @@ public final class Snake {
     private final List<pointVector> bodySegments;
 
     public Snake() {
-        this.sizeMultiplier = GameSettings.sizeMultiplier;
-        this.segmentSize = GameSettings.segmentSize;
+        this.sizeMultiplier = GameSettings.SIZE_MULTIPLIER;
+        this.segmentSize = GameSettings.SEGMENT_SIZE;
         this.safeWidth = GameSettings.WIDTH - this.segmentSize;
         this.safeHeight = GameSettings.HEIGHT - this.segmentSize;
         bodySegments = new ArrayList<>();
@@ -26,7 +26,7 @@ public final class Snake {
         dir.normalize();
         dir.multiply(0.5);
         velocity.add(dir);
-        velocity.limit(GameSettings.maxSpeed);
+        velocity.setConstantSpeed(GameSettings.MAX_SPEED);
         bodySegments.get(0).add(velocity);
     }
 
