@@ -10,13 +10,17 @@ public class PointVector {
         this.y = y;
     }
 
-    public double getX() { return x; }
+    public double getX() {
+        return x;
+    }
 
-    public double getY() { return y; }
+    public double getY() {
+        return y;
+    }
 
     public void normalize() {
         double l = length();
-        if(l != 0 && l != 1) {
+        if (l != 0 && l != 1) {
             divide(l);
         }
     }
@@ -42,14 +46,14 @@ public class PointVector {
     }
 
     public void setConstantSpeed(double max) {
-        if(length() != max) {
+        if (length() != max) {
             normalize();
             multiply(max);
         }
     }
 
     public double length() {
-        return Math.sqrt(x*x + y*y);
+        return Math.sqrt(x * x + y * y);
     }
 
     public static PointVector subtract(PointVector v1, PointVector v2) {
@@ -57,10 +61,9 @@ public class PointVector {
     }
 
     public static PointVector subtract(PointVector v1, PointVector v2, PointVector target) {
-        if(target == null) {
+        if (target == null) {
             target = new PointVector(v1.x - v2.x, v1.y - v2.y);
-        }
-        else {
+        } else {
             target.set(v1.x - v2.x, v1.y - v2.y);
         }
         return target;
@@ -71,7 +74,11 @@ public class PointVector {
         this.y = y;
     }
 
-    public void setX(double x) { this.x = x; }
+    public void setX(double x) {
+        this.x = x;
+    }
 
-    public void setY(double y) { this.y = y; }
+    public void setY(double y) {
+        this.y = y;
+    }
 }

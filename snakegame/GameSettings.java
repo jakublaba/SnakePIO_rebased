@@ -12,7 +12,7 @@ public interface GameSettings {
     /*
      *  SNAKE PROPERTIES
      */
-    int SIZE_MULTIPLIER = 5;
+    int SIZE_MULTIPLIER = 10;
     double SEGMENT_SIZE = 30;
     double MAX_SPEED = 4;
 

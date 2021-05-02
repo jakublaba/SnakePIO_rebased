@@ -1,5 +1,7 @@
 package snakegame;
 
+import java.util.ListIterator;
+
 public class GameBoard {
     private final double boardHeight, boardWidth, segmentSize;
     private final Snake mySnake;
@@ -20,8 +22,7 @@ public class GameBoard {
     }
 
     public void updateGame(PointVector mousePosition) {
-        mySnake.updateHeadLocation(mousePosition);
-        mySnake.move();
+        mySnake.move(mousePosition);
         checkBorders();
         if (checkTailCollision()) {
             mySoundPlayer.playSnakeCrashedSound();
@@ -32,26 +33,30 @@ public class GameBoard {
     }
 
     private boolean checkFood() {
-        PointVector distance = new PointVector(mySnake.get(0).getX(), mySnake.get(0).getY());
+        PointVector distance = new PointVector(mySnake.getHead().getX(), mySnake.getHead().getY());
         distance.subtract(myFood.getPosition());
         if (distance.length() < segmentSize) {
             myFood.respawn();
-            //na potrzeby testowania wąż rośnie szybciej
-            for (int i = 0; i < GameSettings.SIZE_MULTIPLIER; i++) {
-                mySnake.addBodySegment();
-            }
+            mySnake.addBodySegment();
             return true;
         }
         return false;
     }
 
     private boolean checkTailCollision() {
-        if (mySnake.getSize() > 10) {
-            for (int i = 10; i < mySnake.getSize(); i++) {
-                PointVector distance = new PointVector(mySnake.get(0).getX(), mySnake.get(0).getY());
-                distance.subtract(mySnake.get(i));
+        final int limitDoUgryzienia = 30; // nie da się zbytnio zderzyć poniżej
+        var mySnake = getMySnake();
+
+        if ((mySnake.getSize() * GameSettings.SIZE_MULTIPLIER) > limitDoUgryzienia) {
+            var myBodySegments = mySnake.getBodySegments();
+            ListIterator<PointVector> mySnakeIterator = myBodySegments.listIterator(limitDoUgryzienia);
+
+            var headPosition = mySnake.getHead();
+
+            while (mySnakeIterator.hasNext()) {
+                var distance = new PointVector(headPosition.getX(), headPosition.getY());
+                distance.subtract(mySnakeIterator.next());
                 if (distance.length() < (segmentSize / 2)) {
-                    System.out.printf("Game Over: Collision with tail segment number %d\n", i);
                     System.exit(1); //to będzie trzeba usunąć oczywiście
                     return true;
                 }
@@ -61,16 +66,24 @@ public class GameBoard {
     }
 
     private void checkBorders() {
-        if (mySnake.get(0).getX() > boardWidth) {
-            mySnake.get(0).setX(0);
-        } else if (mySnake.get(0).getX() < 0) {
-            mySnake.get(0).setX(boardWidth);
+        ListIterator<PointVector> mySnakeIterator = mySnake.getBodySegments().listIterator();
+        final var head = mySnakeIterator.next();
+        var newHead = new PointVector(head.getX(), head.getY());
+
+        if (head.getX() > boardWidth) {
+            newHead.setX(0);
+            mySnakeIterator.set(newHead);
+        } else if (head.getX() < 0) {
+            newHead.setX(boardWidth);
+            mySnakeIterator.set(newHead);
         }
 
-        if (mySnake.get(0).getY() > boardHeight) {
-            mySnake.get(0).setY(0);
-        } else if (mySnake.get(0).getY() < 0) {
-            mySnake.get(0).setY(boardHeight);
+        if (head.getY() > boardHeight) {
+            newHead.setY(0);
+            mySnakeIterator.set(newHead);
+        } else if (head.getY() < 0) {
+            newHead.setY(boardHeight);
+            mySnakeIterator.set(newHead);
         }
     }
 
