@@ -6,6 +6,8 @@ import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 
+import java.util.ListIterator;
+
 public class GamePane extends Pane {
     private final double segmentSize;
 
@@ -18,11 +20,11 @@ public class GamePane extends Pane {
         double rest = GameSettings.HEIGHT % sideLength;
         double numberOfSquare = (GameSettings.HEIGHT - GameSettings.HEIGHT % sideLength) / sideLength;
 
-        for(int i = 0; i < numberOfSquare; ++i) {
-            for(int j = 0; j < numberOfSquare; ++j) {
+        for (int i = 0; i < numberOfSquare; ++i) {
+            for (int j = 0; j < numberOfSquare; ++j) {
                 Rectangle squareBackground = new Rectangle();
-                squareBackground.setX(i*sideLength + rest/2);
-                squareBackground.setY(j*sideLength + rest/2);
+                squareBackground.setX(i * sideLength + rest / 2);
+                squareBackground.setY(j * sideLength + rest / 2);
                 squareBackground.setWidth(sideLength);
                 squareBackground.setHeight(sideLength);
                 if ((i + j) % 2 == 0) {
@@ -36,19 +38,28 @@ public class GamePane extends Pane {
         }
     }
 
-    public void show(GameBoard myBoard) {
+    public void render(GameBoard myBoard) {
         getChildren().clear();
         setBackground();
 
-        for(int i = 0; i < myBoard.mySnake.getSize(); i++) {
+        int colorChooser = 0; /* only used for determining snakeBodySegment colour */
+
+        var mySnakeBodySegments = myBoard.getMySnake().getBodySegments(); //copy the segments
+        ListIterator<PointVector> mySnakeIterator = mySnakeBodySegments.listIterator(); //creates the iterator
+        while (mySnakeIterator.hasNext()) {
             Circle snakeSegmentImg = new Circle(segmentSize / 2);
-            snakeSegmentImg.setCenterX(GameBoard.mySnake.get(i).getX() - segmentSize / 2);
-            snakeSegmentImg.setCenterY(GameBoard.mySnake.get(i).getY() - segmentSize / 2);
-            if (i % 2 == 0)
+            var snakeSegmentPosition = mySnakeIterator.next(); //temporary PointVector object
+            snakeSegmentImg.setCenterX(snakeSegmentPosition.getX() - segmentSize / 2);
+            snakeSegmentImg.setCenterY(snakeSegmentPosition.getY() - segmentSize / 2);
+
+            /* colouring */
+            if (colorChooser % 2 == 0)
                 snakeSegmentImg.setFill(GameSettings.SNAKE_COLOR_ONE);
             else
                 snakeSegmentImg.setFill(GameSettings.SNAKE_COLOR_TWO);
+            colorChooser++;
             snakeSegmentImg.setStroke(GameSettings.SNAKE_EDGE_COLOR);
+
             getChildren().add(snakeSegmentImg);
         }
 
