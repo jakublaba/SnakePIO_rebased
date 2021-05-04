@@ -108,10 +108,12 @@ public class GamePane extends Pane {
         }
         verticalSawImg.setX(myBoard.getMyVerticalSaw().getX() - segmentSize / 2);
         verticalSawImg.setY(myBoard.getMyVerticalSaw().getY() - segmentSize / 2);
+        verticalSawImg.setRotate(verticalSawImg.getRotate() + 10);
         getChildren().add(verticalSawImg);
 
         horizontalSawImg.setX(myBoard.getMyHorizontalSaw().getX() - segmentSize / 2);
         horizontalSawImg.setY(myBoard.getMyHorizontalSaw().getY() - segmentSize / 2);
+        horizontalSawImg.setRotate(horizontalSawImg.getRotate() + 5);
         getChildren().add(horizontalSawImg);
     }
 }

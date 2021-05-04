@@ -8,7 +8,7 @@ public final class GameBoard {
     private final Food myFood;
     private final SpecialFood mySpecialFood;
     private final GameSoundPlayer mySoundPlayer;
-    private Saw verticalSaw, horizontalSaw;
+    private final Saw verticalSaw, horizontalSaw;
 
     public GameBoard() {
         boardHeight = GameSettings.HEIGHT;
@@ -44,7 +44,6 @@ public final class GameBoard {
         mySpecialFood.move();
         verticalSaw.move(0);
         horizontalSaw.move(1);
-        //System.out.println(mySpecialFood.getPosition().getX() + " " + mySpecialFood.getPosition().getY() + " dupa ");
         checkBorders();
         if (checkTailCollision() || checkSawCollision()) {
             mySoundPlayer.playSnakeCrashedSound();
