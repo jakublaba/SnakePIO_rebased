@@ -2,17 +2,20 @@ package snakegame;
 
 import java.util.ListIterator;
 
-public class GameBoard {
+public final class GameBoard {
     private final double boardHeight, boardWidth, segmentSize;
     private final Snake mySnake;
-    public static Food myFood;
+    private final Food myFood;
+    private final SpecialFood mySpecialFood;
     private final GameSoundPlayer mySoundPlayer;
 
     public GameBoard() {
         this.boardHeight = GameSettings.HEIGHT;
         this.boardWidth = GameSettings.WIDTH;
         this.segmentSize = GameSettings.SEGMENT_SIZE;
+
         myFood = new Food();
+        mySpecialFood = new SpecialFood();
         mySnake = new Snake();
         mySoundPlayer = new GameSoundPlayer();
     }
@@ -21,8 +24,18 @@ public class GameBoard {
         return mySnake;
     }
 
+    public Food getMyFood() {
+        return myFood;
+    }
+
+    public SpecialFood getMySpecialFood() {
+        return mySpecialFood;
+    }
+
     public void updateGame(PointVector mousePosition) {
         mySnake.move(mousePosition);
+        mySpecialFood.move();
+        //System.out.println(mySpecialFood.getPosition().getX() + " " + mySpecialFood.getPosition().getY() + " dupa ");
         checkBorders();
         if (checkTailCollision()) {
             mySoundPlayer.playSnakeCrashedSound();
@@ -30,17 +43,38 @@ public class GameBoard {
         if (checkFood()) {
             mySoundPlayer.playFoodEatenSound();
         }
+        if (checkSpecialFood()) {
+            mySoundPlayer.playFoodEatenSound();
+        }
     }
 
     private boolean checkFood() {
-        PointVector distance = new PointVector(mySnake.getHead().getX(), mySnake.getHead().getY());
-        distance.subtract(myFood.getPosition());
+        var distance = new PointVector(mySnake.getHead().getX(), mySnake.getHead().getY());
+        distance.subtract(getMyFood().getPosition());
         if (distance.length() < segmentSize) {
-            myFood.respawn();
+            getMyFood().respawn();
             mySnake.addBodySegment();
             return true;
         }
         return false;
+    }
+
+    private boolean checkSpecialFood() {
+        if (mySpecialFood.isAlive()) {
+            var distance = new PointVector(mySnake.getHead().getX(), mySnake.getHead().getY());
+            distance.subtract(getMySpecialFood().getPosition());
+            if (distance.length() < segmentSize) {
+                mySnake.addBodySegment();
+                mySnake.addBodySegment(); //not very elegant
+                mySpecialFood.setLongevity(0);
+                return true;
+            } else
+                return false;
+        } else {
+            getMySpecialFood().respawn();
+            return false;
+        }
+
     }
 
     private boolean checkTailCollision() {
@@ -86,6 +120,4 @@ public class GameBoard {
             mySnakeIterator.set(newHead);
         }
     }
-
-
 }

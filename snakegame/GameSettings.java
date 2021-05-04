@@ -19,11 +19,13 @@ public interface GameSettings {
     /*
      * GRAPHICS
      */
-    Color SNAKE_COLOR_ONE = Color.LIGHTSKYBLUE; //był darksalmon
+    Color SNAKE_COLOR_ONE = Color.LIGHTSKYBLUE;
     Color SNAKE_COLOR_TWO = Color.CORNFLOWERBLUE;
-    Color SNAKE_EDGE_COLOR = Color.LIGHTSTEELBLUE; // był Color.web("#654321")
+    Color SNAKE_EDGE_COLOR = Color.LIGHTSTEELBLUE;
     Color FOOD_COLOR = Color.RED;
     Color BG_COLOR_ONE = Color.GREEN;
     Color BG_COLOR_TWO = Color.DARKGREEN;
+
+
 
 }

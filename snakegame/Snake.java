@@ -16,6 +16,7 @@ public final class Snake {
         this.segmentSize = GameSettings.SEGMENT_SIZE;
         this.safeWidth = GameSettings.WIDTH - this.segmentSize;
         this.safeHeight = GameSettings.HEIGHT - this.segmentSize;
+
         bodySegments = new ArrayList<>();
         bodySegments.add(new PointVector(ThreadLocalRandom.current().nextDouble(this.segmentSize, this.safeWidth),
                 ThreadLocalRandom.current().nextDouble(this.segmentSize, this.safeHeight)));
@@ -32,7 +33,7 @@ public final class Snake {
         var oldLocation = mySnakeIterator.next();   //save head location to temp
         var temporarySegment = oldLocation;
 
-        PointVector dir = PointVector.subtract(mouse, temporarySegment);
+        var dir = PointVector.subtract(mouse, temporarySegment);
         dir.normalize();
         dir.multiply(0.5);
         velocity.add(dir);

@@ -3,16 +3,24 @@ package snakegame;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 
 public class GamePane extends Pane {
     private final double segmentSize;
+    private static Color BG_COLOR_O = GameSettings.BG_COLOR_ONE;
+    private static Color BG_COLOR_T = GameSettings.BG_COLOR_TWO;
 
     public GamePane() {
         this.segmentSize = GameSettings.SEGMENT_SIZE;
     }
 
+
+    public static void setBG_COLORS (Color choiceOne, Color choiceTwo){
+        BG_COLOR_O = choiceOne;
+        BG_COLOR_T = choiceTwo;
+    }
     public void setBackground() {
         int sideLength = 40;
         double rest = GameSettings.HEIGHT % sideLength;
@@ -26,17 +34,16 @@ public class GamePane extends Pane {
                 squareBackground.setWidth(sideLength);
                 squareBackground.setHeight(sideLength);
                 if ((i + j) % 2 == 0) {
-                    squareBackground.setFill(GameSettings.BG_COLOR_ONE);
+                    squareBackground.setFill(this.BG_COLOR_O);
                 } else {
-                    squareBackground.setFill(GameSettings.BG_COLOR_TWO);
+                    squareBackground.setFill(this.BG_COLOR_T);
                 }
 
                 getChildren().add(squareBackground);
             }
         }
     }
-
-    public void render(GameBoard myBoard) {
+    public void show(GameBoard myBoard) {
         getChildren().clear();
         setBackground();
 
@@ -61,10 +68,22 @@ public class GamePane extends Pane {
         }
 
         Circle foodImg = new Circle(segmentSize / 2);
-        foodImg.setCenterX(GameBoard.myFood.getX());
-        foodImg.setCenterY(GameBoard.myFood.getY());
+        foodImg.setCenterX(myBoard.getMyFood().getX());
+        foodImg.setCenterY(myBoard.getMyFood().getY());
         foodImg.setFill(GameSettings.FOOD_COLOR);
         getChildren().add(foodImg);
+
+        if (myBoard.getMySpecialFood().isAlive()) {
+            Circle specialFoodImg = new Circle(segmentSize / 2);
+            specialFoodImg.setCenterX(myBoard.getMySpecialFood().getX());
+            specialFoodImg.setCenterY(myBoard.getMySpecialFood().getY());
+            if (myBoard.getMySpecialFood().getLongevity() > 100)
+                specialFoodImg.setFill(Color.DARKORANGE);
+            else
+                specialFoodImg.setFill(Color.YELLOW);
+            getChildren().add(specialFoodImg);
+        }
+
     }
 
 }
