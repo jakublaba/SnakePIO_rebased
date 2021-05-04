@@ -10,6 +10,12 @@ public class PointVector {
         this.y = y;
     }
 
+    public PointVector(PointVector p) {
+        super();
+        this.x = p.getX();
+        this.y = p.getY();
+    }
+
     public double getX() {
         return x;
     }

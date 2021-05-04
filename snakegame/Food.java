@@ -1,5 +1,7 @@
 package snakegame;
 
+import javafx.scene.image.ImageView;
+
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Food {
@@ -9,9 +11,7 @@ public class Food {
         final var segmentSize = GameSettings.SEGMENT_SIZE;
         final var safeWidth = GameSettings.WIDTH - segmentSize;
         final var safeHeight = GameSettings.HEIGHT - segmentSize;
-
-        this.position = new PointVector(ThreadLocalRandom.current().nextDouble(segmentSize, safeWidth),
-                ThreadLocalRandom.current().nextDouble(segmentSize, safeHeight));
+        this.position = new PointVector(ThreadLocalRandom.current().nextDouble(segmentSize, safeWidth), ThreadLocalRandom.current().nextDouble(segmentSize, safeHeight));
     }
 
     public PointVector getPosition() {

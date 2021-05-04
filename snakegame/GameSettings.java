@@ -26,6 +26,10 @@ public interface GameSettings {
     Color BG_COLOR_ONE = Color.GREEN;
     Color BG_COLOR_TWO = Color.DARKGREEN;
 
-
-
+    /*
+    * IMGS
+    * */
+    String APPLE_IMG = "resources/img/apple.png";
+    String RUBY_IMG = "resources/img/ruby.png";
+    String SAW_IMG = "resources/img/SawSmall.png";
 }

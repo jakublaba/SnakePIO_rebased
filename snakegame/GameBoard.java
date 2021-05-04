@@ -8,16 +8,19 @@ public final class GameBoard {
     private final Food myFood;
     private final SpecialFood mySpecialFood;
     private final GameSoundPlayer mySoundPlayer;
+    private Saw verticalSaw, horizontalSaw;
 
     public GameBoard() {
-        this.boardHeight = GameSettings.HEIGHT;
-        this.boardWidth = GameSettings.WIDTH;
-        this.segmentSize = GameSettings.SEGMENT_SIZE;
+        boardHeight = GameSettings.HEIGHT;
+        boardWidth = GameSettings.WIDTH;
+        segmentSize = GameSettings.SEGMENT_SIZE;
 
         myFood = new Food();
         mySpecialFood = new SpecialFood();
         mySnake = new Snake();
         mySoundPlayer = new GameSoundPlayer();
+        verticalSaw = new Saw(3);
+        horizontalSaw = new Saw(5);
     }
 
     public Snake getMySnake() {
@@ -32,12 +35,18 @@ public final class GameBoard {
         return mySpecialFood;
     }
 
+    public Saw getMyVerticalSaw() { return verticalSaw; }
+
+    public Saw getMyHorizontalSaw() { return horizontalSaw; }
+
     public void updateGame(PointVector mousePosition) {
         mySnake.move(mousePosition);
         mySpecialFood.move();
+        verticalSaw.move(0);
+        horizontalSaw.move(1);
         //System.out.println(mySpecialFood.getPosition().getX() + " " + mySpecialFood.getPosition().getY() + " dupa ");
         checkBorders();
-        if (checkTailCollision()) {
+        if (checkTailCollision() || checkSawCollision()) {
             mySoundPlayer.playSnakeCrashedSound();
         }
         if (checkFood()) {
@@ -88,12 +97,27 @@ public final class GameBoard {
             var headPosition = mySnake.getHead();
 
             while (mySnakeIterator.hasNext()) {
-                var distance = new PointVector(headPosition.getX(), headPosition.getY());
+                var distance = new PointVector(headPosition);
                 distance.subtract(mySnakeIterator.next());
                 if (distance.length() < (segmentSize / 2)) {
                     System.exit(1); //to będzie trzeba usunąć oczywiście
                     return true;
                 }
+            }
+        }
+        return false;
+    }
+
+    private boolean checkSawCollision() {
+        var mySnake = getMySnake();
+        for(PointVector bodySegment : mySnake.getBodySegments()) {
+            var distanceToHorizontalSaw = new PointVector(bodySegment);
+            var distanceToVerticalSaw = new PointVector(bodySegment);
+            distanceToHorizontalSaw.subtract(getMyVerticalSaw().getLocation());
+            distanceToVerticalSaw.subtract(getMyHorizontalSaw().getLocation());
+            if(distanceToHorizontalSaw.length() < segmentSize / 2 || distanceToVerticalSaw.length() < segmentSize / 2) {
+                System.exit(1); //do usunięcia later
+                return true;
             }
         }
         return false;

@@ -10,3 +10,6 @@ Sounds:
 From: https://kenney.nl
 CC0 1.0 Universal: https://creativecommons.org/publicdomain/zero/1.0/
 
+Images:
+https://opengameart.org/content/fruits
+https://opengameart.org/content/spikey-stuff

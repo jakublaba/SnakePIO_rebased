@@ -11,9 +11,22 @@ public class GamePane extends Pane {
     private final double segmentSize;
     private static Color BG_COLOR_O = GameSettings.BG_COLOR_ONE;
     private static Color BG_COLOR_T = GameSettings.BG_COLOR_TWO;
+    private final ImageView appleImg, rubyImg, verticalSawImg, horizontalSawImg;
 
     public GamePane() {
-        this.segmentSize = GameSettings.SEGMENT_SIZE;
+        segmentSize = GameSettings.SEGMENT_SIZE;
+        Image apple = new Image(getClass().getResourceAsStream("resources/img/apple.png"));
+        Image ruby = new Image(getClass().getResourceAsStream("resources/img/ruby.png"));
+        Image verticalSaw = new Image(getClass().getResourceAsStream("resources/img/SawSmall.png"));
+        Image horizontalSaw = new Image(getClass().getResourceAsStream("resources/img/SawBig.png"));
+        appleImg = new ImageView();
+        rubyImg = new ImageView();
+        verticalSawImg = new ImageView();
+        horizontalSawImg = new ImageView();
+        appleImg.setImage(apple);
+        rubyImg.setImage(ruby);
+        verticalSawImg.setImage(verticalSaw);
+        horizontalSawImg.setImage(horizontalSaw);
     }
 
 
@@ -21,6 +34,7 @@ public class GamePane extends Pane {
         BG_COLOR_O = choiceOne;
         BG_COLOR_T = choiceTwo;
     }
+
     public void setBackground() {
         int sideLength = 40;
         double rest = GameSettings.HEIGHT % sideLength;
@@ -57,7 +71,7 @@ public class GamePane extends Pane {
             snakeSegmentImg.setCenterY(mySnakeBodySegment.getY() - segmentSize / 2);
 
             /* colouring */
-            if (colorChooser % 2 == 0)
+            if ((colorChooser / GameSettings.SIZE_MULTIPLIER) % 2 == 0)
                 snakeSegmentImg.setFill(GameSettings.SNAKE_COLOR_ONE);
             else
                 snakeSegmentImg.setFill(GameSettings.SNAKE_COLOR_TWO);
@@ -66,14 +80,19 @@ public class GamePane extends Pane {
 
             getChildren().add(snakeSegmentImg);
         }
-
+        /*
         Circle foodImg = new Circle(segmentSize / 2);
         foodImg.setCenterX(myBoard.getMyFood().getX());
         foodImg.setCenterY(myBoard.getMyFood().getY());
         foodImg.setFill(GameSettings.FOOD_COLOR);
         getChildren().add(foodImg);
+        */
+        appleImg.setX(myBoard.getMyFood().getX() - segmentSize / 2);
+        appleImg.setY(myBoard.getMyFood().getY() - segmentSize / 2);
+        getChildren().add(appleImg);
 
         if (myBoard.getMySpecialFood().isAlive()) {
+            /*
             Circle specialFoodImg = new Circle(segmentSize / 2);
             specialFoodImg.setCenterX(myBoard.getMySpecialFood().getX());
             specialFoodImg.setCenterY(myBoard.getMySpecialFood().getY());
@@ -82,8 +101,17 @@ public class GamePane extends Pane {
             else
                 specialFoodImg.setFill(Color.YELLOW);
             getChildren().add(specialFoodImg);
+            */
+            rubyImg.setX(myBoard.getMySpecialFood().getX() - segmentSize / 2);
+            rubyImg.setY(myBoard.getMySpecialFood().getY() - segmentSize / 2);
+            getChildren().add(rubyImg);
         }
+        verticalSawImg.setX(myBoard.getMyVerticalSaw().getX() - segmentSize / 2);
+        verticalSawImg.setY(myBoard.getMyVerticalSaw().getY() - segmentSize / 2);
+        getChildren().add(verticalSawImg);
 
+        horizontalSawImg.setX(myBoard.getMyHorizontalSaw().getX() - segmentSize / 2);
+        horizontalSawImg.setY(myBoard.getMyHorizontalSaw().getY() - segmentSize / 2);
+        getChildren().add(horizontalSawImg);
     }
-
 }
