@@ -19,8 +19,8 @@ public final class GameBoard {
         mySpecialFood = new SpecialFood();
         mySnake = new Snake();
         mySoundPlayer = new GameSoundPlayer();
-        verticalSaw = new Saw(3);
-        horizontalSaw = new Saw(5);
+        verticalSaw = new Saw(4);
+        horizontalSaw = new Saw(1);
     }
 
     public Snake getMySnake() {
@@ -113,9 +113,11 @@ public final class GameBoard {
         for(PointVector bodySegment : mySnake.getBodySegments()) {
             var distanceToHorizontalSaw = new PointVector(bodySegment);
             var distanceToVerticalSaw = new PointVector(bodySegment);
-            distanceToHorizontalSaw.subtract(getMyVerticalSaw().getLocation());
-            distanceToVerticalSaw.subtract(getMyHorizontalSaw().getLocation());
-            if(distanceToHorizontalSaw.length() < segmentSize / 2 || distanceToVerticalSaw.length() < segmentSize / 2) {
+            distanceToHorizontalSaw.subtract(getMyHorizontalSaw().getLocation());
+            distanceToHorizontalSaw.subtract(new PointVector(GameSettings.BIG_SAW_SIZE / 2, GameSettings.BIG_SAW_SIZE / 2));
+            distanceToVerticalSaw.subtract(getMyVerticalSaw().getLocation());
+            distanceToVerticalSaw.subtract(new PointVector(GameSettings.SMALL_SAW_SIZE / 2, GameSettings.SMALL_SAW_SIZE / 2));
+            if(distanceToHorizontalSaw.length() < (segmentSize + GameSettings.BIG_SAW_SIZE) / 2.5 || distanceToVerticalSaw.length() < (segmentSize + GameSettings.SMALL_SAW_SIZE) / 2.5) {
                 System.exit(1); //do usunięcia later
                 return true;
             }

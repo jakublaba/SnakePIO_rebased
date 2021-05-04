@@ -15,10 +15,10 @@ public class GamePane extends Pane {
 
     public GamePane() {
         segmentSize = GameSettings.SEGMENT_SIZE;
-        Image apple = new Image(getClass().getResourceAsStream("resources/img/apple.png"));
-        Image ruby = new Image(getClass().getResourceAsStream("resources/img/ruby.png"));
-        Image verticalSaw = new Image(getClass().getResourceAsStream("resources/img/SawSmall.png"));
-        Image horizontalSaw = new Image(getClass().getResourceAsStream("resources/img/SawBig.png"));
+        Image apple = new Image(getClass().getResourceAsStream(GameSettings.APPLE_IMG));
+        Image ruby = new Image(getClass().getResourceAsStream(GameSettings.RUBY_IMG));
+        Image verticalSaw = new Image(getClass().getResourceAsStream(GameSettings.SAW_IMG1));
+        Image horizontalSaw = new Image(getClass().getResourceAsStream(GameSettings.SAW_IMG2));
         appleImg = new ImageView();
         rubyImg = new ImageView();
         verticalSawImg = new ImageView();
