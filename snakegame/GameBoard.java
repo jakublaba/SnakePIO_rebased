@@ -3,17 +3,16 @@ package snakegame;
 import java.util.ListIterator;
 
 public final class GameBoard {
-    private final double boardHeight, boardWidth, segmentSize;
+    private final double boardHeight, boardWidth;
     private final Snake mySnake;
     private final Food myFood;
     private final SpecialFood mySpecialFood;
     private final GameSoundPlayer mySoundPlayer;
-    private final Saw verticalSaw, horizontalSaw;
+    private final Saw verticalSaw, horizontalSaw, diagonalUpSaw, diagonalDownSaw;
 
     public GameBoard() {
         boardHeight = GameSettings.BOARD_HEIGHT;
         boardWidth = GameSettings.BOARD_WIDTH;
-        segmentSize = GameSettings.SEGMENT_SIZE;
 
         myFood = new Food();
         mySpecialFood = new SpecialFood();
@@ -21,6 +20,8 @@ public final class GameBoard {
         mySoundPlayer = new GameSoundPlayer();
         verticalSaw = new Saw(4, GameSettings.SMALL_SAW_SIZE);
         horizontalSaw = new Saw(1, GameSettings.BIG_SAW_SIZE);
+        diagonalUpSaw = new Saw(3, GameSettings.SMALL_SAW_SIZE);
+        diagonalDownSaw = new Saw(2, GameSettings.BIG_SAW_SIZE);
     }
 
     public Snake getMySnake() {
@@ -39,11 +40,17 @@ public final class GameBoard {
 
     public Saw getMyHorizontalSaw() { return horizontalSaw; }
 
+    public Saw getMyDiagonalUpSaw() { return diagonalUpSaw; }
+
+    public Saw getMyDiagonalDownSaw() { return diagonalDownSaw; }
+
     public void updateGame(PointVector mousePosition) {
         mySnake.move(mousePosition);
         mySpecialFood.move();
-        verticalSaw.move(0);
-        horizontalSaw.move(1);
+        verticalSaw.verticalMove();
+        horizontalSaw.horizontalMove();
+        diagonalUpSaw.diagonalMoveUp();
+        diagonalDownSaw.diagonalMoveDown();
         checkBorders();
         if (checkTailCollision() || checkSawCollision()) {
             mySoundPlayer.playSnakeCrashedSound();
@@ -59,9 +66,9 @@ public final class GameBoard {
     private boolean checkFood() {
         var distance = new PointVector(mySnake.getHead().getX(), mySnake.getHead().getY());
         distance.subtract(getMyFood().getPosition());
-        if (distance.length() < segmentSize) {
+        if (distance.length() < GameSettings.SEGMENT_SIZE) {
             getMyFood().respawn();
-            mySnake.addBodySegment();
+            for(int i = 0; i < GameSettings.FOOD_MULTIPLIER; i++) mySnake.addBodySegment();
             return true;
         }
         return false;
@@ -71,9 +78,8 @@ public final class GameBoard {
         if (mySpecialFood.isAlive()) {
             var distance = new PointVector(mySnake.getHead().getX(), mySnake.getHead().getY());
             distance.subtract(getMySpecialFood().getPosition());
-            if (distance.length() < segmentSize) {
-                mySnake.addBodySegment();
-                mySnake.addBodySegment(); //not very elegant
+            if (distance.length() < GameSettings.SEGMENT_SIZE) {
+                for(int i = 0; i < GameSettings.SPECIAL_FOOD_MULTIPLIER; i++) mySnake.addBodySegment();
                 mySpecialFood.setLongevity(0);
                 return true;
             } else
@@ -86,19 +92,19 @@ public final class GameBoard {
     }
 
     private boolean checkTailCollision() {
-        final int limitDoUgryzienia = 30; // nie da się zbytnio zderzyć poniżej
+        final int biteLimit = (int)GameSettings.SEGMENT_SIZE; // nie da się zbytnio zderzyć poniżej
         var mySnake = getMySnake();
 
-        if ((mySnake.getActualSize()) > limitDoUgryzienia) {
+        if ((mySnake.getActualSize()) > biteLimit) {
             var myBodySegments = mySnake.getBodySegments();
-            ListIterator<PointVector> mySnakeIterator = myBodySegments.listIterator(limitDoUgryzienia);
+            ListIterator<PointVector> mySnakeIterator = myBodySegments.listIterator(biteLimit);
 
             var headPosition = mySnake.getHead();
 
             while (mySnakeIterator.hasNext()) {
                 var distance = new PointVector(headPosition);
                 distance.subtract(mySnakeIterator.next());
-                if (distance.length() < (segmentSize / 2)) {
+                if (distance.length() < (GameSettings.SEGMENT_SIZE / 2)) {
                     System.exit(1); //to będzie trzeba usunąć oczywiście
                     return true;
                 }
@@ -107,17 +113,21 @@ public final class GameBoard {
         return false;
     }
 
-    //tutaj jeszcze nie do końca precyzyjnie działa to wykrywanie kolizji
     private boolean checkSawCollision() {
         var mySnake = getMySnake();
         for(PointVector bodySegment : mySnake.getBodySegments()) {
             var distanceToHorizontalSaw = new PointVector(bodySegment);
             var distanceToVerticalSaw = new PointVector(bodySegment);
+            var distanceToDiagonalUpSaw = new PointVector(bodySegment);
+            var distanceToDiagonalDownSaw = new PointVector(bodySegment);
             distanceToHorizontalSaw.subtract(getMyHorizontalSaw().getLocation());
-            distanceToHorizontalSaw.subtract(new PointVector(GameSettings.BIG_SAW_SIZE / 2, GameSettings.BIG_SAW_SIZE / 2));
             distanceToVerticalSaw.subtract(getMyVerticalSaw().getLocation());
-            distanceToVerticalSaw.subtract(new PointVector(GameSettings.SMALL_SAW_SIZE / 2, GameSettings.SMALL_SAW_SIZE / 2));
-            if(distanceToHorizontalSaw.length() < (segmentSize + GameSettings.BIG_SAW_SIZE) / 2.5 || distanceToVerticalSaw.length() < (segmentSize + GameSettings.SMALL_SAW_SIZE) / 2.5) {
+            distanceToDiagonalUpSaw.subtract(getMyDiagonalUpSaw().getLocation());
+            distanceToDiagonalDownSaw.subtract(getMyDiagonalDownSaw().getLocation());
+            if (distanceToHorizontalSaw.length() < (GameSettings.SEGMENT_SIZE + getMyHorizontalSaw().getSize()) / 2.3 ||
+                distanceToVerticalSaw.length() < (GameSettings.SEGMENT_SIZE + getMyVerticalSaw().getSize()) / 2.3 ||
+                distanceToDiagonalUpSaw.length() < ((GameSettings.SEGMENT_SIZE + getMyDiagonalUpSaw().getSize()) / 2.3) ||
+                distanceToDiagonalDownSaw.length() < (GameSettings.SEGMENT_SIZE + getMyDiagonalDownSaw().getSize()) / 2.3) {
                 System.exit(1); //do usunięcia later
                 return true;
             }

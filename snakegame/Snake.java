@@ -12,10 +12,10 @@ public final class Snake {
     private final List<PointVector> bodySegments;
 
     public Snake() {
-        this.sizeMultiplier = GameSettings.SIZE_MULTIPLIER;
-        segmentSize = GameSettings.SEGMENT_SIZE;
-        safeWidth = GameSettings.BOARD_WIDTH - segmentSize;
-        safeHeight = GameSettings.BOARD_HEIGHT - segmentSize;
+        this.sizeMultiplier = GameSettings.FOOD_MULTIPLIER;
+        double segmentSize = GameSettings.SEGMENT_SIZE;
+        double safeWidth = GameSettings.BOARD_WIDTH - segmentSize;
+        double safeHeight = GameSettings.BOARD_HEIGHT - segmentSize;
 
         bodySegments = new ArrayList<>();
         bodySegments.add(new PointVector(ThreadLocalRandom.current().nextDouble(this.segmentSize, this.safeWidth),
@@ -81,7 +81,7 @@ public final class Snake {
      * adds n (n=GameSettings.SIZE_MULTIPLIER) segments to the end of the snake
      */
     public void addBodySegment() {
-        for (int i = 0; i < GameSettings.SIZE_MULTIPLIER; i++) {
+        for (int i = 0; i < GameSettings.FOOD_MULTIPLIER; i++) {
             var newBodySegment = new PointVector(getTail().getX(), getTail().getY());
             bodySegments.add(newBodySegment);
         }

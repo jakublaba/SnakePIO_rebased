@@ -2,13 +2,16 @@ package snakegame;
 
 public class Saw {
     private final PointVector location;
-    private double speed;
+    private double speedX, speedY;
     private double size;
+    private double maxTop, maxBottom, maxLeft, maxRight;
 
     public Saw(double speed, double size) {
-        location = new PointVector(GameSettings.BOARD_WIDTH / 2 - GameSettings.SEGMENT_SIZE / 2, GameSettings.BOARD_HEIGHT / 2 - GameSettings.SEGMENT_SIZE / 2);
-        this.speed = speed;
+        location = new PointVector(GameSettings.BOARD_WIDTH / 2, GameSettings.BOARD_HEIGHT / 2);
+        this.speedX = this.speedY = speed;
         this.size = size;
+        this.maxTop = this.maxLeft = size / 2;
+        this.maxBottom = this.maxRight = GameSettings.BOARD_HEIGHT - size / 2;
     }
 
     public PointVector getLocation() { return location; }
@@ -19,23 +22,26 @@ public class Saw {
 
     public double getSize() { return size; }
 
-    //0 - vertical saw, 1 - horizontal saw
-    public void move(int mode) {
-        if(mode == 0) {
-            double maxTop = size / 2;
-            double maxBottom = GameSettings.BOARD_HEIGHT - size / 2;
-            if(location.getY() <= maxTop || location.getY() >= maxBottom) {
-                speed *= -1;
-            }
-            location.setY(location.getY() + speed);
-        }
-        if(mode == 1) {
-            double maxLeft = size / 2;
-            double maxRight = GameSettings.BOARD_WIDTH - size / 2;
-            if(location.getX() <= maxLeft || location.getX() >= maxRight) {
-                speed *= -1;
-            }
-            location.setX(location.getX() + speed);
-        }
+    public void verticalMove() {
+        if(location.getY() <= maxTop || location.getY() >= maxBottom) speedY *= -1;
+        location.setY(location.getY() + speedY);
+    }
+    public void horizontalMove() {
+        if(location.getX() <= maxLeft || location.getX() >= maxRight) speedX *= -1;
+        location.setX(location.getX() + speedX);
+    }
+
+    public void diagonalMoveUp() {
+        if(location.getX() <= maxLeft || location.getX() >= maxRight) speedX *= -1;
+        if(location.getY() <= maxTop || location.getY() >= maxBottom) speedY *= -1;
+        location.setX(location.getX() + speedX);
+        location.setY(location.getY() - speedY);
+    }
+
+    public void diagonalMoveDown() {
+        if(location.getX() <= maxLeft || location.getX() >= maxRight) speedX *= -1;
+        if(location.getY() <= maxTop || location.getY() >= maxBottom) speedY *= -1;
+        location.setX(location.getX() + speedX);
+        location.setY(location.getY() + speedY);
     }
 }
