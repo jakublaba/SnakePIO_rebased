@@ -24,7 +24,7 @@ public interface GameSettings {
     /*
      * GRAPHICS AND ANIMATIONS
      */
-    Color SNAKE_COLOR_ONE = Color.LIGHTSKYBLUE;
+    Color SNAKE_COLOR_ONE = Color.DARKBLUE;
     Color SNAKE_COLOR_TWO = Color.CORNFLOWERBLUE;
     Color SNAKE_EDGE_COLOR = Color.LIGHTSTEELBLUE;
     Color BG_COLOR_ONE = Color.web("#7ed967");

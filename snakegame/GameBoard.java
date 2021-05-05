@@ -54,6 +54,9 @@ public final class GameBoard {
         checkBorders();
         if (checkTailCollision() || checkSawCollision()) {
             mySoundPlayer.playSnakeCrashedSound();
+            Controller.setLosePane();
+            Controller.layerPane.getChildren().add(Controller.losePane);
+            Controller.gameLoop.stop();
         }
         if (checkFood()) {
             mySoundPlayer.playFoodEatenSound();
@@ -105,7 +108,6 @@ public final class GameBoard {
                 var distance = new PointVector(headPosition);
                 distance.subtract(mySnakeIterator.next());
                 if (distance.length() < (GameSettings.SEGMENT_SIZE / 2)) {
-                    System.exit(1); //to będzie trzeba usunąć oczywiście
                     return true;
                 }
             }
@@ -128,7 +130,6 @@ public final class GameBoard {
                 distanceToVerticalSaw.length() < (GameSettings.SEGMENT_SIZE + getMyVerticalSaw().getSize()) / 2.3 ||
                 distanceToDiagonalUpSaw.length() < ((GameSettings.SEGMENT_SIZE + getMyDiagonalUpSaw().getSize()) / 2.3) ||
                 distanceToDiagonalDownSaw.length() < (GameSettings.SEGMENT_SIZE + getMyDiagonalDownSaw().getSize()) / 2.3) {
-                System.exit(1); //do usunięcia later
                 return true;
             }
         }

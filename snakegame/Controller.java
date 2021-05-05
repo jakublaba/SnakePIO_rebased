@@ -1,12 +1,18 @@
 package snakegame;
 
 import javafx.animation.AnimationTimer;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.chart.PieChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
@@ -16,6 +22,8 @@ import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Objects;
 
@@ -50,6 +58,21 @@ public class Controller {
     private javafx.scene.control.ChoiceBox<String> settingsChoiceGameMode;
 
     private boolean pause;
+    public static StackPane layerPane;
+    public static AnimationTimer gameLoop;
+
+    //Pause Pane
+    private Pane pausePane;
+    private ImageView imageViewCornerPlay;
+    private ImageView imageViewCornerPause;
+    private Button resumeButton;
+    private Slider musicSlider;
+    private Slider soundSlider;
+    private Button pauseCornerButton;
+
+    //Lose Pane
+    public static final Pane losePane = new Pane();
+    private static ImageView imageViewGameover;
 
     @FXML
     public void startButtonAction() {
@@ -59,55 +82,37 @@ public class Controller {
         PointVector mousePosition = new PointVector(0, 0);
         Stage primaryStage = new Stage();
         BorderPane root = new BorderPane();
-        StackPane layerPane = new StackPane();
-
+        layerPane = new StackPane();
         gameField = new Pane();
-        Pane pausePane = new Pane();
-        pausePane.setVisible(false);
-        pausePane.setStyle("-fx-background-color: rgba(255,255,255,0.6); -fx-background-radius: 10; ");
-        Label centerLabel = new Label("Game Paused!");
-        centerLabel.setStyle("-fx-font-size: 3em; ");
-        pausePane.getChildren().add(centerLabel);
-        pausePane.setMaxWidth(400);
-        pausePane.setMaxHeight(200);
-
-        Button pauseButton = new Button("Pause");
-        pauseButton.setTranslateX(GameSettings.BOARD_WIDTH / 2 - 30);
-        pauseButton.setTranslateY(GameSettings.BOARD_HEIGHT / 2 - 25);
         layerPane.getChildren().addAll(gameField);
-        layerPane.getChildren().add(pauseButton);
+        setPausePane();
         layerPane.getChildren().add(pausePane);
+        pauseCornerButton = new Button("", imageViewCornerPause);
+        pauseCornerButton.setVisible(true);
+        pauseCornerButton.setTranslateX(GameSettings.BOARD_WIDTH / 2 - 30);
+        pauseCornerButton.setTranslateY(GameSettings.BOARD_HEIGHT / 2 - 30);
+        pauseCornerButton.setStyle("-fx-background-color: transparent");
+        layerPane.getChildren().add(pauseCornerButton);
         root.setCenter(layerPane);
-
         Scene scene = new Scene(root, GameSettings.BOARD_WIDTH, GameSettings.BOARD_HEIGHT);
         primaryStage.setTitle("SnakeFX");
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
         primaryStage.show();
-
         GamePane GamePane = new GamePane();
         gameField.getChildren().add(GamePane);
-
         /*
          * tworzymy soundtrack który będzie grał w trakcie gry
          * ustalony na zapętlenie
          * dalej w pętli game loop (animation timer) jest stopowany
          */
-
-            var soundtrack = new Media(Objects.requireNonNull(getClass().getResource(
-                    "resources/sounds/happy_0.mp3")).toExternalForm());
-            var soundtrackPlayer = new MediaPlayer(soundtrack);
-            soundtrackPlayer.setCycleCount(MediaPlayer.INDEFINITE);
-            //soundtrackPlayer.setVolume(0.2); //0.0 - muted; 1.0 - full volume -- Teraz jest ustawiany z ustawień
-            soundtrackPlayer.setVolume(GameSoundPlayer.getValueOfMusicVolume());
-
-
-
+        var soundtrack = new Media(Objects.requireNonNull(getClass().getResource("resources/sounds/happy_0.mp3")).toExternalForm());
+        var soundtrackPlayer = new MediaPlayer(soundtrack);
+        soundtrackPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+        soundtrackPlayer.setVolume(GameSoundPlayer.getValueOfMusicVolume());
         scene.addEventFilter(MouseEvent.ANY, e -> mousePosition.set(e.getX(), e.getY()));
-
         GameBoard myBoard = new GameBoard();
-
-        AnimationTimer gameLoop = new AnimationTimer() {
+        gameLoop = new AnimationTimer() {
             @Override
             public void handle(long currentTime) {
                 soundtrackPlayer.play();
@@ -118,23 +123,138 @@ public class Controller {
         pause = false;
         gameLoop.start();
 
-        pauseButton.setOnAction(event -> {
+        pauseCornerButton.setOnAction(event -> {
             if (!pause) {
                 gameLoop.stop();
+                soundtrackPlayer.stop();
+                musicSlider.setValue(GameSoundPlayer.getValueOfMusicVolume()*100);
+                soundSlider.setValue(GameSoundPlayer.getValueOfSoundEffectVolume()*100);
                 pausePane.setVisible(true);
+                pauseCornerButton.setGraphic(imageViewCornerPlay);
                 pause = true;
+                resumeButton.setOnAction(eve -> {
+                   pausePane.setVisible(false);
+                   gameLoop.start();
+                   soundtrackPlayer.play();
+                   pauseCornerButton.setGraphic(imageViewCornerPause);
+                   pause = false;
+                });
+
+                musicSlider.setOnMouseReleased(e1 ->{
+                    soundtrackPlayer.setVolume(musicSlider.getValue()/100);
+                    GameSoundPlayer.setValueOfMusicVolume(musicSlider.getValue()/100);
+                });
+
+                soundSlider.setOnMouseReleased(e2 -> GameSoundPlayer.setValueOfSoundEffectVolume(soundSlider.getValue()/100));
+
             } else {
                 gameLoop.start();
                 pausePane.setVisible(false);
+                pauseCornerButton.setGraphic(imageViewCornerPause);
                 pause = false;
             }
         });
-
     }
+
+    protected static void setLosePane(){
+        losePane.setVisible(true);
+        losePane.setStyle("-fx-background-color: transparent;"
+                + "-fx-background-radius: 10;");
+        losePane.setMaxSize(700,700);
+        ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList(
+                new PieChart.Data("Your Score", 140),
+                new PieChart.Data("To Highscore", 20));
+        PieChart chart = new PieChart(pieChartData);
+        chart.setLegendVisible(false);
+        chart.setStyle("-fx-font-size: 2em;");
+        chart.setMaxSize(500,500);
+        chart.setMinSize(500,500);
+        chart.setTranslateY(100);
+        chart.setTranslateX(100);
+        Button quitButton = new Button("Quit");
+        quitButton.setStyle("-fx-background-color: rgba(255,255,255,0.7); -fx-font-size: 2em;");
+        quitButton.setPrefSize(100,50);
+        quitButton.setTranslateX(200);
+        quitButton.setTranslateY(500);
+        quitButton.setOnAction(e -> quitButtonAction());
+        Button againButton = new Button("Again!");
+        againButton.setStyle("-fx-background-color: rgba(255,255,255,0.7); -fx-font-size: 2em;");
+        againButton.setPrefSize(100,50);
+        againButton.setTranslateX(400);
+        againButton.setTranslateY(500);
+        imageViewGameover.setX(150);
+        losePane.getChildren().add(imageViewGameover);
+        losePane.getChildren().add(chart);
+        losePane.getChildren().add(quitButton);
+        losePane.getChildren().add(againButton);
+    }
+
+    private void setPausePane() {
+        try {
+            pausePane = new Pane();
+            pausePane.setVisible(false);
+            pausePane.setStyle("-fx-background-color: rgba(255,255,255,0.2);"
+                    + "-fx-background-radius: 10;");
+            Label centerLabel = new Label("Game Paused!");
+            centerLabel.setStyle("-fx-font-size: 3em; -fx-padding: 10px;");
+            centerLabel.setTranslateX(60);
+            Label musicSliderLabel = new Label("Music Volume");
+            musicSliderLabel.setStyle("-fx-font-size: 2em;");
+            musicSliderLabel.setTranslateX(50);
+            musicSliderLabel.setTranslateY(80);
+            Label soundSliderLabel = new Label("Sound Volume");
+            soundSliderLabel.setStyle("-fx-font-size: 2em;");
+            soundSliderLabel.setTranslateX(50);
+            soundSliderLabel.setTranslateY(150);
+            FileInputStream inputPauseIcon = new FileInputStream("src/snakegame/resources/img/playIcon.png");
+            Image imagePause = new Image(inputPauseIcon);
+            ImageView imageViewPause = new ImageView(imagePause);
+            FileInputStream inputPlayCornerIcon = new FileInputStream("src/snakegame/resources/img/playCornerIcon.png");
+            Image imageCornerPlay = new Image(inputPlayCornerIcon);
+            imageViewCornerPlay = new ImageView(imageCornerPlay);
+            FileInputStream inputPauseCornerIcon = new FileInputStream("src/snakegame/resources/img/pauseCornerIcon.png");
+            Image imageCornerPause = new Image(inputPauseCornerIcon);
+            imageViewCornerPause = new ImageView(imageCornerPause);
+            FileInputStream inputGameoverGraphics = new FileInputStream("src/snakegame/resources/img/gameoverGraphics.png");
+            Image imageGameover = new Image(inputGameoverGraphics);
+            imageViewGameover = new ImageView(imageGameover);
+            resumeButton = new Button("Resume", imageViewPause);
+            resumeButton.setTranslateX(110);
+            resumeButton.setTranslateY(230);
+            resumeButton.setMinSize(180, 65);
+            resumeButton.setMaxSize(180, 65);
+            resumeButton.setStyle("-fx-background-color: rgba(255,255,255,0.7); -fx-font-size: 2em;");
+            musicSlider = new Slider();
+            musicSlider.setMin(0);
+            musicSlider.setMax(100);
+            musicSlider.setTranslateX(50);
+            musicSlider.setTranslateY(120);
+            musicSlider.setMinWidth(300);
+            musicSlider.setMaxWidth(300);
+            soundSlider = new Slider();
+            soundSlider.setMin(0);
+            soundSlider.setMax(100);
+            soundSlider.setTranslateX(50);
+            soundSlider.setTranslateY(190);
+            soundSlider.setMinWidth(300);
+            soundSlider.setMaxWidth(300);
+            pausePane.getChildren().add(centerLabel);
+            pausePane.getChildren().add(resumeButton);
+            pausePane.getChildren().add(musicSlider);
+            pausePane.getChildren().add(musicSliderLabel);
+            pausePane.getChildren().add(soundSliderLabel);
+            pausePane.getChildren().add(soundSlider);
+            pausePane.setMaxSize(400, 300);
+        }catch (FileNotFoundException e) {
+            System.out.println("Dupa");
+        }
+    }
+
+    private static void quitButtonAction() { System.exit(0); }
 
     @FXML
     private void exitButtonAction() {
-        System.exit(0);
+        quitButtonAction();
     }
 
     @FXML

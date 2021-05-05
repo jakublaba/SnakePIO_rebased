@@ -40,8 +40,10 @@ public class GameSoundPlayer {
 
     public void playFoodEatenSound() {
         foodEatenSound.play();
+        foodEatenSound.setVolume(getValueOfSoundEffectVolume());
     }
     public void playSnakeCrashedSound() {
         snakeCrashedSound.play();
+        snakeCrashedSound.setVolume(getValueOfSoundEffectVolume());
     }
 }
