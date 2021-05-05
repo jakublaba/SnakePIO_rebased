@@ -11,16 +11,16 @@ public final class GameBoard {
     private final Saw verticalSaw, horizontalSaw;
 
     public GameBoard() {
-        boardHeight = GameSettings.HEIGHT;
-        boardWidth = GameSettings.WIDTH;
+        boardHeight = GameSettings.BOARD_HEIGHT;
+        boardWidth = GameSettings.BOARD_WIDTH;
         segmentSize = GameSettings.SEGMENT_SIZE;
 
         myFood = new Food();
         mySpecialFood = new SpecialFood();
         mySnake = new Snake();
         mySoundPlayer = new GameSoundPlayer();
-        verticalSaw = new Saw(4);
-        horizontalSaw = new Saw(1);
+        verticalSaw = new Saw(4, GameSettings.SMALL_SAW_SIZE);
+        horizontalSaw = new Saw(1, GameSettings.BIG_SAW_SIZE);
     }
 
     public Snake getMySnake() {
@@ -107,6 +107,7 @@ public final class GameBoard {
         return false;
     }
 
+    //tutaj jeszcze nie do końca precyzyjnie działa to wykrywanie kolizji
     private boolean checkSawCollision() {
         var mySnake = getMySnake();
         for(PointVector bodySegment : mySnake.getBodySegments()) {

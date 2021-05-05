@@ -37,8 +37,8 @@ public class GamePane extends Pane {
 
     public void setBackground() {
         int sideLength = 40;
-        double rest = GameSettings.HEIGHT % sideLength;
-        double numberOfSquare = (GameSettings.HEIGHT - GameSettings.HEIGHT % sideLength) / sideLength;
+        double rest = GameSettings.BOARD_HEIGHT % sideLength;
+        double numberOfSquare = (GameSettings.BOARD_HEIGHT - GameSettings.BOARD_HEIGHT % sideLength) / sideLength;
 
         for (int i = 0; i < numberOfSquare; ++i) {
             for (int j = 0; j < numberOfSquare; ++j) {
@@ -71,10 +71,8 @@ public class GamePane extends Pane {
             snakeSegmentImg.setCenterY(mySnakeBodySegment.getY() - segmentSize / 2);
 
             /* colouring */
-            if ((colorChooser / GameSettings.SIZE_MULTIPLIER) % 2 == 0)
-                snakeSegmentImg.setFill(GameSettings.SNAKE_COLOR_ONE);
-            else
-                snakeSegmentImg.setFill(GameSettings.SNAKE_COLOR_TWO);
+            if ((colorChooser / GameSettings.SIZE_MULTIPLIER) % 2 == 0) snakeSegmentImg.setFill(GameSettings.SNAKE_COLOR_ONE);
+            else snakeSegmentImg.setFill(GameSettings.SNAKE_COLOR_TWO);
             colorChooser++;
             snakeSegmentImg.setStroke(GameSettings.SNAKE_EDGE_COLOR);
 
@@ -106,13 +104,13 @@ public class GamePane extends Pane {
             rubyImg.setY(myBoard.getMySpecialFood().getY() - segmentSize / 2);
             getChildren().add(rubyImg);
         }
-        verticalSawImg.setX(myBoard.getMyVerticalSaw().getX() - segmentSize / 2);
-        verticalSawImg.setY(myBoard.getMyVerticalSaw().getY() - segmentSize / 2);
+        verticalSawImg.setX(myBoard.getMyVerticalSaw().getX() - myBoard.getMyVerticalSaw().getSize() / 2);
+        verticalSawImg.setY(myBoard.getMyVerticalSaw().getY() - myBoard.getMyVerticalSaw().getSize() / 2);
         verticalSawImg.setRotate(verticalSawImg.getRotate() + 10);
         getChildren().add(verticalSawImg);
 
-        horizontalSawImg.setX(myBoard.getMyHorizontalSaw().getX() - segmentSize / 2);
-        horizontalSawImg.setY(myBoard.getMyHorizontalSaw().getY() - segmentSize / 2);
+        horizontalSawImg.setX(myBoard.getMyHorizontalSaw().getX() - myBoard.getMyHorizontalSaw().getSize() / 2);
+        horizontalSawImg.setY(myBoard.getMyHorizontalSaw().getY() - myBoard.getMyHorizontalSaw().getSize() / 2);
         horizontalSawImg.setRotate(horizontalSawImg.getRotate() + 5);
         getChildren().add(horizontalSawImg);
     }

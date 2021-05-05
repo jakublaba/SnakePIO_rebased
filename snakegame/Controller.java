@@ -3,7 +3,6 @@ package snakegame;
 import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -48,7 +47,7 @@ public class Controller {
     @FXML
     private javafx.scene.control.Slider settingsSoundSlider;
     @FXML
-    private javafx.scene.control.ChoiceBox settingsChoiceGameMode;
+    private javafx.scene.control.ChoiceBox<String> settingsChoiceGameMode;
 
     private boolean pause;
 
@@ -73,14 +72,14 @@ public class Controller {
         pausePane.setMaxHeight(200);
 
         Button pauseButton = new Button("Pause");
-        pauseButton.setTranslateX(GameSettings.WIDTH / 2 - 30);
-        pauseButton.setTranslateY(GameSettings.HEIGHT / 2 - 25);
+        pauseButton.setTranslateX(GameSettings.BOARD_WIDTH / 2 - 30);
+        pauseButton.setTranslateY(GameSettings.BOARD_HEIGHT / 2 - 25);
         layerPane.getChildren().addAll(gameField);
         layerPane.getChildren().add(pauseButton);
         layerPane.getChildren().add(pausePane);
         root.setCenter(layerPane);
 
-        Scene scene = new Scene(root, GameSettings.WIDTH, GameSettings.HEIGHT);
+        Scene scene = new Scene(root, GameSettings.BOARD_WIDTH, GameSettings.BOARD_HEIGHT);
         primaryStage.setTitle("SnakeFX");
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
@@ -221,7 +220,7 @@ public class Controller {
             root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("settings.fxml")));
             Stage stage = new Stage();
             stage.setTitle("SnakeFX - Settings");
-            stage.setScene(new Scene(root, 576.0, 415.0));
+            stage.setScene(new Scene(root, GameSettings.MENU_WIDTH, GameSettings.MENU_HEIGHT));
             stage.setResizable(false);
             stage.show();
             Stage stage1 = (Stage) settingsButton.getScene().getWindow();
@@ -239,7 +238,7 @@ public class Controller {
             root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("menu.fxml")));
             Stage stage1 = new Stage();
             stage1.setTitle("Snake");
-            stage1.setScene(new Scene(root, 576.0, 415.0));
+            stage1.setScene(new Scene(root, GameSettings.MENU_WIDTH, GameSettings.MENU_HEIGHT));
             stage1.show();
             stage.hide();
         } catch (IOException e) {

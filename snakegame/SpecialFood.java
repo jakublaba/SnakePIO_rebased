@@ -40,16 +40,16 @@ public class SpecialFood extends Food {
     }
 
     private void checkBordersAndTeleport() {
-        if (this.position.getX() > GameSettings.WIDTH) {
+        if (this.position.getX() > GameSettings.BOARD_WIDTH) {
             this.position.setX(0);
         } else if (this.position.getX() < 0) {
-            this.position.setX(GameSettings.WIDTH);
+            this.position.setX(GameSettings.BOARD_WIDTH);
         }
 
-        if (this.position.getY() > GameSettings.HEIGHT) {
+        if (this.position.getY() > GameSettings.BOARD_HEIGHT) {
             this.position.setY(0);
         } else if (this.position.getY() < 0) {
-            this.position.setY(GameSettings.HEIGHT);
+            this.position.setY(GameSettings.BOARD_HEIGHT);
         }
     }
 
@@ -70,8 +70,8 @@ public class SpecialFood extends Food {
         //20 percent chance of le epic food appearing
         if (ThreadLocalRandom.current().nextInt(0, 1000) >= 998) {
             final var segmentSize = GameSettings.SEGMENT_SIZE;
-            final var safeWidth = GameSettings.WIDTH - segmentSize;
-            final var safeHeight = GameSettings.HEIGHT - segmentSize;
+            final var safeWidth = GameSettings.BOARD_WIDTH - segmentSize;
+            final var safeHeight = GameSettings.BOARD_HEIGHT - segmentSize;
 
             this.position.set(ThreadLocalRandom.current().nextDouble(segmentSize, safeWidth),
                     ThreadLocalRandom.current().nextDouble(segmentSize, safeHeight));

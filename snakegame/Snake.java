@@ -13,9 +13,9 @@ public final class Snake {
 
     public Snake() {
         this.sizeMultiplier = GameSettings.SIZE_MULTIPLIER;
-        this.segmentSize = GameSettings.SEGMENT_SIZE;
-        this.safeWidth = GameSettings.WIDTH - this.segmentSize;
-        this.safeHeight = GameSettings.HEIGHT - this.segmentSize;
+        segmentSize = GameSettings.SEGMENT_SIZE;
+        safeWidth = GameSettings.BOARD_WIDTH - segmentSize;
+        safeHeight = GameSettings.BOARD_HEIGHT - segmentSize;
 
         bodySegments = new ArrayList<>();
         bodySegments.add(new PointVector(ThreadLocalRandom.current().nextDouble(this.segmentSize, this.safeWidth),

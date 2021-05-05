@@ -4,10 +4,12 @@ import javafx.scene.paint.Color;
 
 public interface GameSettings {
     /*
-     *  GAME BOARD SIZE
+     *  WINDOW SIZES
      */
-    double HEIGHT = 800;
-    double WIDTH = 800;
+    double BOARD_HEIGHT = 800;
+    double BOARD_WIDTH = 800;
+    double MENU_HEIGHT = 415;
+    double MENU_WIDTH = 576;
 
     /*
      *  SNAKE PROPERTIES
