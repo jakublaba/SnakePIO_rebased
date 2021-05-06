@@ -75,8 +75,7 @@ public final class GamePane extends Pane {
             snakeSegmentImg.setCenterY(mySnakeBodySegment.getY());
 
             /* colouring */
-            if ((colorChooser / GameSettings.FOOD_MULTIPLIER) % 2 == 0)
-                snakeSegmentImg.setFill(GameSettings.SNAKE_COLOR_ONE);
+            if ((colorChooser / GameSettings.FOOD_MULTIPLIER) % 2 == 0) snakeSegmentImg.setFill(GameSettings.SNAKE_COLOR_ONE);
             else snakeSegmentImg.setFill(GameSettings.SNAKE_COLOR_TWO);
             colorChooser++;
             snakeSegmentImg.setStroke(GameSettings.SNAKE_EDGE_COLOR);

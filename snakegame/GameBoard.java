@@ -71,9 +71,10 @@ public final class GameBoard {
         if (checkTailCollision() || checkSawCollision()) {
             mySoundPlayer.playSnakeCrashedSound();
             c.setLosePane();
-            c.layerPane.getChildren().add(Controller.losePane);
-            c.gameLoop.stop();
-            c.soundtrackPlayer.stop();
+            Controller.disablePauseButton();
+            Controller.layerPane.getChildren().add(Controller.losePane);
+            Controller.gameLoop.stop();
+            Controller.soundtrackPlayer.stop();
             if (score > highscore) {
                 ReaderOfHighscore r = new ReaderOfHighscore();
                 r.setHighscore(score);

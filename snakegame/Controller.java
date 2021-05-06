@@ -67,7 +67,7 @@ public final class Controller {
     private Button resumeButton;
     private Slider musicSlider;
     private Slider soundSlider;
-    private Button pauseCornerButton;
+    private static Button pauseCornerButton;
 
     //Lose Pane
     public static final Pane losePane = new Pane();
@@ -129,7 +129,7 @@ public final class Controller {
         pauseCornerButton.setOnAction(event -> {
             if (!pause) {
                 gameLoop.stop();
-                soundtrackPlayer.stop();
+                soundtrackPlayer.pause();
                 musicSlider.setValue(GameSoundPlayer.getValueOfMusicVolume() * 100);
                 soundSlider.setValue(GameSoundPlayer.getValueOfSoundEffectVolume() * 100);
                 pausePane.setVisible(true);
@@ -196,8 +196,7 @@ public final class Controller {
         try {
             pausePane = new Pane();
             pausePane.setVisible(false);
-            pausePane.setStyle("-fx-background-color: rgba(255,255,255,0.2);"
-                    + "-fx-background-radius: 10;");
+            pausePane.setStyle("-fx-background-color: rgba(255,255,255,0.2);" + "-fx-background-radius: 10;");
             Label centerLabel = new Label("Game Paused!");
             centerLabel.setStyle("-fx-font-size: 3em; -fx-padding: 10px;");
             centerLabel.setTranslateX(60);
@@ -372,5 +371,9 @@ public final class Controller {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static void disablePauseButton() {
+        pauseCornerButton.setDisable(true);
     }
 }
