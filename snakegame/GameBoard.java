@@ -66,13 +66,14 @@ public final class GameBoard {
         horizontalSaw.horizontalMove();
         diagonalUpSaw.diagonalMoveUp();
         diagonalDownSaw.diagonalMoveDown();
+        Controller c = new Controller();
         checkBorders();
         if (checkTailCollision() || checkSawCollision()) {
             mySoundPlayer.playSnakeCrashedSound();
-            Controller.setLosePane();
-            Controller.layerPane.getChildren().add(Controller.losePane);
-            Controller.gameLoop.stop();
-            Controller.soundtrackPlayer.stop();
+            c.setLosePane();
+            c.layerPane.getChildren().add(Controller.losePane);
+            c.gameLoop.stop();
+            c.soundtrackPlayer.stop();
             if (score > highscore) {
                 ReaderOfHighscore r = new ReaderOfHighscore();
                 r.setHighscore(score);

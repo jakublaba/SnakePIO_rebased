@@ -159,7 +159,7 @@ public final class Controller {
         });
     }
 
-    protected static void setLosePane() {
+    protected void setLosePane() {
         losePane.setVisible(true);
         losePane.setStyle("-fx-background-color: transparent;" + "-fx-background-radius: 10;");
         losePane.setMaxSize(700, 700);
@@ -184,6 +184,7 @@ public final class Controller {
         againButton.setPrefSize(100, 50);
         againButton.setTranslateX(400);
         againButton.setTranslateY(500);
+        againButton.setOnAction(e -> System.out.println("siur123"));
         imageViewGameover.setX(150);
         losePane.getChildren().add(imageViewGameover);
         losePane.getChildren().add(chart);
