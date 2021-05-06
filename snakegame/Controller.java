@@ -24,7 +24,6 @@ import javafx.stage.Stage;
 
 import java.io.*;
 import java.util.Objects;
-import java.util.Scanner;
 
 public class Controller {
     @FXML
@@ -159,7 +158,7 @@ public class Controller {
         });
     }
 
-    protected static void setLosePane() throws IOException {
+    protected static void setLosePane() {
         losePane.setVisible(true);
         losePane.setStyle("-fx-background-color: transparent;" + "-fx-background-radius: 10;");
         losePane.setMaxSize(700,700);

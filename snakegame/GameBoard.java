@@ -15,9 +15,9 @@ public final class GameBoard {
 
     public GameBoard() throws FileNotFoundException {
         score = 0;
-        File f = new File(GameSettings.HIGHSCORE_FILE_PATH);
-        Scanner sc = new Scanner(f);
-        highscore = sc.nextInt();
+        ReaderOfHighscore r = new ReaderOfHighscore();
+        r.readHighScore();
+        highscore = r.getHighscore();
         boardHeight = GameSettings.BOARD_HEIGHT;
         boardWidth = GameSettings.BOARD_WIDTH;
 
@@ -65,9 +65,9 @@ public final class GameBoard {
             Controller.layerPane.getChildren().add(Controller.losePane);
             Controller.gameLoop.stop();
             if(score > highscore) {
-                Writer w = new FileWriter(GameSettings.HIGHSCORE_FILE_PATH);
-                w.write(new Integer(score).toString());
-                w.close();
+                ReaderOfHighscore r = new ReaderOfHighscore();
+                r.setHighscore(score);
+                r.writeHighScore();
             }
         }
         if (checkFood() || checkSpecialFood()) {
