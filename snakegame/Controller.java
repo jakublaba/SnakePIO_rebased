@@ -22,10 +22,9 @@ import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.util.Objects;
+import java.util.Scanner;
 
 public class Controller {
     @FXML
@@ -75,7 +74,7 @@ public class Controller {
     private static ImageView imageViewGameover;
 
     @FXML
-    public void startButtonAction() {
+    public void startButtonAction() throws FileNotFoundException {
         Stage Menu = (Stage) settingsButton.getScene().getWindow();
         Menu.hide();
         Pane gameField;
@@ -116,7 +115,11 @@ public class Controller {
             @Override
             public void handle(long currentTime) {
                 soundtrackPlayer.play();
-                myBoard.updateGame(mousePosition); //process controls
+                try {
+                    myBoard.updateGame(mousePosition); //process controls
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 GamePane.render(myBoard); //render
             }
         };
@@ -156,14 +159,13 @@ public class Controller {
         });
     }
 
-    protected static void setLosePane(){
+    protected static void setLosePane() throws IOException {
         losePane.setVisible(true);
-        losePane.setStyle("-fx-background-color: transparent;"
-                + "-fx-background-radius: 10;");
+        losePane.setStyle("-fx-background-color: transparent;" + "-fx-background-radius: 10;");
         losePane.setMaxSize(700,700);
         ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList(
-                new PieChart.Data("Your Score", 140),
-                new PieChart.Data("To Highscore", 20));
+                new PieChart.Data("Your Score:" + GameBoard.score, GameBoard.score),
+                new PieChart.Data("To Highscore:" + GameBoard.highscore, GameBoard.highscore));
         PieChart chart = new PieChart(pieChartData);
         chart.setLegendVisible(false);
         chart.setStyle("-fx-font-size: 2em;");

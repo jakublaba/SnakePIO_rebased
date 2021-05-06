@@ -1,8 +1,11 @@
 package snakegame;
 
+import java.io.*;
 import java.util.ListIterator;
+import java.util.Scanner;
 
 public final class GameBoard {
+    public static int score, highscore;
     private final double boardHeight, boardWidth;
     private final Snake mySnake;
     private final Food myFood;
@@ -10,7 +13,11 @@ public final class GameBoard {
     private final GameSoundPlayer mySoundPlayer;
     private final Saw verticalSaw, horizontalSaw, diagonalUpSaw, diagonalDownSaw;
 
-    public GameBoard() {
+    public GameBoard() throws FileNotFoundException {
+        score = 0;
+        File f = new File(GameSettings.HIGHSCORE_FILE_PATH);
+        Scanner sc = new Scanner(f);
+        highscore = sc.nextInt();
         boardHeight = GameSettings.BOARD_HEIGHT;
         boardWidth = GameSettings.BOARD_WIDTH;
 
@@ -44,7 +51,7 @@ public final class GameBoard {
 
     public Saw getMyDiagonalDownSaw() { return diagonalDownSaw; }
 
-    public void updateGame(PointVector mousePosition) {
+    public void updateGame(PointVector mousePosition) throws IOException {
         mySnake.move(mousePosition);
         mySpecialFood.move();
         verticalSaw.verticalMove();
@@ -57,12 +64,16 @@ public final class GameBoard {
             Controller.setLosePane();
             Controller.layerPane.getChildren().add(Controller.losePane);
             Controller.gameLoop.stop();
+            if(score > highscore) {
+                Writer w = new FileWriter(GameSettings.HIGHSCORE_FILE_PATH);
+                w.write(new Integer(score).toString());
+                w.close();
+            }
         }
-        if (checkFood()) {
+        if (checkFood() || checkSpecialFood()) {
             mySoundPlayer.playFoodEatenSound();
-        }
-        if (checkSpecialFood()) {
-            mySoundPlayer.playFoodEatenSound();
+            score = mySnake.getSizeForUser();
+            System.out.println("Score:" + score);
         }
     }
 

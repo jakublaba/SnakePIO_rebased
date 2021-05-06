@@ -3,6 +3,7 @@ package snakegame;
 import javafx.scene.paint.Color;
 
 public interface GameSettings {
+    String HIGHSCORE_FILE_PATH = "C:/Users/Kuba/IdeaProjects/SnakeFX/src/snakegame/resources/highscore.txt";
     /*
      *  WINDOW SIZES
      */

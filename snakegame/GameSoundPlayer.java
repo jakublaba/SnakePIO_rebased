@@ -23,15 +23,13 @@ public class GameSoundPlayer {
 
     public GameSoundPlayer() {
         try {
-            foodEatenSound = new AudioClip(getClass().getResource(
-                    "resources/sounds/impactWood_light_001.mp3").toExternalForm());
+            foodEatenSound = new AudioClip(Objects.requireNonNull(getClass().getResource("resources/sounds/impactWood_light_001.mp3")).toExternalForm());
             foodEatenSound.setVolume(getValueOfSoundEffectVolume());
         } catch (NullPointerException e) {
             System.err.println("Zły plik boży");
         }
         try {
-            snakeCrashedSound = new AudioClip(getClass().getResource(
-                    "resources/sounds/back_002.mp3").toExternalForm());
+            snakeCrashedSound = new AudioClip(Objects.requireNonNull(getClass().getResource("resources/sounds/back_002.mp3")).toExternalForm());
             snakeCrashedSound.setVolume(getValueOfSoundEffectVolume());
         } catch (NullPointerException e) {
             System.err.println("Zły plik boży");
