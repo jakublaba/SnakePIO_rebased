@@ -25,7 +25,7 @@ import javafx.stage.Stage;
 import java.io.*;
 import java.util.Objects;
 
-public class Controller {
+public final class Controller {
     @FXML
     private javafx.scene.control.Button settingsButton;
     @FXML
@@ -58,6 +58,7 @@ public class Controller {
     private boolean pause;
     public static StackPane layerPane;
     public static AnimationTimer gameLoop;
+    public static MediaPlayer soundtrackPlayer;
 
     //Pause Pane
     private Pane pausePane;
@@ -105,7 +106,7 @@ public class Controller {
          * dalej w pętli game loop (animation timer) jest stopowany
          */
         var soundtrack = new Media(Objects.requireNonNull(getClass().getResource("resources/sounds/happy_0.mp3")).toExternalForm());
-        var soundtrackPlayer = new MediaPlayer(soundtrack);
+        soundtrackPlayer = new MediaPlayer(soundtrack);
         soundtrackPlayer.setCycleCount(MediaPlayer.INDEFINITE);
         soundtrackPlayer.setVolume(GameSoundPlayer.getValueOfMusicVolume());
         scene.addEventFilter(MouseEvent.ANY, e -> mousePosition.set(e.getX(), e.getY()));
@@ -129,25 +130,25 @@ public class Controller {
             if (!pause) {
                 gameLoop.stop();
                 soundtrackPlayer.stop();
-                musicSlider.setValue(GameSoundPlayer.getValueOfMusicVolume()*100);
-                soundSlider.setValue(GameSoundPlayer.getValueOfSoundEffectVolume()*100);
+                musicSlider.setValue(GameSoundPlayer.getValueOfMusicVolume() * 100);
+                soundSlider.setValue(GameSoundPlayer.getValueOfSoundEffectVolume() * 100);
                 pausePane.setVisible(true);
                 pauseCornerButton.setGraphic(imageViewCornerPlay);
                 pause = true;
                 resumeButton.setOnAction(eve -> {
-                   pausePane.setVisible(false);
-                   gameLoop.start();
-                   soundtrackPlayer.play();
-                   pauseCornerButton.setGraphic(imageViewCornerPause);
-                   pause = false;
+                    pausePane.setVisible(false);
+                    gameLoop.start();
+                    soundtrackPlayer.play();
+                    pauseCornerButton.setGraphic(imageViewCornerPause);
+                    pause = false;
                 });
 
-                musicSlider.setOnMouseReleased(e1 ->{
-                    soundtrackPlayer.setVolume(musicSlider.getValue()/100);
-                    GameSoundPlayer.setValueOfMusicVolume(musicSlider.getValue()/100);
+                musicSlider.setOnMouseReleased(e1 -> {
+                    soundtrackPlayer.setVolume(musicSlider.getValue() / 100);
+                    GameSoundPlayer.setValueOfMusicVolume(musicSlider.getValue() / 100);
                 });
 
-                soundSlider.setOnMouseReleased(e2 -> GameSoundPlayer.setValueOfSoundEffectVolume(soundSlider.getValue()/100));
+                soundSlider.setOnMouseReleased(e2 -> GameSoundPlayer.setValueOfSoundEffectVolume(soundSlider.getValue() / 100));
 
             } else {
                 gameLoop.start();
@@ -161,26 +162,26 @@ public class Controller {
     protected static void setLosePane() {
         losePane.setVisible(true);
         losePane.setStyle("-fx-background-color: transparent;" + "-fx-background-radius: 10;");
-        losePane.setMaxSize(700,700);
+        losePane.setMaxSize(700, 700);
         ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList(
-                new PieChart.Data("Your Score:" + GameBoard.score, GameBoard.score),
-                new PieChart.Data("To Highscore:" + GameBoard.highscore, GameBoard.highscore));
+                new PieChart.Data("Score: " + GameBoard.score, GameBoard.score),
+                new PieChart.Data("Highscore: " + GameBoard.highscore, GameBoard.highscore));
         PieChart chart = new PieChart(pieChartData);
         chart.setLegendVisible(false);
-        chart.setStyle("-fx-font-size: 2em;");
-        chart.setMaxSize(500,500);
-        chart.setMinSize(500,500);
+        chart.setStyle("-fx-font-size: 2em; -fx-font-weight: bold");
+        chart.setMaxSize(500, 500);
+        chart.setMinSize(500, 500);
         chart.setTranslateY(100);
         chart.setTranslateX(100);
         Button quitButton = new Button("Quit");
         quitButton.setStyle("-fx-background-color: rgba(255,255,255,0.7); -fx-font-size: 2em;");
-        quitButton.setPrefSize(100,50);
+        quitButton.setPrefSize(100, 50);
         quitButton.setTranslateX(200);
         quitButton.setTranslateY(500);
         quitButton.setOnAction(e -> quitButtonAction());
         Button againButton = new Button("Again!");
         againButton.setStyle("-fx-background-color: rgba(255,255,255,0.7); -fx-font-size: 2em;");
-        againButton.setPrefSize(100,50);
+        againButton.setPrefSize(100, 50);
         againButton.setTranslateX(400);
         againButton.setTranslateY(500);
         imageViewGameover.setX(150);
@@ -246,12 +247,14 @@ public class Controller {
             pausePane.getChildren().add(soundSliderLabel);
             pausePane.getChildren().add(soundSlider);
             pausePane.setMaxSize(400, 300);
-        }catch (FileNotFoundException e) {
-            System.out.println("Dupa");
+        } catch (FileNotFoundException e) {
+            System.out.println("nie udało się wczytać pliku");
         }
     }
 
-    private static void quitButtonAction() { System.exit(0); }
+    private static void quitButtonAction() {
+        System.exit(0);
+    }
 
     @FXML
     private void exitButtonAction() {
@@ -267,6 +270,7 @@ public class Controller {
         settingsPaneMusic.setVisible(false);
         settingsPaneStyle.setVisible(false);
     }
+
     @FXML
     public void settingsButtonMusicAction() {
         settingsButtonMusic.setStyle("-fx-font-size: 2em; -fx-text-fill: #000000; ");
@@ -276,6 +280,7 @@ public class Controller {
         settingsPaneMusic.setVisible(true);
         settingsPaneStyle.setVisible(false);
     }
+
     @FXML
     public void settingsButtonStyleAction() {
         settingsButtonMusic.setStyle("-fx-font-size: 1em; -fx-text-fill: #828282; ");
@@ -288,13 +293,13 @@ public class Controller {
 
     @FXML
     public void settingsMusicSliderAction() {
-         GameSoundPlayer.setValueOfMusicVolume(settingsMusicSlider.getValue()/100);
-         System.out.println("Ustawiam głośność muzyki na: " + GameSoundPlayer.getValueOfMusicVolume());
+        GameSoundPlayer.setValueOfMusicVolume(settingsMusicSlider.getValue() / 100);
+        System.out.println("Ustawiam głośność muzyki na: " + GameSoundPlayer.getValueOfMusicVolume());
     }
 
     @FXML
     public void settingsSoundSliderAction() {
-        GameSoundPlayer.setValueOfSoundEffectVolume(settingsSoundSlider.getValue()/100);
+        GameSoundPlayer.setValueOfSoundEffectVolume(settingsSoundSlider.getValue() / 100);
         System.out.println("Ustawiam głośność efektów na: " + GameSoundPlayer.getValueOfSoundEffectVolume());
     }
 
@@ -325,9 +330,10 @@ public class Controller {
         settingsButtonChooseStyleTwo.setStyle("-fx-border-color: transparent; -fx-border-width: 0; ");
         settingsButtonChooseStyleThree.setStyle("-fx-border-color: black; -fx-border-width: 4; ");
     }
+
     @FXML
     public void settingsChoiceGameModeAction() {
-        if(settingsChoiceGameMode.getItems().isEmpty()) {
+        if (settingsChoiceGameMode.getItems().isEmpty()) {
             settingsChoiceGameMode.getItems().add("Easy");
             settingsChoiceGameMode.getItems().add("Medium");
             settingsChoiceGameMode.getItems().add("Hard");

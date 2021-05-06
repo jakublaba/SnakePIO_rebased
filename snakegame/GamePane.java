@@ -7,7 +7,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 
-public class GamePane extends Pane {
+public final class GamePane extends Pane {
     private final double segmentSize;
     private static Color BG_COLOR_O = GameSettings.BG_COLOR_ONE;
     private static Color BG_COLOR_T = GameSettings.BG_COLOR_TWO;
@@ -34,7 +34,7 @@ public class GamePane extends Pane {
     }
 
 
-    public static void setBG_COLORS (Color choiceOne, Color choiceTwo){
+    public static void setBG_COLORS(Color choiceOne, Color choiceTwo) {
         BG_COLOR_O = choiceOne;
         BG_COLOR_T = choiceTwo;
     }
@@ -75,32 +75,20 @@ public class GamePane extends Pane {
             snakeSegmentImg.setCenterY(mySnakeBodySegment.getY());
 
             /* colouring */
-            if ((colorChooser / GameSettings.FOOD_MULTIPLIER) % 2 == 0) snakeSegmentImg.setFill(GameSettings.SNAKE_COLOR_ONE);
+            if ((colorChooser / GameSettings.FOOD_MULTIPLIER) % 2 == 0)
+                snakeSegmentImg.setFill(GameSettings.SNAKE_COLOR_ONE);
             else snakeSegmentImg.setFill(GameSettings.SNAKE_COLOR_TWO);
             colorChooser++;
             snakeSegmentImg.setStroke(GameSettings.SNAKE_EDGE_COLOR);
 
             getChildren().add(snakeSegmentImg);
         }
-        /*
-        Circle appleDebugShape = new Circle(GameSettings.SEGMENT_SIZE / 2);
-        appleDebugShape.setCenterX(myBoard.getMyFood().getX());
-        appleDebugShape.setCenterY(myBoard.getMyFood().getY());
-        appleDebugShape.setFill(Color.BLACK);
-        getChildren().add(appleDebugShape);
-        */
+
         appleImg.setX(myBoard.getMyFood().getX() - segmentSize / 2);
         appleImg.setY(myBoard.getMyFood().getY() - segmentSize / 2);
         getChildren().add(appleImg);
 
         if (myBoard.getMySpecialFood().isAlive()) {
-            /*
-            Circle rubyDebugShape = new Circle(GameSettings.SEGMENT_SIZE / 2);
-            rubyDebugShape.setCenterX(myBoard.getMyFood().getX());
-            rubyDebugShape.setCenterY(myBoard.getMyFood().getY());
-            rubyDebugShape.setFill(Color.BLACK);
-            getChildren().add(rubyDebugShape);
-            */
             rubyImg.setX(myBoard.getMySpecialFood().getX() - segmentSize / 2);
             rubyImg.setY(myBoard.getMySpecialFood().getY() - segmentSize / 2);
             getChildren().add(rubyImg);

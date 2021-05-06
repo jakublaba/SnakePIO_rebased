@@ -9,11 +9,13 @@ import java.util.Scanner;
 public class ReaderOfHighscore {
     private int highscore;
 
-    public int getHighscore(){
+    public int getHighscore() {
         return highscore;
     }
 
-    public void setHighscore(int highscore) { this.highscore = highscore; }
+    public void setHighscore(int highscore) {
+        this.highscore = highscore;
+    }
 
     public void readHighScore() throws InputMismatchException {
         Scanner readingFile;
@@ -27,12 +29,11 @@ public class ReaderOfHighscore {
                 highscore = Integer.parseInt(tmpLine);
                 System.out.println("Wczytano highscore: " + highscore);
             }
-        }
-        catch (FileNotFoundException e) {
+        } catch (FileNotFoundException e) {
             System.out.println("There is no file:" + "resources/highscore.txt");
         }
     }
-    
+
     public void writeHighScore() throws InputMismatchException {
         PrintWriter writingFile;
         try {

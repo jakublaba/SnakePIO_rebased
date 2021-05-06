@@ -82,7 +82,7 @@ public final class Snake {
      */
     public void addBodySegment() {
         for (int i = 0; i < GameSettings.FOOD_MULTIPLIER; i++) {
-            var newBodySegment = new PointVector(getTail().getX(), getTail().getY());
+            var newBodySegment = new PointVector(getTail());
             bodySegments.add(newBodySegment);
         }
     }

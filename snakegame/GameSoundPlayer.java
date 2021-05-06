@@ -2,7 +2,9 @@ package snakegame;
 
 import javafx.scene.media.AudioClip;
 
-public class GameSoundPlayer {
+import java.util.Objects;
+
+public final class GameSoundPlayer {
     private AudioClip foodEatenSound;
     private AudioClip snakeCrashedSound;
     private static double valueOfMusicVolume = 0.2;
@@ -11,13 +13,16 @@ public class GameSoundPlayer {
     public static void setValueOfMusicVolume(double value) {
         valueOfMusicVolume = value;
     }
+
     public static double getValueOfMusicVolume() {
         return valueOfMusicVolume;
     }
+
     public static void setValueOfSoundEffectVolume(double value) {
         valueOfSoundEffectVolume = value;
     }
-    public static double getValueOfSoundEffectVolume(){
+
+    public static double getValueOfSoundEffectVolume() {
         return valueOfSoundEffectVolume;
     }
 
@@ -26,13 +31,13 @@ public class GameSoundPlayer {
             foodEatenSound = new AudioClip(Objects.requireNonNull(getClass().getResource("resources/sounds/impactWood_light_001.mp3")).toExternalForm());
             foodEatenSound.setVolume(getValueOfSoundEffectVolume());
         } catch (NullPointerException e) {
-            System.err.println("Zły plik boży");
+            System.err.println("Zły plik!");
         }
         try {
             snakeCrashedSound = new AudioClip(Objects.requireNonNull(getClass().getResource("resources/sounds/back_002.mp3")).toExternalForm());
             snakeCrashedSound.setVolume(getValueOfSoundEffectVolume());
         } catch (NullPointerException e) {
-            System.err.println("Zły plik boży");
+            System.err.println("Zły plik!");
         }
     }
 

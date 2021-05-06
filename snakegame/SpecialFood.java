@@ -2,7 +2,7 @@ package snakegame;
 
 import java.util.concurrent.ThreadLocalRandom;
 
-public class SpecialFood extends Food {
+public final class SpecialFood extends Food {
     private final int MAX_LONGEVITY = 300; //maximum longevity in "ticks"
     private final PointVector velocity;
     private int longevity; //this is a time in "ticks", which determines for how long will it be visible

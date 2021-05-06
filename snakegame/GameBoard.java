@@ -43,13 +43,21 @@ public final class GameBoard {
         return mySpecialFood;
     }
 
-    public Saw getMyVerticalSaw() { return verticalSaw; }
+    public Saw getMyVerticalSaw() {
+        return verticalSaw;
+    }
 
-    public Saw getMyHorizontalSaw() { return horizontalSaw; }
+    public Saw getMyHorizontalSaw() {
+        return horizontalSaw;
+    }
 
-    public Saw getMyDiagonalUpSaw() { return diagonalUpSaw; }
+    public Saw getMyDiagonalUpSaw() {
+        return diagonalUpSaw;
+    }
 
-    public Saw getMyDiagonalDownSaw() { return diagonalDownSaw; }
+    public Saw getMyDiagonalDownSaw() {
+        return diagonalDownSaw;
+    }
 
     public void updateGame(PointVector mousePosition) throws IOException {
         mySnake.move(mousePosition);
@@ -64,7 +72,8 @@ public final class GameBoard {
             Controller.setLosePane();
             Controller.layerPane.getChildren().add(Controller.losePane);
             Controller.gameLoop.stop();
-            if(score > highscore) {
+            Controller.soundtrackPlayer.stop();
+            if (score > highscore) {
                 ReaderOfHighscore r = new ReaderOfHighscore();
                 r.setHighscore(score);
                 r.writeHighScore();
@@ -82,7 +91,7 @@ public final class GameBoard {
         distance.subtract(getMyFood().getPosition());
         if (distance.length() < GameSettings.SEGMENT_SIZE) {
             getMyFood().respawn();
-            for(int i = 0; i < GameSettings.FOOD_MULTIPLIER; i++) mySnake.addBodySegment();
+            for (int i = 0; i < GameSettings.FOOD_MULTIPLIER; i++) mySnake.addBodySegment();
             return true;
         }
         return false;
@@ -93,7 +102,7 @@ public final class GameBoard {
             var distance = new PointVector(mySnake.getHead().getX(), mySnake.getHead().getY());
             distance.subtract(getMySpecialFood().getPosition());
             if (distance.length() < GameSettings.SEGMENT_SIZE) {
-                for(int i = 0; i < GameSettings.SPECIAL_FOOD_MULTIPLIER; i++) mySnake.addBodySegment();
+                for (int i = 0; i < GameSettings.SPECIAL_FOOD_MULTIPLIER; i++) mySnake.addBodySegment();
                 mySpecialFood.setLongevity(0);
                 return true;
             } else
@@ -106,7 +115,7 @@ public final class GameBoard {
     }
 
     private boolean checkTailCollision() {
-        final int biteLimit = (int)GameSettings.SEGMENT_SIZE; // nie da się zbytnio zderzyć poniżej
+        final int biteLimit = (int) GameSettings.SEGMENT_SIZE; // nie da się zbytnio zderzyć poniżej
         var mySnake = getMySnake();
 
         if ((mySnake.getActualSize()) > biteLimit) {
@@ -128,7 +137,7 @@ public final class GameBoard {
 
     private boolean checkSawCollision() {
         var mySnake = getMySnake();
-        for(PointVector bodySegment : mySnake.getBodySegments()) {
+        for (PointVector bodySegment : mySnake.getBodySegments()) {
             var distanceToHorizontalSaw = new PointVector(bodySegment);
             var distanceToVerticalSaw = new PointVector(bodySegment);
             var distanceToDiagonalUpSaw = new PointVector(bodySegment);
@@ -138,9 +147,9 @@ public final class GameBoard {
             distanceToDiagonalUpSaw.subtract(getMyDiagonalUpSaw().getLocation());
             distanceToDiagonalDownSaw.subtract(getMyDiagonalDownSaw().getLocation());
             if (distanceToHorizontalSaw.length() < (GameSettings.SEGMENT_SIZE + getMyHorizontalSaw().getSize()) / 2.3 ||
-                distanceToVerticalSaw.length() < (GameSettings.SEGMENT_SIZE + getMyVerticalSaw().getSize()) / 2.3 ||
-                distanceToDiagonalUpSaw.length() < ((GameSettings.SEGMENT_SIZE + getMyDiagonalUpSaw().getSize()) / 2.3) ||
-                distanceToDiagonalDownSaw.length() < (GameSettings.SEGMENT_SIZE + getMyDiagonalDownSaw().getSize()) / 2.3) {
+                    distanceToVerticalSaw.length() < (GameSettings.SEGMENT_SIZE + getMyVerticalSaw().getSize()) / 2.3 ||
+                    distanceToDiagonalUpSaw.length() < ((GameSettings.SEGMENT_SIZE + getMyDiagonalUpSaw().getSize()) / 2.3) ||
+                    distanceToDiagonalDownSaw.length() < (GameSettings.SEGMENT_SIZE + getMyDiagonalDownSaw().getSize()) / 2.3) {
                 return true;
             }
         }
