@@ -1,0 +1,20 @@
+.bodybg{
+ -fx-background-image: url("resources/img/menuBack.png");
+}
+.mainlabel{
+    -fx-font-family:"Courier New", Helvetica, Courier New, sans-serif;
+    -fx-font-size: 10em;
+    -fx-text-fill: rgb(39, 149, 39);
+    -fx-font-weight: bold;
+}
+.button{
+    -fx-border-color: transparent;
+    -fx-border-width: 0;
+    -fx-background-radius: 3;
+    -fx-background-color: rgba(255,255,255,0.5);
+    -fx-font-family:"Palatino", Helvetica;
+    -fx-font-size: 2em;
+    -fx-font-weight: bold;
+    -fx-text-fill: rgba(0, 0, 0, 0.8);
+}
+

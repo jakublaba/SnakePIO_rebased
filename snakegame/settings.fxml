@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="415.0" prefWidth="576.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="snakegame.Controller">
+    <AnchorPane prefHeight="422.0" prefWidth="576.0" styleClass="bodybg" stylesheets="@settings.css">
+        <Line endX="358.0" layoutX="160.0" layoutY="128.0" startX="-101.0" />
+        <Line endX="29.0" endY="-14.0" layoutX="188.0" layoutY="105.0" startX="8.0" startY="21.5" />
+        <Line endX="29.0" endY="-14.0" layoutX="350.0" layoutY="105.0" startX="8.0" startY="21.5" />
+        <Button fx:id="settingsButtonGame" layoutX="59.0" layoutY="90.0" mnemonicParsing="false" onAction="#settingsButtonGameAction" prefHeight="37.0" prefWidth="137.0" text="Game">
+            <font>
+                <Font name="System Bold" size="20.0" />
+            </font>
+        </Button>
+        <Button fx:id="settingsButtonMusic" layoutX="220.0" layoutY="90.0" mnemonicParsing="false" onAction="#settingsButtonMusicAction" prefHeight="37.0" prefWidth="137.0" text="Music">
+            <font>
+                <Font name="CityBlueprint" size="62.0" />
+            </font>
+        </Button>
+        <Button fx:id="settingsButtonStyle" layoutX="380.0" layoutY="90.0" mnemonicParsing="false" onAction="#settingsButtonStyleAction" prefHeight="37.0" prefWidth="137.0" text="Style" />
+        <Pane fx:id="settingsPaneGame" layoutX="58.0" layoutY="130.0" prefHeight="215.0" prefWidth="460.0">
+            <ChoiceBox fx:id="settingsChoiceGameMode" layoutX="10.0" layoutY="79.0" onMouseMoved="#settingsChoiceGameModeAction" prefHeight="31.0" prefWidth="172.0" stylesheets="@settings.css">
+                <styleClass>
+                    <String fx:value="context-menu" />
+                    <String fx:value="cb" />
+                </styleClass>
+            </ChoiceBox>
+            <Label alignment="BASELINE_LEFT" contentDisplay="CENTER" layoutX="14.0" layoutY="32.0" prefHeight="25.0" prefWidth="150.0" text="Game mode">
+                <font>
+                    <Font name="Courier New" size="20.0" />
+                </font>
+            </Label>
+        </Pane>
+        <Pane fx:id="settingsPaneMusic" layoutX="58.0" layoutY="130.0" prefHeight="215.0" prefWidth="460.0" visible="false">
+            <Label alignment="TOP_LEFT" contentDisplay="CENTER" layoutX="46.0" layoutY="23.0" prefHeight="35.0" prefWidth="189.0" text="Volume of Music">
+                <font>
+                    <Font name="Courier New" size="20.0" />
+                </font>
+            </Label>
+            <Slider fx:id="settingsSoundSlider" layoutX="46.0" layoutY="136.0" onMouseReleased="#settingsSoundSliderAction" prefHeight="14.0" prefWidth="368.0" value="20.0" />
+            <Label alignment="TOP_LEFT" contentDisplay="CENTER" layoutX="46.0" layoutY="98.0" prefHeight="31.0" prefWidth="340.0" text="Volume of Sound Effects">
+                <font>
+                    <Font name="Courier New" size="20.0" />
+                </font>
+            </Label>
+            <Slider fx:id="settingsMusicSlider" layoutX="46.0" layoutY="58.0" minorTickCount="25" onMouseReleased="#settingsMusicSliderAction" prefHeight="14.0" prefWidth="368.0" snapToTicks="true" value="20.0">
+                <effect>
+                    <Blend />
+                </effect>
+            </Slider>
+        </Pane>
+        <Pane fx:id="settingsPaneStyle" layoutX="58.0" layoutY="130.0" prefHeight="215.0" prefWidth="460.0" visible="false">
+            <Label alignment="BOTTOM_LEFT" contentDisplay="CENTER" layoutX="14.0" layoutY="26.0" prefHeight="25.0" prefWidth="368.0" text="Choose your background style">
+                <font>
+                    <Font name="Courier New" size="20.0" />
+                </font>
+            </Label>
+            <Button fx:id="settingsButtonChooseStyleOne" layoutX="14.0" layoutY="72.0" mnemonicParsing="false" onAction="#settingsButtonChooseStyleOneAction" prefHeight="120.0" prefWidth="120.0" styleClass="bodysetone" stylesheets="@settings.css">
+                <cursor>
+                    <Cursor fx:constant="OPEN_HAND" />
+                </cursor>
+            </Button>
+            <Button fx:id="settingsButtonChooseStyleTwo" layoutX="170.0" layoutY="72.0" mnemonicParsing="false" onAction="#settingsButtonChooseStyleTwoAction" prefHeight="120.0" prefWidth="120.0" styleClass="bodysettwo" stylesheets="@settings.css">
+                <cursor>
+                    <Cursor fx:constant="OPEN_HAND" />
+                </cursor>
+            </Button>
+            <Button fx:id="settingsButtonChooseStyleThree" layoutX="326.0" layoutY="72.0" mnemonicParsing="false" onAction="#settingsButtonChooseStyleThreeAction" prefHeight="120.0" prefWidth="120.0" styleClass="bodysetthree" stylesheets="@settings.css">
+                <cursor>
+                    <Cursor fx:constant="OPEN_HAND" />
+                </cursor>
+            </Button>
+        </Pane>
+        <Button fx:id="closeButton" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#backButtonAction" prefHeight="45.0" prefWidth="108.0" styleClass="backbutton" stylesheets="@settings.css" text="Back" />
+    </AnchorPane>
+</Pane>

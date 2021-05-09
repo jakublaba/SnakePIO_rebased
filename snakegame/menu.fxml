@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="415.0"
+      prefWidth="576.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="snakegame.Controller">
+   <AnchorPane prefHeight="415.0" prefWidth="576.0" styleClass="bodybg" stylesheets="@menu.css">
+      <Label alignment="CENTER" layoutX="13.0" layoutY="14.0" prefHeight="141.0" prefWidth="550.0"
+             styleClass="mainlabel" stylesheets="@menu.css" text="Snake" textAlignment="CENTER">
+         <font>
+            <Font name="Courier New" size="120.0"/>
+         </font>
+         <textFill>
+            <LinearGradient>
+               <stops>
+                  <Stop>
+                     <color>
+                        <Color red="0.6063647270202637" green="0.7236841917037964" blue="0.08375974744558334"/>
+                     </color>
+                  </Stop>
+                  <Stop offset="1.0">
+                     <color>
+                        <Color red="0.16812865436077118" green="0.6052631735801697" blue="0.25555557012557983"/>
+                     </color>
+                  </Stop>
+               </stops>
+            </LinearGradient>
+         </textFill>
+      </Label>
+      <Button layoutX="137.0" layoutY="155.0" mnemonicParsing="false" onAction="#startButtonAction" prefHeight="60.0"
+              prefWidth="300.0" stylesheets="@menu.css" text="Start">
+         <font>
+            <Font name="Calisto MT" size="12.0"/>
+         </font>
+      </Button>
+      <Button fx:id="settingsButton" layoutX="135.0" layoutY="234.0" mnemonicParsing="false"
+              onAction="#settingsButtonAction" prefHeight="60.0" prefWidth="300.0" stylesheets="@menu.css"
+              text="Settings">
+         <font>
+            <Font name="Castellar" size="29.0"/>
+         </font>
+      </Button>
+      <Button layoutX="135.0" layoutY="312.0" mnemonicParsing="false" onAction="#exitButtonAction" prefHeight="60.0"
+              prefWidth="300.0" stylesheets="@menu.css" text="Exit"/>
+   </AnchorPane>
+</Pane>
