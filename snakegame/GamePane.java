@@ -8,13 +8,11 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 
 public final class GamePane extends Pane {
-    private final double segmentSize;
     private static Color BG_COLOR_O = GameSettings.BG_COLOR_ONE;
     private static Color BG_COLOR_T = GameSettings.BG_COLOR_TWO;
     private final ImageView appleImg, rubyImg, verticalSawImg, horizontalSawImg, diagonalUpSawImg, diagonalDownSawImg;
 
     public GamePane() {
-        segmentSize = GameSettings.SEGMENT_SIZE;
         Image apple = new Image(getClass().getResourceAsStream(GameSettings.APPLE_IMG));
         Image ruby = new Image(getClass().getResourceAsStream(GameSettings.RUBY_IMG));
         Image smallSaw = new Image(getClass().getResourceAsStream(GameSettings.SMALL_SAW_IMG));
@@ -70,7 +68,7 @@ public final class GamePane extends Pane {
         var mySnakeBodySegments = myBoard.getMySnake().getBodySegments(); //copy the segments
 
         for (PointVector mySnakeBodySegment : mySnakeBodySegments) {
-            Circle snakeSegmentImg = new Circle(segmentSize / 2);
+            Circle snakeSegmentImg = new Circle(GameSettings.SEGMENT_SIZE / 2);
             snakeSegmentImg.setCenterX(mySnakeBodySegment.getX());
             snakeSegmentImg.setCenterY(mySnakeBodySegment.getY());
 
@@ -83,13 +81,13 @@ public final class GamePane extends Pane {
             getChildren().add(snakeSegmentImg);
         }
 
-        appleImg.setX(myBoard.getMyFood().getX() - segmentSize / 2);
-        appleImg.setY(myBoard.getMyFood().getY() - segmentSize / 2);
+        appleImg.setX(myBoard.getMyFood().getX() - GameSettings.SEGMENT_SIZE / 2);
+        appleImg.setY(myBoard.getMyFood().getY() - GameSettings.SEGMENT_SIZE / 2);
         getChildren().add(appleImg);
 
         if (myBoard.getMySpecialFood().isAlive()) {
-            rubyImg.setX(myBoard.getMySpecialFood().getX() - segmentSize / 2);
-            rubyImg.setY(myBoard.getMySpecialFood().getY() - segmentSize / 2);
+            rubyImg.setX(myBoard.getMySpecialFood().getX() - GameSettings.SEGMENT_SIZE / 2);
+            rubyImg.setY(myBoard.getMySpecialFood().getY() - GameSettings.SEGMENT_SIZE / 2);
             getChildren().add(rubyImg);
         }
 

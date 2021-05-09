@@ -3,8 +3,10 @@ package snakegame;
 import javafx.animation.AnimationTimer;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
@@ -21,6 +23,7 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 
 import java.io.*;
 import java.util.Objects;
@@ -55,6 +58,7 @@ public final class Controller {
     @FXML
     private javafx.scene.control.ChoiceBox<String> settingsChoiceGameMode;
 
+    private Stage primaryStage;
     private boolean pause;
     public static StackPane layerPane;
     public static AnimationTimer gameLoop;
@@ -79,7 +83,94 @@ public final class Controller {
         Menu.hide();
         Pane gameField;
         PointVector mousePosition = new PointVector(0, 0);
-        Stage primaryStage = new Stage();
+        primaryStage = new Stage();
+        BorderPane root = new BorderPane();
+        layerPane = new StackPane();
+        gameField = new Pane();
+        layerPane.getChildren().addAll(gameField);
+        setPausePane();
+        layerPane.getChildren().add(pausePane);
+        pauseCornerButton = new Button("", imageViewCornerPause);
+        pauseCornerButton.setVisible(true);
+        pauseCornerButton.setTranslateX(GameSettings.BOARD_WIDTH / 2 - 30);
+        pauseCornerButton.setTranslateY(GameSettings.BOARD_HEIGHT / 2 - 30);
+        pauseCornerButton.setStyle("-fx-background-color: transparent");
+        layerPane.getChildren().add(pauseCornerButton);
+        root.setCenter(layerPane);
+        Scene scene = new Scene(root, GameSettings.BOARD_WIDTH, GameSettings.BOARD_HEIGHT);
+        primaryStage.setTitle("SnakeFX");
+        primaryStage.setScene(scene);
+        primaryStage.setResizable(false);
+        primaryStage.show();
+        GamePane GamePane = new GamePane();
+        gameField.getChildren().add(GamePane);
+        /*
+         * tworzymy soundtrack który będzie grał w trakcie gry
+         * ustalony na zapętlenie
+         * dalej w pętli game loop (animation timer) jest stopowany
+         */
+        var soundtrack = new Media(Objects.requireNonNull(getClass().getResource("resources/sounds/happy_0.mp3")).toExternalForm());
+        soundtrackPlayer = new MediaPlayer(soundtrack);
+        soundtrackPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+        soundtrackPlayer.setVolume(GameSoundPlayer.getValueOfMusicVolume());
+        scene.addEventFilter(MouseEvent.ANY, e -> mousePosition.set(e.getX(), e.getY()));
+        GameBoard myBoard = new GameBoard();
+        gameLoop = new AnimationTimer() {
+            @Override
+            public void handle(long currentTime) {
+                soundtrackPlayer.play();
+                try {
+                    myBoard.updateGame(mousePosition); //process controls
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                GamePane.render(myBoard); //render
+            }
+        };
+        pause = false;
+        gameLoop.start();
+
+        pauseCornerButton.setOnAction(event -> {
+            if (!pause) {
+                gameLoop.stop();
+                soundtrackPlayer.pause();
+                musicSlider.setValue(GameSoundPlayer.getValueOfMusicVolume() * 100);
+                soundSlider.setValue(GameSoundPlayer.getValueOfSoundEffectVolume() * 100);
+                pausePane.setVisible(true);
+                pauseCornerButton.setGraphic(imageViewCornerPlay);
+                pause = true;
+                resumeButton.setOnAction(eve -> {
+                    pausePane.setVisible(false);
+                    gameLoop.start();
+                    soundtrackPlayer.play();
+                    pauseCornerButton.setGraphic(imageViewCornerPause);
+                    pause = false;
+                });
+
+                musicSlider.setOnMouseReleased(e1 -> {
+                    soundtrackPlayer.setVolume(musicSlider.getValue() / 100);
+                    GameSoundPlayer.setValueOfMusicVolume(musicSlider.getValue() / 100);
+                });
+
+                soundSlider.setOnMouseReleased(e2 -> GameSoundPlayer.setValueOfSoundEffectVolume(soundSlider.getValue() / 100));
+
+            } else {
+                gameLoop.start();
+                pausePane.setVisible(false);
+                pauseCornerButton.setGraphic(imageViewCornerPause);
+                pause = false;
+            }
+        });
+    }
+
+    public void againButtonAction(ActionEvent actionEvent) throws FileNotFoundException {
+        Node n = (Node) actionEvent.getSource();
+        primaryStage = (Stage) n.getScene().getWindow();
+        primaryStage.hide();
+        Window.getWindows().clear();
+        layerPane.getChildren().clear();
+        Pane gameField;
+        PointVector mousePosition = new PointVector(0, 0);
         BorderPane root = new BorderPane();
         layerPane = new StackPane();
         gameField = new Pane();
@@ -160,6 +251,7 @@ public final class Controller {
     }
 
     protected void setLosePane() {
+        losePane.getChildren().clear();
         losePane.setVisible(true);
         losePane.setStyle("-fx-background-color: transparent;" + "-fx-background-radius: 10;");
         losePane.setMaxSize(700, 700);
@@ -184,7 +276,13 @@ public final class Controller {
         againButton.setPrefSize(100, 50);
         againButton.setTranslateX(400);
         againButton.setTranslateY(500);
-        againButton.setOnAction(e -> System.out.println("siur123"));
+        againButton.setOnAction(e -> {
+            try {
+                againButtonAction(e);
+            } catch (FileNotFoundException fileNotFoundException) {
+                fileNotFoundException.printStackTrace();
+            }
+        });
         imageViewGameover.setX(150);
         losePane.getChildren().add(imageViewGameover);
         losePane.getChildren().add(chart);
