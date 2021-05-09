@@ -30,6 +30,7 @@ public interface GameSettings {
     Color BG_COLOR_ONE = Color.web("#7ed967");
     Color BG_COLOR_TWO = Color.web("#12743c");
 
+    String SNAKE_ICON = "resources/img/snake.png";
     String APPLE_IMG = "resources/img/apple.png";
     String RUBY_IMG = "resources/img/ruby.png";
     String SMALL_SAW_IMG = "resources/img/SawSmall.png";

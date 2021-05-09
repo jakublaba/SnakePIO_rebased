@@ -20,7 +20,7 @@ public class ReaderOfHighscore {
     public void readHighScore() throws InputMismatchException {
         Scanner readingFile;
         try {
-            readingFile = new Scanner(new File("src/snakegame/resources/highscore.txt"));
+            readingFile = new Scanner(new File("src/snakegame/resources/.highscore.txt"));
             while (readingFile.hasNextLine()) {
                 String tmpLine = readingFile.nextLine();
                 if (!tmpLine.matches("^\\d+$")) {
@@ -30,19 +30,19 @@ public class ReaderOfHighscore {
                 System.out.println("Wczytano highscore: " + highscore);
             }
         } catch (FileNotFoundException e) {
-            System.out.println("There is no file:" + "resources/highscore.txt");
+            System.out.println("There is no file:" + "resources/.highscore.txt");
         }
     }
 
     public void writeHighScore() throws InputMismatchException {
         PrintWriter writingFile;
         try {
-            writingFile = new PrintWriter("src/snakegame/resources/highscore.txt");
+            writingFile = new PrintWriter("src/snakegame/resources/.highscore.txt");
             writingFile.println(highscore);
             writingFile.close();
             System.out.println("Zapisano highscore: " + highscore);
         } catch (FileNotFoundException e) {
-            System.out.println("There is no file:" + "resources/highscore.txt");
+            System.out.println("There is no file:" + "resources/.highscore.txt");
         }
     }
 }

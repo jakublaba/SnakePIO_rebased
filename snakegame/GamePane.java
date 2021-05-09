@@ -1,18 +1,29 @@
 package snakegame;
 
+import javafx.geometry.Pos;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 
 public final class GamePane extends Pane {
+    private Text scoreDisplay;
     private static Color BG_COLOR_O = GameSettings.BG_COLOR_ONE;
     private static Color BG_COLOR_T = GameSettings.BG_COLOR_TWO;
     private final ImageView appleImg, rubyImg, verticalSawImg, horizontalSawImg, diagonalUpSawImg, diagonalDownSawImg;
 
     public GamePane() {
+        scoreDisplay = new Text("Score: " + GameBoard.score);
+        scoreDisplay.setFont(new Font("Tisa", 24));
+        scoreDisplay.setFill(Color.BLACK);
+        scoreDisplay.setTextAlignment(TextAlignment.CENTER);
+        scoreDisplay.setX(GameSettings.BOARD_WIDTH / 2);
+        scoreDisplay.setY(GameSettings.BOARD_HEIGHT / 2);
         Image apple = new Image(getClass().getResourceAsStream(GameSettings.APPLE_IMG));
         Image ruby = new Image(getClass().getResourceAsStream(GameSettings.RUBY_IMG));
         Image smallSaw = new Image(getClass().getResourceAsStream(GameSettings.SMALL_SAW_IMG));
@@ -62,11 +73,11 @@ public final class GamePane extends Pane {
     public void show(GameBoard myBoard) {
         getChildren().clear();
         setBackground();
+        scoreDisplay.setText("Score: " + GameBoard.score);
+        getChildren().add(scoreDisplay);
 
         int colorChooser = 0; /* only used for determining snakeBodySegment colour */
-
         var mySnakeBodySegments = myBoard.getMySnake().getBodySegments(); //copy the segments
-
         for (PointVector mySnakeBodySegment : mySnakeBodySegments) {
             Circle snakeSegmentImg = new Circle(GameSettings.SEGMENT_SIZE / 2);
             snakeSegmentImg.setCenterX(mySnakeBodySegment.getX());

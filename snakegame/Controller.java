@@ -99,6 +99,7 @@ public final class Controller {
         root.setCenter(layerPane);
         Scene scene = new Scene(root, GameSettings.BOARD_WIDTH, GameSettings.BOARD_HEIGHT);
         primaryStage.setTitle("SnakeFX");
+        primaryStage.getIcons().add(new Image(getClass().getResourceAsStream(GameSettings.SNAKE_ICON)));
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
         primaryStage.show();
