@@ -25,3 +25,8 @@ Snake icon:
 From: https://opengameart.org/content/giant-snake
 Author: Baŝto https://opengameart.org/users/ba%C5%9Dto
 License: CC BY-SA 4.0 https://creativecommons.org/licenses/by-sa/4.0/
+
+Background:
+From: https://pixabay.com/pt/illustrations/desenhos-animados-3d-2716788/
+Author: gyathanarts
+License: Pixabay License
