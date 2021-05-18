@@ -1,7 +1,7 @@
 package snakegame;
 
 public class Saw {
-    private final PointVector location;
+    private PointVector location;
     private double speedX, speedY;
     private double size;
     private double maxTop, maxBottom, maxLeft, maxRight;
@@ -52,5 +52,29 @@ public class Saw {
         if (location.getY() <= maxTop || location.getY() >= maxBottom) speedY *= -1;
         location.setX(location.getX() + speedX);
         location.setY(location.getY() + speedY);
+    }
+    
+    public void setLocation(PointVector location) {
+        this.location = location;
+    }
+
+    
+    public double getSpeedX() {
+        return speedX;
+    }
+
+    
+    public double getSpeedY() {
+        return speedY;
+    }
+
+    
+    public void setSpeedX(double speedX) {
+        this.speedX = speedX;
+    }
+
+   
+    public void setSpeedY(double speedY) {
+        this.speedY = speedY;
     }
 }

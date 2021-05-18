@@ -1,6 +1,5 @@
 package snakegame;
 
-import javafx.geometry.Pos;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -12,7 +11,7 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 
 public final class GamePane extends Pane {
-    private Text scoreDisplay;
+    private final Text scoreDisplay;
     private static Color BG_COLOR_O = GameSettings.BG_COLOR_ONE;
     private static Color BG_COLOR_T = GameSettings.BG_COLOR_TWO;
     private final ImageView appleImg, rubyImg, verticalSawImg, horizontalSawImg, diagonalUpSawImg, diagonalDownSawImg;

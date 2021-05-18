@@ -14,7 +14,7 @@ public interface GameSettings {
     /*
      *  SNAKE PROPERTIES
      */
-    int FOOD_MULTIPLIER = 2;
+    int FOOD_MULTIPLIER = 5;
     int SPECIAL_FOOD_MULTIPLIER = 5;
     double SEGMENT_SIZE = 30;
     double SMALL_SAW_SIZE = 40;

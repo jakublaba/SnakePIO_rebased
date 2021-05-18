@@ -39,7 +39,7 @@ public final class SpecialFood extends Food {
         return randomVector;
     }
 
-    private void checkBordersAndTeleport() {
+    public void checkBordersAndTeleport() {
         if (this.position.getX() > GameSettings.BOARD_WIDTH) {
             this.position.setX(0);
         } else if (this.position.getX() < 0) {

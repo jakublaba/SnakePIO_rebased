@@ -22,12 +22,19 @@ public final class Snake {
                 ThreadLocalRandom.current().nextDouble(this.segmentSize, this.safeHeight)));
         this.velocity = new PointVector(0, 0);
     }
-
+    public Snake(List<PointVector> preparedSnake){
+        this.sizeMultiplier = GameSettings.FOOD_MULTIPLIER;
+        double segmentSize = GameSettings.SEGMENT_SIZE;
+        double safeWidth = GameSettings.BOARD_WIDTH - segmentSize;
+        double safeHeight = GameSettings.BOARD_HEIGHT - segmentSize;
+        bodySegments = preparedSnake;
+        this.velocity = new PointVector(0, 0);
+    }
     public List<PointVector> getBodySegments() {
         return bodySegments;
     }
 
-    public void move(PointVector mouse) {
+    public void move (PointVector mouse) {
         ListIterator<PointVector> mySnakeIterator = bodySegments.listIterator(); //creates the iterator
 
         var oldLocation = mySnakeIterator.next();   //save head location to temp
@@ -39,14 +46,13 @@ public final class Snake {
         velocity.add(dir);
         velocity.setConstantSpeed(GameSettings.MAX_SPEED);
         temporarySegment.add(velocity);
-        mySnakeIterator.set(temporarySegment);  //save new head location
+        mySnakeIterator.set(temporarySegment); //save new head location
 
         while (mySnakeIterator.hasNext()) {
             temporarySegment = oldLocation;
             oldLocation = mySnakeIterator.next();
             mySnakeIterator.set(new PointVector(temporarySegment.getX(), temporarySegment.getY()));
         }
-
     }
 
     /*
@@ -78,7 +84,7 @@ public final class Snake {
     }
 
     /*
-     * adds n (n=GameSettings.SIZE_MULTIPLIER) segments to the end of the snake
+     * adds n (n = GameSettings.SIZE_MULTIPLIER) segments to the end of the snake
      */
     public void addBodySegment() {
         for (int i = 0; i < GameSettings.FOOD_MULTIPLIER; i++) {
