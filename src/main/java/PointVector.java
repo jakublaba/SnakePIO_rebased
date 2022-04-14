@@ -1,5 +1,3 @@
-package snakegame;
-
 public class PointVector {
     private double x;
     private double y;

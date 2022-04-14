@@ -1,5 +1,3 @@
-package snakegame;
-
 import java.util.concurrent.ThreadLocalRandom;
 
 public final class SpecialFood extends Food {

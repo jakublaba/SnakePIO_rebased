@@ -7,7 +7,6 @@
 [Jakub Łaba](https://github.com/jakublaba)*
 
 **Soundtrack** \
-Happy Arcade Tune \
 Author: [rezoner](https://soundcloud.com/rezoner) \
 License: [CC-BY 3.0](https://creativecommons.org/licenses/by/3.0/)
 

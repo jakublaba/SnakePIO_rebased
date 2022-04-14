@@ -1,5 +1,3 @@
-package snakegame;
-
 import javafx.scene.media.AudioClip;
 
 import java.util.Objects;
@@ -28,13 +26,13 @@ public final class GameSoundPlayer {
 
     public GameSoundPlayer() {
         try {
-            foodEatenSound = new AudioClip(Objects.requireNonNull(getClass().getResource("resources/sounds/impactWood_light_001.mp3")).toExternalForm());
+            foodEatenSound = new AudioClip(Objects.requireNonNull(getClass().getResource("/sounds/impactWood_light_001.mp3")).toExternalForm());
             foodEatenSound.setVolume(getValueOfSoundEffectVolume());
         } catch (NullPointerException e) {
             System.err.println("Zły plik!");
         }
         try {
-            snakeCrashedSound = new AudioClip(Objects.requireNonNull(getClass().getResource("resources/sounds/back_002.mp3")).toExternalForm());
+            snakeCrashedSound = new AudioClip(Objects.requireNonNull(getClass().getResource("/sounds/back_002.mp3")).toExternalForm());
             snakeCrashedSound.setVolume(getValueOfSoundEffectVolume());
         } catch (NullPointerException e) {
             System.err.println("Zły plik!");

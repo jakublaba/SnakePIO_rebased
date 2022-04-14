@@ -1,5 +1,5 @@
 .bodybg{
- -fx-background-image: url("resources/img/menuBack.png");
+ -fx-background-image: url("../img/menuBack.png");
 }
 .mainlabel{
     -fx-font-family:"Courier New", Helvetica, Courier New, sans-serif;

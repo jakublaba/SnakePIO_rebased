@@ -1,5 +1,3 @@
-package snakegame;
-
 import javafx.animation.AnimationTimer;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -110,7 +108,7 @@ public final class Controller {
          * ustalony na zapętlenie
          * dalej w pętli game loop (animation timer) jest stopowany
          */
-        var soundtrack = new Media(Objects.requireNonNull(getClass().getResource("resources/sounds/happy_0.mp3")).toExternalForm());
+        var soundtrack = new Media(Objects.requireNonNull(getClass().getResource("/sounds/happy_0.mp3")).toExternalForm());
         soundtrackPlayer = new MediaPlayer(soundtrack);
         soundtrackPlayer.setCycleCount(MediaPlayer.INDEFINITE);
         soundtrackPlayer.setVolume(GameSoundPlayer.getValueOfMusicVolume());
@@ -192,12 +190,11 @@ public final class Controller {
         primaryStage.show();
         GamePane GamePane = new GamePane();
         gameField.getChildren().add(GamePane);
-        /*
-         * tworzymy soundtrack który będzie grał w trakcie gry
-         * ustalony na zapętlenie
-         * dalej w pętli game loop (animation timer) jest stopowany
-         */
-        var soundtrack = new Media(Objects.requireNonNull(getClass().getResource("resources/sounds/happy_0.mp3")).toExternalForm());
+
+        // Tworzymy soundtrack który będzie grał w trakcie gry
+        // Ustalony na zapętlenie
+        // Dalej w pętli game loop (animation timer) jest stopowany
+        var soundtrack = new Media(Objects.requireNonNull(getClass().getResource("/sounds/happy_0.mp3")).toExternalForm());
         soundtrackPlayer = new MediaPlayer(soundtrack);
         soundtrackPlayer.setCycleCount(MediaPlayer.INDEFINITE);
         soundtrackPlayer.setVolume(GameSoundPlayer.getValueOfMusicVolume());
@@ -307,16 +304,16 @@ public final class Controller {
             soundSliderLabel.setStyle("-fx-font-size: 2em;");
             soundSliderLabel.setTranslateX(50);
             soundSliderLabel.setTranslateY(150);
-            FileInputStream inputPauseIcon = new FileInputStream("src/snakegame/resources/img/playIcon.png");
+            FileInputStream inputPauseIcon = new FileInputStream("src/main/resources/img/playIcon.png");
             Image imagePause = new Image(inputPauseIcon);
             ImageView imageViewPause = new ImageView(imagePause);
-            FileInputStream inputPlayCornerIcon = new FileInputStream("src/snakegame/resources/img/playCornerIcon.png");
+            FileInputStream inputPlayCornerIcon = new FileInputStream("src/main/resources/img/playCornerIcon.png");
             Image imageCornerPlay = new Image(inputPlayCornerIcon);
             imageViewCornerPlay = new ImageView(imageCornerPlay);
-            FileInputStream inputPauseCornerIcon = new FileInputStream("src/snakegame/resources/img/pauseCornerIcon.png");
+            FileInputStream inputPauseCornerIcon = new FileInputStream("src/main/resources/img/pauseCornerIcon.png");
             Image imageCornerPause = new Image(inputPauseCornerIcon);
             imageViewCornerPause = new ImageView(imageCornerPause);
-            FileInputStream inputGameoverGraphics = new FileInputStream("src/snakegame/resources/img/gameoverGraphics.png");
+            FileInputStream inputGameoverGraphics = new FileInputStream("src/main/resources/img/gameoverGraphics.png");
             Image imageGameover = new Image(inputGameoverGraphics);
             imageViewGameover = new ImageView(imageGameover);
             resumeButton = new Button("Resume", imageViewPause);
@@ -443,7 +440,7 @@ public final class Controller {
     public void settingsButtonAction() {
         Parent root;
         try {
-            root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("settings.fxml")));
+            root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/settings.fxml")));
             Stage stage = new Stage();
             stage.setTitle("SnakeFX - Settings");
             stage.setScene(new Scene(root, GameSettings.MENU_WIDTH, GameSettings.MENU_HEIGHT));
@@ -461,7 +458,7 @@ public final class Controller {
         Stage stage = (Stage) closeButton.getScene().getWindow();
         Parent root;
         try {
-            root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("menu.fxml")));
+            root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/menu.fxml")));
             Stage stage1 = new Stage();
             stage1.setTitle("Snake");
             stage1.setScene(new Scene(root, GameSettings.MENU_WIDTH, GameSettings.MENU_HEIGHT));

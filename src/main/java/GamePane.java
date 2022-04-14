@@ -1,5 +1,3 @@
-package snakegame;
-
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -69,7 +67,7 @@ public final class GamePane extends Pane {
             }
         }
     }
-    public void show(GameBoard myBoard) {
+    public void render(GameBoard myBoard) {
         getChildren().clear();
         setBackground();
         scoreDisplay.setText("Score: " + GameBoard.score);

@@ -1,16 +1,16 @@
 .bodybg{
- -fx-background-image: url("resources/img/settingsBack.png");
+ -fx-background-image: url("../img/settingsBack.png");
 }
 
 .bodysetone{
- -fx-background-image: url("resources/img/firstOptionBack.png");
+ -fx-background-image: url("../img/firstOptionBack.png");
 }
 
 .bodysettwo{
- -fx-background-image: url("resources/img/secondOptionBack.png");
+ -fx-background-image: url("../img/secondOptionBack.png");
 }
 .bodysetthree{
- -fx-background-image: url("resources/img/thirdOptionBack.png");
+ -fx-background-image: url("../img/thirdOptionBack.png");
 }
 
 .button{

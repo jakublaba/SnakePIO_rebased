@@ -1,5 +1,3 @@
-package snakegame;
-
 public class Saw {
     private PointVector location;
     private double speedX, speedY;

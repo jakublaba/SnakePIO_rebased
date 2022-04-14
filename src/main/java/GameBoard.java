@@ -1,5 +1,3 @@
-package snakegame;
-
 import java.io.*;
 import java.util.ListIterator;
 import java.util.Scanner;
@@ -110,7 +108,7 @@ public final class GameBoard {
         headPosition.subtract(foodPosition);
         if (headPosition.length() < GameSettings.SEGMENT_SIZE) {
             getMyFood().respawn();
-            for (int i = 0; i < GameSettings.FOOD_MULTIPLIER; i++) mySnake.addBodySegment();
+            for (int i = 0; i < GameSettings.FOOD_MULTIPLIER; i++) mySnake.addBodySegments();
             return true;
         }
         return false;
@@ -121,7 +119,7 @@ public final class GameBoard {
             var distance = new PointVector(headPosition);
             distance.subtract(foodPosition);
             if (distance.length() < GameSettings.SEGMENT_SIZE) {
-                for (int i = 0; i < GameSettings.SPECIAL_FOOD_MULTIPLIER; i++) mySnake.addBodySegment();
+                for (int i = 0; i < GameSettings.SPECIAL_FOOD_MULTIPLIER; i++) mySnake.addBodySegments();
                 mySpecialFood.setLongevity(0);
                 return true;
             } else

@@ -1,5 +1,3 @@
-package snakegame;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
@@ -20,7 +18,7 @@ public class ReaderOfHighscore {
     public void readHighScore() throws InputMismatchException {
         Scanner readingFile;
         try {
-            readingFile = new Scanner(new File("src/snakegame/resources/.highscore.txt"));
+            readingFile = new Scanner(new File("src/main/resources/.highscore.txt"));
             while (readingFile.hasNextLine()) {
                 String tmpLine = readingFile.nextLine();
                 if (!tmpLine.matches("^\\d+$")) {
@@ -37,7 +35,7 @@ public class ReaderOfHighscore {
     public void writeHighScore() throws InputMismatchException {
         PrintWriter writingFile;
         try {
-            writingFile = new PrintWriter("src/snakegame/resources/.highscore.txt");
+            writingFile = new PrintWriter("src/main/resources/.highscore.txt");
             writingFile.println(highscore);
             writingFile.close();
             System.out.println("Zapisano highscore: " + highscore);

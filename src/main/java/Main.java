@@ -1,5 +1,3 @@
-package snakegame;
-
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -12,7 +10,7 @@ import java.io.IOException;
 public final class Main extends Application {
     public void start(Stage primaryStage) {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("menu.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("/fxml/menu.fxml"));
             primaryStage.setTitle("SnakeFX");
             primaryStage.getIcons().add(new Image(getClass().getResource(GameSettings.SNAKE_ICON).toExternalForm()));
             primaryStage.setScene(new Scene(root, GameSettings.MENU_WIDTH, GameSettings.MENU_HEIGHT));

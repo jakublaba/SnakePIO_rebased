@@ -1,5 +1,3 @@
-package snakegame;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
@@ -12,10 +10,10 @@ public final class Snake {
     private final List<PointVector> bodySegments;
 
     public Snake() {
-        this.sizeMultiplier = GameSettings.FOOD_MULTIPLIER;
-        double segmentSize = GameSettings.SEGMENT_SIZE;
-        double safeWidth = GameSettings.BOARD_WIDTH - segmentSize;
-        double safeHeight = GameSettings.BOARD_HEIGHT - segmentSize;
+        sizeMultiplier = GameSettings.FOOD_MULTIPLIER;
+        segmentSize = GameSettings.SEGMENT_SIZE;
+        safeWidth = GameSettings.BOARD_WIDTH - segmentSize;
+        safeHeight = GameSettings.BOARD_HEIGHT - segmentSize;
 
         bodySegments = new ArrayList<>();
         bodySegments.add(new PointVector(ThreadLocalRandom.current().nextDouble(this.segmentSize, this.safeWidth),
@@ -23,10 +21,10 @@ public final class Snake {
         this.velocity = new PointVector(0, 0);
     }
     public Snake(List<PointVector> preparedSnake){
-        this.sizeMultiplier = GameSettings.FOOD_MULTIPLIER;
-        double segmentSize = GameSettings.SEGMENT_SIZE;
-        double safeWidth = GameSettings.BOARD_WIDTH - segmentSize;
-        double safeHeight = GameSettings.BOARD_HEIGHT - segmentSize;
+        sizeMultiplier = GameSettings.FOOD_MULTIPLIER;
+        segmentSize = GameSettings.SEGMENT_SIZE;
+        safeWidth = GameSettings.BOARD_WIDTH - segmentSize;
+        safeHeight = GameSettings.BOARD_HEIGHT - segmentSize;
         bodySegments = preparedSnake;
         this.velocity = new PointVector(0, 0);
     }
@@ -55,38 +53,28 @@ public final class Snake {
         }
     }
 
-    /*
-     * returns size of bodySegments list divided by multiplier (user score)
-     */
+    // Returns size of bodySegments list divided by multiplier (user score)
     public int getSizeForUser() {
         return bodySegments.size() / sizeMultiplier;
     }
 
-    /*
-     * returns actual size of bodySegments list
-     */
+    // Returns actual size of bodySegments list
     public int getActualSize() {
         return bodySegments.size();
     }
 
-    /*
-     * returns snake's head (first body segment)
-     */
+    // Returns snake's head (first body segment)
     public PointVector getHead() {
         return bodySegments.get(0);
     }
 
-    /*
-     * returns snake's tail (last body segment)
-     */
+    // Returns snake's tail (last body segment)
     public PointVector getTail() {
-        return bodySegments.get(getActualSize() - 1); //actually quite robust when using ArrayList
+        return bodySegments.get(getActualSize() - 1);
     }
 
-    /*
-     * adds n (n = GameSettings.SIZE_MULTIPLIER) segments to the end of the snake
-     */
-    public void addBodySegment() {
+    // Adds n = GameSettings.SIZE_MULTIPLIER segments to the end of the snake
+    public void addBodySegments() {
         for (int i = 0; i < GameSettings.FOOD_MULTIPLIER; i++) {
             var newBodySegment = new PointVector(getTail());
             bodySegments.add(newBodySegment);
