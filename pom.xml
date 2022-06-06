@@ -6,7 +6,7 @@
     <groupId>pl.edu.pw.ee</groupId>
     <artifactId>Snake</artifactId>
     <packaging>jar</packaging>
-    <version>1.0-SNAPSHOT</version>
+    <version>0.1.0</version>
     <name>Snake</name>
     <url>http://maven.apache.org</url>
 
@@ -14,10 +14,10 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <javafx.version>16</javafx.version>
         <junit.version>5.7.0</junit.version>
-        <annotations.version>RELEASE</annotations.version>
         <javafx.maven.plugin.version>0.0.6</javafx.maven.plugin.version>
         <maven.compiler.plugin.version>16</maven.compiler.plugin.version>
         <maven.surefire.plugin.version>2.22.1</maven.surefire.plugin.version>
+        <maven.shade.plugin.version>3.2.1</maven.shade.plugin.version>
     </properties>
 
     <dependencies>
@@ -45,12 +45,6 @@
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-swing</artifactId>
             <version>${javafx.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jetbrains</groupId>
-            <artifactId>annotations</artifactId>
-            <version>${annotations.version}</version>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -89,6 +83,25 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>${maven.surefire.plugin.version}</version>
+            </plugin>
+            <plugin>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>${maven.shade.plugin.version}</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <transformers>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>ActualMain</mainClass>
+                                </transformer>
+                            </transformers>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
